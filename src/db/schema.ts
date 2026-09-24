@@ -286,6 +286,9 @@ export const notes = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     valeur: numeric("valeur", { precision: 5, scale: 2 }).notNull(),
+    /** Absent à l'épreuve : non justifiée = 0, justifiée = exclue. */
+    absent: boolean("absent").default(false).notNull(),
+    justifie: boolean("justifie").default(false).notNull(),
   },
   (t) => [unique("notes_unique").on(t.evaluationId, t.eleveUserId)],
 );

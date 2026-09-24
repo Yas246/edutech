@@ -64,15 +64,21 @@ export default async function PageEvaluations({
       evaluationId: notes.evaluationId,
       eleveUserId: notes.eleveUserId,
       valeur: notes.valeur,
+      absent: notes.absent,
+      justifie: notes.justifie,
     })
     .from(notes)
     .innerJoin(evaluations, eq(evaluations.id, notes.evaluationId))
     .where(eq(evaluations.classeId, idClasse));
 
-  const notesParEvaluation = new Map<number, Record<number, string>>();
+  const notesParEvaluation = new Map<number, Record<number, { valeur: string; absent: boolean; justifie: boolean }>>();
   for (const n of toutesNotes) {
     const sac = notesParEvaluation.get(n.evaluationId) ?? {};
-    sac[n.eleveUserId] = n.valeur.replace(".", ",");
+    sac[n.eleveUserId] = {
+      valeur: n.absent ? "" : n.valeur.replace(".", ","),
+      absent: n.absent,
+      justifie: n.justifie,
+    };
     notesParEvaluation.set(n.evaluationId, sac);
   }
 

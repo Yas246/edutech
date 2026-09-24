@@ -113,12 +113,16 @@ export async function chargerBulletins(classeId: number): Promise<BulletinsClass
   const periode = await periodeActive(classeId);
 
   // Évaluations de la classe, avec les notes de chacun.
+  // Règle d'absence (reprise du modèle de référence) : absence non
+  // justifiée = 0 dans la moyenne ; absence justifiée = épreuve exclue.
   const lignesNotes = await db
     .select({
       eleveUserId: notes.eleveUserId,
       matiereId: evaluations.matiereId,
       valeur: notes.valeur,
       bareme: evaluations.bareme,
+      absent: notes.absent,
+      justifie: notes.justifie,
     })
     .from(evaluations)
     .innerJoin(notes, eq(notes.evaluationId, evaluations.id))
@@ -139,7 +143,8 @@ export async function chargerBulletins(classeId: number): Promise<BulletinsClass
     const matieresEleve: BulletinMatiere[] = programme.map((m) => {
       const notesMatiere = lignesNotes
         .filter((n) => n.eleveUserId === eleve.id && n.matiereId === m.id)
-        .map((n) => (Number(n.valeur) / n.bareme) * 20);
+        .filter((n) => !(n.absent && n.justifie))
+        .map((n) => (n.absent ? 0 : (Number(n.valeur) / n.bareme) * 20));
       const moyenne =
         notesMatiere.length > 0
           ? notesMatiere.reduce((a, b) => a + b, 0) / notesMatiere.length
@@ -175,11 +180,26 @@ export async function chargerBulletins(classeId: number): Promise<BulletinsClass
     };
   });
 
-  // Rang : moyenne décroissante, sans moyenne = dernier.
+  // Rang : moyenne décroissante, ex æquo = même place, sans moyenne = dernier.
   const classees = [...resultats]
     .sort((a, b) => (b.moyenneGenerale ?? -1) - (a.moyenneGenerale ?? -1));
+  let rangPrecedent = 0;
+  let moyennePrecedente: number | null = null;
   classees.forEach((e, index) => {
-    e.rang = e.moyenneGenerale === null ? null : index + 1;
+    if (e.moyenneGenerale === null) {
+      e.rang = null;
+      return;
+    }
+    if (
+      moyennePrecedente !== null &&
+      Math.abs(e.moyenneGenerale - moyennePrecedente) < 0.005
+    ) {
+      e.rang = rangPrecedent;
+      return;
+    }
+    rangPrecedent = index + 1;
+    moyennePrecedente = e.moyenneGenerale;
+    e.rang = rangPrecedent;
   });
 
   return {

@@ -68,34 +68,56 @@ export async function enregistrerNotes(_prec: Retour, donnees: FormData): Promis
   const contexte = await gardeClasse(evaluation.classeId);
   if (!contexte) return { erreur: "Vous ne faites pas partie de l'équipe de cette classe." };
 
-  // Champs note_<idEleve> : vides = pas de note (élève absent à l'épreuve).
-  const lignes: { eleveUserId: number; valeur: string }[] = [];
-  for (const [cle, brut] of donnees.entries()) {
-    if (!cle.startsWith("note_")) continue;
-    const brutTexte = String(brut).trim();
-    if (!brutTexte) continue;
-    const id = Number(cle.slice("note_".length));
-    if (!Number.isInteger(id)) continue;
-    lignes.push({ eleveUserId: id, valeur: brutTexte });
+  // Champs par élève : note_<id>, absent_<id>, justifie_<id>.
+  // Absent non justifiée = zéro compté ; absente justifiée = exclue.
+  // Le champ note d'un élève absent étant désactivé, les identifiants
+  // se collectent aussi depuis les cases à cocher.
+  type Ligne = { eleveUserId: number; valeur: string; absent: boolean; justifie: boolean };
+  const lignes: Ligne[] = [];
+  const ids = new Set<number>();
+  for (const [cle] of donnees.entries()) {
+    for (const prefixe of ["note_", "absent_"]) {
+      if (cle.startsWith(prefixe)) {
+        const id = Number(cle.slice(prefixe.length));
+        if (Number.isInteger(id)) ids.add(id);
+      }
+    }
+  }
+  for (const id of ids) {
+    const absent = donnees.get(`absent_${id}`) !== null;
+    const justifie = absent && donnees.get(`justifie_${id}`) !== null;
+    const brutTexte = String(donnees.get(`note_${id}`) ?? "").trim();
+    // Note vide sans absence : l'élève n'a pas de note, on passe.
+    if (!absent && brutTexte === "") continue;
+    lignes.push({
+      eleveUserId: id,
+      valeur: absent ? "0" : brutTexte,
+      absent,
+      justifie,
+    });
   }
   if (lignes.length === 0) {
-    return { erreur: "Aucune note saisie. Laissez vide les élèves absents à l'épreuve." };
+    return { erreur: "Aucune note saisie pour cette classe." };
   }
 
   // Vérification et conversion (virgule française acceptée).
-  const valeurComposee = new Map<number, number>();
+  const valeurComposee = new Map<number, Ligne>();
   for (const l of lignes) {
-    const nombre = Number(l.valeur.replace(",", "."));
-    if (!Number.isFinite(nombre)) {
-      return { erreur: `« ${l.valeur} » n'est pas un nombre.` };
+    if (!l.absent) {
+      const nombre = Number(l.valeur.replace(",", "."));
+      if (!Number.isFinite(nombre)) {
+        return { erreur: `« ${l.valeur} » n'est pas un nombre.` };
+      }
+      if (nombre < 0) return { erreur: "Une note ne peut pas être négative." };
+      if (nombre > evaluation.bareme) {
+        return {
+          erreur: `Note ${l.valeur} refusée : le barème de « ${evaluation.titre} » est ${evaluation.bareme}.`,
+        };
+      }
+      valeurComposee.set(l.eleveUserId, { ...l, valeur: nombre.toFixed(2) });
+    } else {
+      valeurComposee.set(l.eleveUserId, l);
     }
-    if (nombre < 0) return { erreur: "Une note ne peut pas être négative." };
-    if (nombre > evaluation.bareme) {
-      return {
-        erreur: `Note ${l.valeur} refusée : le barème de « ${evaluation.titre} » est ${evaluation.bareme}.`,
-      };
-    }
-    valeurComposee.set(l.eleveUserId, nombre);
   }
 
   // Tous les élèves notés doivent appartenir à la classe.
@@ -108,13 +130,23 @@ export async function enregistrerNotes(_prec: Retour, donnees: FormData): Promis
     if (!idsClasse.has(id)) return { erreur: "Un des élèves notés n'appartient pas à cette classe." };
   }
 
-  for (const [eleveUserId, nombre] of valeurComposee) {
+  for (const [eleveUserId, ligne] of valeurComposee) {
     await db
       .insert(notes)
-      .values({ evaluationId: idEvaluation, eleveUserId, valeur: nombre.toFixed(2) })
+      .values({
+        evaluationId: idEvaluation,
+        eleveUserId,
+        valeur: ligne.valeur,
+        absent: ligne.absent,
+        justifie: ligne.justifie,
+      })
       .onConflictDoUpdate({
         target: [notes.evaluationId, notes.eleveUserId],
-        set: { valeur: nombre.toFixed(2) },
+        set: {
+          valeur: ligne.valeur,
+          absent: ligne.absent,
+          justifie: ligne.justifie,
+        },
       });
   }
 
