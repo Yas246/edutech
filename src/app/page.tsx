@@ -1,69 +1,178 @@
-import Image from "next/image";
+import Link from "next/link";
+import { nombreCommunes, nombreDepartements, nombreEtablissements } from "@/lib/recensement";
 
-export default function Home() {
+const roles = [
+  {
+    titre: "Élèves",
+    texte:
+      "Vos notes, vos absences, votre emploi du temps, vos bulletins et un coach qui vous oriente.",
+  },
+  {
+    titre: "Parents",
+    texte:
+      "Le suivi de chacun de vos enfants en un seul endroit : résultats, présences, échéances de scolarité.",
+  },
+  {
+    titre: "Enseignants",
+    texte:
+      "Faites l'appel en un instant, saisissez les évaluations, laissez les moyennes se calculer seules.",
+  },
+  {
+    titre: "Établissements",
+    texte:
+      "Classes, matières, bulletins officiels, recouvrement de la scolarité et annonces à toute la communauté.",
+  },
+  {
+    titre: "Ministère",
+    texte:
+      "Valide les établissements et lit la nation : effectifs, absentéisme et recouvrement, département par département.",
+  },
+];
+
+const modules = [
+  {
+    titre: "Vie scolaire",
+    texte:
+      "Appel quotidien, évaluations, moyennes pondérées par coefficient et bulletins trimestriels au format béninois.",
+  },
+  {
+    titre: "Famille",
+    texte:
+      "Un parent suit plusieurs enfants, même dans des classes différentes. L'élève est informé, l'argent reste entre l'école et le parent.",
+  },
+  {
+    titre: "Finances scolaires",
+    texte:
+      "Frais, factures par tranches, reçus numérotés et paiement par Mobile Money. Le suivi, sans remplacer la comptabilité.",
+  },
+  {
+    titre: "Transport",
+    texte:
+      "Les lignes de bus, leurs arrêts et le ticket à 200 F, achetable en ligne ou par code USSD pour ceux qui n'ont pas de smartphone.",
+  },
+];
+
+export default function Accueil() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      {/* Héros */}
+      <section className="bg-vert text-white">
+        <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:py-20">
+          <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm">
+            <span className="inline-block h-2 w-2 rounded-full bg-jaune" aria-hidden="true" />
+            Recensement chargé : {nombreEtablissements} établissements réels
           </p>
+          <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+            Toute l&apos;école béninoise sur une seule plateforme
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg text-white/85">
+            EduTech relie les élèves, les enseignants, les parents, les établissements et le
+            ministère : la vie de la classe, les bulletins, la scolarité, le transport et
+            l&apos;orientation, même avec une connexion modeste.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/inscription"
+              className="rounded-xl bg-jaune px-5 py-3 font-semibold text-encre hover:brightness-95"
+            >
+              Créer un compte
+            </Link>
+            <Link
+              href="/etablissements"
+              className="rounded-xl border border-white/40 px-5 py-3 font-medium text-white hover:bg-white/10"
+            >
+              Parcourir les établissements
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Chiffres réels du recensement */}
+      <section aria-label="Le pays couvert" className="border-b border-ligne bg-white">
+        <dl className="mx-auto grid w-full max-w-6xl grid-cols-2 gap-6 px-4 py-8 sm:grid-cols-4">
+          <div>
+            <dt className="text-sm text-encre-doux">Établissements recensés</dt>
+            <dd className="text-3xl font-bold text-vert">{nombreEtablissements}</dd>
+          </div>
+          <div>
+            <dt className="text-sm text-encre-doux">Départements</dt>
+            <dd className="text-3xl font-bold text-vert">{nombreDepartements}</dd>
+          </div>
+          <div>
+            <dt className="text-sm text-encre-doux">Communes</dt>
+            <dd className="text-3xl font-bold text-vert">{nombreCommunes}</dd>
+          </div>
+          <div>
+            <dt className="text-sm text-encre-doux">Ticket de bus</dt>
+            <dd className="text-3xl font-bold text-vert">200 F</dd>
+          </div>
+        </dl>
+      </section>
+
+      {/* Les cinq rôles */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-14">
+        <h2 className="text-2xl font-bold tracking-tight">Une plateforme, cinq places</h2>
+        <p className="mt-2 max-w-2xl text-encre-doux">
+          Chacun voit ce qui le concerne, et rien d&apos;autre. Le ministère valide les
+          établissements ; l&apos;école fait vivre ses classes ; la famille suit ses enfants.
+        </p>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {roles.map((r) => (
+            <li key={r.titre} className="rounded-2xl border border-ligne bg-white p-5">
+              <h3 className="font-semibold text-vert-fonce">{r.titre}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-encre-doux">{r.texte}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Les modules */}
+      <section className="border-y border-ligne bg-white">
+        <div className="mx-auto w-full max-w-6xl px-4 py-14">
+          <h2 className="text-2xl font-bold tracking-tight">Ce que la plateforme fait</h2>
+          <div className="mt-8 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+            {modules.map((m) => (
+              <div key={m.titre}>
+                <h3 className="flex items-center gap-2 font-semibold">
+                  <span
+                    className="inline-block h-2.5 w-2.5 rounded-sm bg-jaune"
+                    aria-hidden="true"
+                  />
+                  {m.titre}
+                </h3>
+                <p className="mt-2 max-w-xl text-sm leading-relaxed text-encre-doux">{m.texte}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Appel final */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-14">
+        <div className="rounded-2xl bg-vert-clair p-8 sm:p-10">
+          <h2 className="text-2xl font-bold tracking-tight text-vert-fonce">
+            Votre établissement est peut-être déjà là
+          </h2>
+          <p className="mt-2 max-w-2xl text-encre-doux">
+            Les {nombreEtablissements} établissements du recensement national sont chargés. La
+            direction se crée un compte, le ministère valide, et la classe ouvre.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/inscription"
+              className="rounded-xl bg-vert px-5 py-3 font-semibold text-white hover:bg-vert-fonce"
+            >
+              Inscrire mon établissement
+            </Link>
+            <Link
+              href="/etablissements"
+              className="rounded-xl border border-vert px-5 py-3 font-medium text-vert-fonce hover:bg-white"
+            >
+              Voir l&apos;annuaire
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
