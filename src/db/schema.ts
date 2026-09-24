@@ -275,10 +275,12 @@ export const presencesEnseignants = pgTable(
 );
 
 /**
- * Un transfert d'élève entre établissements, à la manière du système
- * national : la direction d'accueil demande, le ministère valide.
- * Tant que le transfert n'est pas validé, l'élève ne peut pas être
- * inscrit dans la classe d'accueil.
+ * Un transfert d'élève entre établissements : il se règle ENTRE ÉCOLES.
+ * La direction d'accueil ouvre la demande après examen du dossier ;
+ * la direction d'ORIGINE l'accepte (le « transfert numérique ») ou la
+ * refuse. Tant que l'origine n'a pas accepté, l'élève n'est pas
+ * inscrit dans la classe d'accueil. Le ministère n'est pas juge :
+ * il lit les mouvements comme le reste.
  */
 export const transferts = pgTable("transferts", {
   id: serial("id").primaryKey(),

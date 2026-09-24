@@ -17,6 +17,7 @@ import {
   periodes,
   presences,
   presencesEnseignants,
+  transferts,
   users,
 } from "../src/db/schema";
 import {
@@ -740,12 +741,101 @@ async function importerEquipePedagogique() {
   );
 }
 
+/**
+ * Le dossier de transfert de démonstration : une élève d'un CEG du
+ * secteur demande son entrée au lycée ; le dossier attend le ministère.
+ */
+async function importerTransfertDemo() {
+  const idEcole = await idEcoleDemo();
+  const [origine] = await db
+    .select()
+    .from(etablissements)
+    .where(eq(etablissements.nom, "CEG 1 Adjarra"))
+    .limit(1);
+  if (!origine) return;
+
+  let [classeOrigine] = await db
+    .select()
+    .from(classes)
+    .where(and(eq(classes.etablissementId, origine.id), eq(classes.nom, "Seconde A")))
+    .limit(1);
+  if (!classeOrigine) {
+    [classeOrigine] = await db
+      .insert(classes)
+      .values({ etablissementId: origine.id, nom: "Seconde A", niveau: "Seconde" })
+      .returning();
+  }
+
+  const idEleve = await idUtilisateur("transfert.test@edutech.bj", {
+    prenom: "Prisca",
+    nom: "Amoussou",
+    role: "eleve",
+    sexe: "F",
+  });
+  await db
+    .insert(inscriptions)
+    .values({ classeId: classeOrigine.id, eleveUserId: idEleve })
+    .onConflictDoNothing();
+
+  // L'école d'origine a sa direction : c'est elle qui acceptera la demande.
+  const idDirectionOrigine = await idUtilisateur("direction-adjarra.test@edutech.bj", {
+    prenom: "Théophile",
+    nom: "Koudjo",
+    role: "direction",
+    telephone: "97 44 55 66",
+    sexe: "M",
+  });
+  await db
+    .update(etablissements)
+    .set({ directionUserId: idDirectionOrigine })
+    .where(eq(etablissements.id, origine.id));
+
+  const [classeArrivee] = await db
+    .select()
+    .from(classes)
+    .where(and(eq(classes.etablissementId, idEcole), eq(classes.nom, "Seconde A")))
+    .limit(1);
+  if (!classeArrivee) return;
+
+  const dejaLa = await db
+    .select({ id: transferts.id })
+    .from(transferts)
+    .where(
+      and(
+        eq(transferts.eleveUserId, idEleve),
+        eq(transferts.etablissementArrivee, idEcole),
+      ),
+    )
+    .limit(1);
+  if (dejaLa.length > 0) return;
+
+  const idDirection = (
+    await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, "admin-etab.test@edutech.bj"))
+      .limit(1)
+  )[0].id;
+  await db.insert(transferts).values({
+    eleveUserId: idEleve,
+    etablissementDepart: origine.id,
+    etablissementArrivee: idEcole,
+    statutArrivee: "passant",
+    classeArriveeId: classeArrivee.id,
+    motif: "Rapprochement du domicile",
+    statut: "demande",
+    demandePar: idDirection,
+  });
+  console.log("Transfert de démonstration : 1 demande ouverte par l'école d'accueil, en attente de l'école d'origine.");
+}
+
 async function principal() {
   await importerRecensement();
   const { idEleve } = await importerEcoleDemo();
   await importerTransport(idEleve);
   await vivifierTerminaleD();
   await importerEquipePedagogique();
+  await importerTransfertDemo();
   console.log("Seed terminé. Comptes de démonstration, mot de passe unique : EduTest-2026");
   process.exit(0);
 }
