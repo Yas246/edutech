@@ -1,0 +1,264 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Donga",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 13
+  },
+  "etablissements": [
+    {
+      "nom": "Bodi CEG",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bassila",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/327975907"
+      ]
+    },
+    {
+      "nom": "CEG 2",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bassila",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/241512507"
+      ]
+    },
+    {
+      "nom": "CEG Bassila",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bassila",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/727303651"
+      ]
+    },
+    {
+      "nom": "CEG Jeniffer Nicolas",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bassila",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/116969222"
+      ]
+    },
+    {
+      "nom": "Lycée Moderne AS-SALAM Bassila",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [],
+      "statut": "",
+      "commune": "Bassila",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/241268307"
+      ]
+    },
+    {
+      "nom": "Ceg patargo",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Djougou",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10567608642"
+      ]
+    },
+    {
+      "nom": "Collège d'ens",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Djougou",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/546854102"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général de Paparapanga",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Djougou",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/8431615024"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement general de Toko Toko",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Djougou",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/546854101"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général I de Djougou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Djougou",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10118307558"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général Serou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Djougou",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5775502656"
+      ]
+    },
+    {
+      "nom": "CEG de Ouaké",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouaké",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/727499345"
+      ]
+    },
+    {
+      "nom": "Collège de Tchalinga",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Ouaké",
+      "departement": "Donga",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/727526838"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,330 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Alibori",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 16
+  },
+  "etablissements": [
+    {
+      "nom": "CEG Banikoara",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Banikoara",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/13915424552"
+      ]
+    },
+    {
+      "nom": "Ceg Gounmori",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Banikoara",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10567590483"
+      ]
+    },
+    {
+      "nom": "Lycée technique agricole de Banikoara",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Banikoara",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Borgou_et_de_l%27Alibori"
+      ]
+    },
+    {
+      "nom": "CEG Gogounou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Gogounou",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472888089"
+      ]
+    },
+    {
+      "nom": "Collège de WARRA Gogounou",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Gogounou",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/888173336"
+      ]
+    },
+    {
+      "nom": "CEG 3 KANDI",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kandi",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/9028980917"
+      ]
+    },
+    {
+      "nom": "Lycée technique commercial et industriel de Kandi",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Kandi",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycée technique industriel et commercial de Kandi"
+      ],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Borgou_et_de_l%27Alibori"
+      ]
+    },
+    {
+      "nom": "CEG Malanville",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Malanville",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472335963"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général de Guéné",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Malanville",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/329179538"
+      ]
+    },
+    {
+      "nom": "Collège de Madécali",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Malanville",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/719605896"
+      ]
+    },
+    {
+      "nom": "CEG Ségbana",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ségbana",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/relation/10024855"
+      ]
+    },
+    {
+      "nom": "Collège de Libantè",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Ségbana",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/722948564"
+      ]
+    },
+    {
+      "nom": "Collège de Liboussou",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Ségbana",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/717283735"
+      ]
+    },
+    {
+      "nom": "Collège de Lougou",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Ségbana",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/717507292"
+      ]
+    },
+    {
+      "nom": "Collège de Piami",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Ségbana",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/722189376"
+      ]
+    },
+    {
+      "nom": "Collège de Sokotindji",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Ségbana",
+      "departement": "Alibori",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/721692021"
+      ]
+    }
+  ]
+}

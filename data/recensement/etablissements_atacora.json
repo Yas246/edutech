@@ -1,0 +1,617 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Atacora",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 31
+  },
+  "etablissements": [
+    {
+      "nom": "Collège catholique Holy Family",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "premier_cycle"
+      ],
+      "statut": "privé",
+      "commune": "",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national"
+      ]
+    },
+    {
+      "nom": "CEG Korontière",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Boukoumbé",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/481193700"
+      ]
+    },
+    {
+      "nom": "CEG Le Baobab de Boukombé",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Boukoumbé",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/266193273"
+      ]
+    },
+    {
+      "nom": "CEG Manta",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Boukoumbé",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2199691021"
+      ]
+    },
+    {
+      "nom": "Collège Saint Augustin",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Boukoumbé",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/481193705"
+      ]
+    },
+    {
+      "nom": "CEG Datori",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cobly",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/330154823"
+      ]
+    },
+    {
+      "nom": "CEG de Kountori",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cobly",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/330154824"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général de Cobli",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cobly",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2279757614"
+      ]
+    },
+    {
+      "nom": "CEG Birni",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kouandé",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/481279739"
+      ]
+    },
+    {
+      "nom": "CEG Kouande",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kouandé",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2608211273"
+      ]
+    },
+    {
+      "nom": "CEG Oroukayo",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kouandé",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2608186592"
+      ]
+    },
+    {
+      "nom": "CEG Kérou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kérou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472357327"
+      ]
+    },
+    {
+      "nom": "CEG Dassari",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Matéri",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/481282878"
+      ]
+    },
+    {
+      "nom": "CEG de Materi",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Matéri",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/353172045"
+      ]
+    },
+    {
+      "nom": "CEG Tantéga",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Matéri",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/481282571"
+      ]
+    },
+    {
+      "nom": "CEG 1 de Natitingou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/207505555"
+      ]
+    },
+    {
+      "nom": "CEG 2 de Natitingou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/264795852"
+      ]
+    },
+    {
+      "nom": "CEG 3 de Natitingou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/264899232"
+      ]
+    },
+    {
+      "nom": "CEG de Perma",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2590040139"
+      ]
+    },
+    {
+      "nom": "CEG Kotopounga",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2590093226"
+      ]
+    },
+    {
+      "nom": "Collège Privé Les Élites",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4788058322"
+      ]
+    },
+    {
+      "nom": "Collège Saint Antoine ex Complexe Commercial de l'Atacora(CCA)",
+      "sigle": "",
+      "type": "college_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "privé",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5055713721"
+      ]
+    },
+    {
+      "nom": "Collège Sainte Thérèse d'Avila",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6934923085"
+      ]
+    },
+    {
+      "nom": "Lycée militaire de jeunes filles Général Mathieu Kérékou",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [
+        "premier_cycle"
+      ],
+      "statut": "public",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycée Militaire de Natitingou"
+      ],
+      "sources": [
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+        "https://www.openstreetmap.org/node/5415009722"
+      ]
+    },
+    {
+      "nom": "CEG Péhonko",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Péhunco",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "CEG Péhunco"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472888091"
+      ]
+    },
+    {
+      "nom": "CEG Tobré",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Péhunco",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/481283357"
+      ]
+    },
+    {
+      "nom": "CEG 2 de Tanguieta",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Tanguiéta",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5787700621"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général 1 de Tanguièta",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Tanguiéta",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "+229 23 83 00 23",
+      "email": "ceg1tanguieta@gmail.com",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5782465638"
+      ]
+    },
+    {
+      "nom": "Collège Père CHAZAL",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Tanguiéta",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5786704776"
+      ]
+    },
+    {
+      "nom": "CEG Kouarfa",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Toucountouna",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2606618242"
+      ]
+    },
+    {
+      "nom": "CEG Toucountouna",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Toucountouna",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/481284975"
+      ]
+    }
+  ]
+}

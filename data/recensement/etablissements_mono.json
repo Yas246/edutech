@@ -1,0 +1,257 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Mono",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 12
+  },
+  "etablissements": [
+    {
+      "nom": "CEG 1 Comè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [
+        "premier_cycle"
+      ],
+      "statut": "public",
+      "commune": "Comè",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Collège d'Enseignement Général 1 de COME"
+      ],
+      "sources": [
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+        "https://www.openstreetmap.org/node/1811005979"
+      ]
+    },
+    {
+      "nom": "CEG Agatogbo",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Comè",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3775162278"
+      ]
+    },
+    {
+      "nom": "CEG Akodéha",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Comè",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "22020269",
+      "email": "",
+      "alias": [
+        "Collège d'enseignement général Akodéha"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/8172162507",
+        "https://www.openstreetmap.org/node/8930192715"
+      ]
+    },
+    {
+      "nom": "CEG3 C omè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Comè",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/9187974683"
+      ]
+    },
+    {
+      "nom": "CEG Agoué",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Grand-Popo",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12144235123"
+      ]
+    },
+    {
+      "nom": "Collège d’enseignement général de DRE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Houéyogbé",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/9718307148"
+      ]
+    },
+    {
+      "nom": "Lycée Technique Agricole d'Akodeha (LTA)",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Houéyogbé",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5439961051"
+      ]
+    },
+    {
+      "nom": "CEG 3 Lokossa",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Lokossa",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4249998480"
+      ]
+    },
+    {
+      "nom": "CEG Aguidahoué",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Lokossa",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12651790125"
+      ]
+    },
+    {
+      "nom": "CEG6 de Lokossa",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Lokossa",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4249998690"
+      ]
+    },
+    {
+      "nom": "Collège catholique Saint Pierre Claver de Lokossa",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "premier_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Lokossa",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national"
+      ]
+    },
+    {
+      "nom": "College d'Enseignement General l de Lokossa",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Lokossa",
+      "departement": "Mono",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5241819179"
+      ]
+    }
+  ]
+}

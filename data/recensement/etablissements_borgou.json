@@ -1,0 +1,879 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Borgou",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 44
+  },
+  "etablissements": [
+    {
+      "nom": "CEG Bembéréké",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bembèrèkè",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472888088"
+      ]
+    },
+    {
+      "nom": "CEG Beroubouay",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bembèrèkè",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/443482227"
+      ]
+    },
+    {
+      "nom": "CEG INA",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bembèrèkè",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4164182891"
+      ]
+    },
+    {
+      "nom": "Collège d'éducation générale publique de Gamia",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bembèrèkè",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/735419741"
+      ]
+    },
+    {
+      "nom": "Lycée technique agricole d'Ina (LTA-INA)",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Bembèrèkè",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/738433700",
+        "https://www.openstreetmap.org/way/738467909"
+      ]
+    },
+    {
+      "nom": "Prytanée militaire de Bembèrèkè",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [
+        "premier_cycle"
+      ],
+      "statut": "public",
+      "commune": "Bembèrèkè",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement généeral de Dunkassa",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Kalalé",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/414733970"
+      ]
+    },
+    {
+      "nom": "College d'Enseignement General Bouka",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kalalé",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/701100433"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général public de Péonga",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kalalé",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/353259078"
+      ]
+    },
+    {
+      "nom": "Collège de Dérassi",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Kalalé",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/724416794"
+      ]
+    },
+    {
+      "nom": "CEG N'Dali",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "N'Dali",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472888090"
+      ]
+    },
+    {
+      "nom": "CEG ouenou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "N'Dali",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12193119466"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général public de Gbégourou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "N'Dali",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/725913196"
+      ]
+    },
+    {
+      "nom": "Collège de Bori",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "N'Dali",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/724882529"
+      ]
+    },
+    {
+      "nom": "ÉCOLE CEG TAMAROU",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "N'Dali",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/377266677"
+      ]
+    },
+    {
+      "nom": "CEG 1 NIKKI",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Nikki",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/318893496"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général de Biro",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Nikki",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/9612566427"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général publique de Gnonkourakali",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Nikki",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/737022456"
+      ]
+    },
+    {
+      "nom": "Collège de Sérékalé",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Nikki",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/724676922"
+      ]
+    },
+    {
+      "nom": "Academia College",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10024122671"
+      ]
+    },
+    {
+      "nom": "CEG Baka",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/11075632224"
+      ]
+    },
+    {
+      "nom": "CEG NIMA",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/11075977776"
+      ]
+    },
+    {
+      "nom": "CEG TITIROU",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/7335358986",
+        "https://www.openstreetmap.org/node/10970506424"
+      ]
+    },
+    {
+      "nom": "Collège catholique Hibiscus 1er cycle",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "premier_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national"
+      ]
+    },
+    {
+      "nom": "Collège Catholique les Hibiscus",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3278602737"
+      ]
+    },
+    {
+      "nom": "Collège catholique saint Thomas d'Aquin",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10970505406"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général 2",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/358473187"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général d'Albarika",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2014",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3027664571"
+      ]
+    },
+    {
+      "nom": "Collège d’enseignement Général Zongo",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10617901205"
+      ]
+    },
+    {
+      "nom": "Collège Moderne Hamdan ben Rachid",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/11075358086"
+      ]
+    },
+    {
+      "nom": "Collège Privé d'Enseignement Générale \"Roger Lafia\"",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/343270880"
+      ]
+    },
+    {
+      "nom": "Collège Privé d'Enseignement Technique et Professionel Espoir Plus",
+      "sigle": "",
+      "type": "college_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "privé",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/343270234"
+      ]
+    },
+    {
+      "nom": "Collège Privé ''Jean Playa de Guema",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10968668285"
+      ]
+    },
+    {
+      "nom": "Lycée des jeunes filles de Parakou",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "public",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycée des jeunes filles"
+      ],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Borgou_et_de_l%27Alibori",
+        "https://www.openstreetmap.org/node/10970498780"
+      ]
+    },
+    {
+      "nom": "Lycée Mathieu Bouké de Parakou",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "public",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycée Mathieu Bouké"
+      ],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Borgou_et_de_l%27Alibori",
+        "https://www.openstreetmap.org/node/10970573348"
+      ]
+    },
+    {
+      "nom": "Collège de Guingourou",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Pèrèrè",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/725759651"
+      ]
+    },
+    {
+      "nom": "CEG Niaro",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Sinendé",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/410265081"
+      ]
+    },
+    {
+      "nom": "CEG Sinendé",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Sinendé",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472888092"
+      ]
+    },
+    {
+      "nom": "CEG Tchatchou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Tchaourou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472888093"
+      ]
+    },
+    {
+      "nom": "CEG TEKPAROU",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Tchaourou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/7335150785",
+        "https://www.openstreetmap.org/way/803019958"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général public de Kika",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Tchaourou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/742623981"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général public de Tchaourou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Tchaourou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/relation/10384986"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement secondaire Kpéssou",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Tchaourou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/806378439"
+      ]
+    },
+    {
+      "nom": "Lycée Technique Agricole de Kika",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Tchaourou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "Parakou-Kabo",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycée technique agricole"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/7102052585",
+        "https://www.openstreetmap.org/way/726148425"
+      ]
+    }
+  ]
+}

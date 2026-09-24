@@ -1,0 +1,152 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Couffo",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 7
+  },
+  "etablissements": [
+    {
+      "nom": "CEG 2 AZOVE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Aplahoué",
+      "departement": "Couffo",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/374187454"
+      ]
+    },
+    {
+      "nom": "CEG I Djakotomey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Djakotomey",
+      "departement": "Couffo",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3315270817"
+      ]
+    },
+    {
+      "nom": "CEG II Djakotomey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Djakotomey",
+      "departement": "Couffo",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4943831272"
+      ]
+    },
+    {
+      "nom": "Ecole et collège pivés le Renaissant",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Djakotomey",
+      "departement": "Couffo",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/889011563"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général de Klouekanmey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Klouékanmè",
+      "departement": "Couffo",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/888992202"
+      ]
+    },
+    {
+      "nom": "Lycée technique agricole Bernadette Sohoundji Agossou",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Klouékanmè",
+      "departement": "Couffo",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12768615162"
+      ]
+    },
+    {
+      "nom": "CEG Tchankada",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Toviklin",
+      "departement": "Couffo",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/688942436"
+      ]
+    }
+  ]
+}

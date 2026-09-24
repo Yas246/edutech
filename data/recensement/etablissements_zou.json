@@ -1,0 +1,578 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Zou",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 29
+  },
+  "etablissements": [
+    {
+      "nom": "CEG Agboka",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5401550627"
+      ]
+    },
+    {
+      "nom": "CEG GOHO",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12255893603"
+      ]
+    },
+    {
+      "nom": "CEG1 Abomey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/1040536025"
+      ]
+    },
+    {
+      "nom": "Collège sainte Thérèse de l'enfant Jésus",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "95505389",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/9625858227"
+      ]
+    },
+    {
+      "nom": "Cours Secondaire Sainte Jeanne d'Arc",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/550438834"
+      ]
+    },
+    {
+      "nom": "Lycée Houegbadja",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/550441893"
+      ]
+    },
+    {
+      "nom": "Lycée Houffon d'Abomey",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "public",
+      "commune": "Abomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Zou_et_des_Collines"
+      ]
+    },
+    {
+      "nom": "Lycée Mafory Bangoura d'Abomey",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "public",
+      "commune": "Abomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Zou_et_des_Collines"
+      ]
+    },
+    {
+      "nom": "CEG 1 BOHICON",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bohicon",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/333464820"
+      ]
+    },
+    {
+      "nom": "CEG 2 Bohicon",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bohicon",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "+22921034391",
+      "email": "",
+      "alias": [
+        "Collège d'Enseignement Général (CEG) 2 de Bohicon"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/4849549201"
+      ]
+    },
+    {
+      "nom": "CEG Davgbanna",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bohicon",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4203022814"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général de Passagon",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bohicon",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6139435066"
+      ]
+    },
+    {
+      "nom": "Cours Secondaire Tetes Bien Faites",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Bohicon",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/493003730"
+      ]
+    },
+    {
+      "nom": "Lycée technique et professionnel de Bohicon",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Bohicon",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Zou_et_des_Collines"
+      ]
+    },
+    {
+      "nom": "Lyteb",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [],
+      "statut": "",
+      "commune": "Bohicon",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5001303853",
+        "https://www.openstreetmap.org/node/5001304617"
+      ]
+    },
+    {
+      "nom": "CEG 1 de Covè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Covè",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/374726195"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement Général 1 de Djidja",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Djidja",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5398081526"
+      ]
+    },
+    {
+      "nom": "CEG Aïzè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouinhi",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12247822421"
+      ]
+    },
+    {
+      "nom": "CEG de Dasso",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouinhi",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4885883332"
+      ]
+    },
+    {
+      "nom": "CEG de Ouinhi",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouinhi",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4885883333"
+      ]
+    },
+    {
+      "nom": "CEG de Tohoues",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouinhi",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4885883334"
+      ]
+    },
+    {
+      "nom": "CEG Vèssamè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouinhi",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12247841645"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général de Houngome",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Za-Kpota",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5908482391"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Générale de Za-Kpota",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Za-Kpota",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5494768109"
+      ]
+    },
+    {
+      "nom": "CEG don",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Zagnanado",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6164348549"
+      ]
+    },
+    {
+      "nom": "CEG 1 Zogbodomey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Zogbodomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12255883240"
+      ]
+    },
+    {
+      "nom": "CEG Massi",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Zogbodomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/809922339"
+      ]
+    },
+    {
+      "nom": "College d'enseignement général de zogbodomey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Zogbodomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12255889466"
+      ]
+    },
+    {
+      "nom": "collège Tanwé-Hessou",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Zogbodomey",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5319926822"
+      ]
+    }
+  ]
+}

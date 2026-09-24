@@ -1,0 +1,523 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Plateau",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 26
+  },
+  "etablissements": [
+    {
+      "nom": "CEG 1 Ikpinlè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adja-Ouèrè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Terrains de Sport du CEG 1 Ikpinlè"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/way/1143911709",
+        "https://www.openstreetmap.org/way/1147012215"
+      ]
+    },
+    {
+      "nom": "CEG 2 Ikpinlè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adja-Ouèrè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/1143924690"
+      ]
+    },
+    {
+      "nom": "CEG1 IKPINLE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adja-Ouèrè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6090816602"
+      ]
+    },
+    {
+      "nom": "Lycée Technique Agricole d''Adja-Ouère",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Adja-Ouèrè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6124642930"
+      ]
+    },
+    {
+      "nom": "CEG Dooké",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "public",
+      "commune": "Ifangni",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "CEG 1 de Kétou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4857605410"
+      ]
+    },
+    {
+      "nom": "CEG 1 de Kpankou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4860817599"
+      ]
+    },
+    {
+      "nom": "CEG 2 Kétou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4859375020"
+      ]
+    },
+    {
+      "nom": "CEG 2 kpankou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4535725202"
+      ]
+    },
+    {
+      "nom": "CEG 3 Kétou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4859372148"
+      ]
+    },
+    {
+      "nom": "CEG Adigoun",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4649685744"
+      ]
+    },
+    {
+      "nom": "CEG Effèoutè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4649685745"
+      ]
+    },
+    {
+      "nom": "CEG Ewe",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4644177097"
+      ]
+    },
+    {
+      "nom": "CEG Idigny",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4857476678"
+      ]
+    },
+    {
+      "nom": "CEG Illara",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4535596523"
+      ]
+    },
+    {
+      "nom": "CEG Illèchin",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4535677934"
+      ]
+    },
+    {
+      "nom": "CEG Illikimou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4535590255"
+      ]
+    },
+    {
+      "nom": "CEG Omou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4535706950"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général Odomèta",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "CEG Odomèta"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/4535767097",
+        "https://www.openstreetmap.org/node/4644002952"
+      ]
+    },
+    {
+      "nom": "CEG 3 POBE AKOUHO",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Pobè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5749226092"
+      ]
+    },
+    {
+      "nom": "CEG ISSABA",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Pobè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5749227642"
+      ]
+    },
+    {
+      "nom": "CEG ONIGBOLO",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Pobè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5749228213"
+      ]
+    },
+    {
+      "nom": "CEG POBÈ",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Pobè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5749226407"
+      ]
+    },
+    {
+      "nom": "Collège catholique sainte claire de pobè",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Pobè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5749227635"
+      ]
+    },
+    {
+      "nom": "Lycée technique de pobè",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Pobè",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5749223098"
+      ]
+    },
+    {
+      "nom": "CEG SAKETE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Sakété",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6073225882"
+      ]
+    }
+  ]
+}

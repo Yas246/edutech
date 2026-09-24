@@ -1,0 +1,474 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Collines",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 23
+  },
+  "etablissements": [
+    {
+      "nom": "CEG 2 Bantè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bantè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2014",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2606027235"
+      ]
+    },
+    {
+      "nom": "CEG Bantè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Bantè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/2606027236"
+      ]
+    },
+    {
+      "nom": "CEG 1 Dassa",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Dassa-Zoumè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/1533652753"
+      ]
+    },
+    {
+      "nom": "CEG 2",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Dassa-Zoumè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Site CEG 2"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/9040211517"
+      ]
+    },
+    {
+      "nom": "CEG 4 AYEDERO SECTEUR 5",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Dassa-Zoumè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "RÉSERVE CEG 4 AYEDERO SECTEUR 5"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/9041049418"
+      ]
+    },
+    {
+      "nom": "CEG AKOFODJOULE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Dassa-Zoumè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/7335177386"
+      ]
+    },
+    {
+      "nom": "CEG GOSSOE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Dassa-Zoumè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6164348546"
+      ]
+    },
+    {
+      "nom": "CEG Aklampa",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Glazoué",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2013",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "CEG Aklanpa"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/2472888087"
+      ]
+    },
+    {
+      "nom": "CEG Assanté",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Glazoué",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/502909563",
+        "https://www.openstreetmap.org/way/502909840",
+        "https://www.openstreetmap.org/way/502912085"
+      ]
+    },
+    {
+      "nom": "CEG KABOLE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Glazoué",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Réserve CEG KABOLE"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/9039097617"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Générale d'Assanté",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Glazoué",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/502908959"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignment Générale d'Assanté (CEG Assanté)",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Glazoué",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/502909437"
+      ]
+    },
+    {
+      "nom": "CEG d'Ogoutèdo",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouèssè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "CEG TAKPA, Toui, Ouèssè, Collines, Bénin"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/way/803582592"
+      ]
+    },
+    {
+      "nom": "CEG de Kokoro",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouèssè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/808272716"
+      ]
+    },
+    {
+      "nom": "CEG TAKPA, Toui, Ouèssè, Collines, Bénin",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouèssè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/7335176387"
+      ]
+    },
+    {
+      "nom": "CEG YAOUI",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouèssè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/7335176390"
+      ]
+    },
+    {
+      "nom": "CEG Attakè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Savalou",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4508195756"
+      ]
+    },
+    {
+      "nom": "CEG LOGOZOHE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Savalou",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/1451971271"
+      ]
+    },
+    {
+      "nom": "Lycée technique agropastoral de Kpataba",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Savalou",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Zou_et_des_Collines"
+      ]
+    },
+    {
+      "nom": "CEG 3 Savè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Savè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Site  CEG 3 Savè"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/9037693417"
+      ]
+    },
+    {
+      "nom": "CEG Igbodja",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Savè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10970601049"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général (CEG) 1 Savé",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Savè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/1015027661"
+      ]
+    },
+    {
+      "nom": "Lycée technique tertiaire et industriel de Savè",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Savè",
+      "departement": "Collines",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_des_d%C3%A9partements_du_Zou_et_des_Collines"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,408 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Littoral",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 20
+  },
+  "etablissements": [
+    {
+      "nom": "CEG AKPAKPA CENTRE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4208098198"
+      ]
+    },
+    {
+      "nom": "CEG de Gbegamey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/234094868"
+      ]
+    },
+    {
+      "nom": "CEG Les Pylônes",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/835724678"
+      ]
+    },
+    {
+      "nom": "CEG MARTIN LUTHER KING",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/320208809"
+      ]
+    },
+    {
+      "nom": "CEG Sainte Rita",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3778428810"
+      ]
+    },
+    {
+      "nom": "CEG Védoko",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/824228831"
+      ]
+    },
+    {
+      "nom": "CEG Yagbé",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10020909400"
+      ]
+    },
+    {
+      "nom": "Collège catholique Père Aupiais",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "premier_cycle",
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+        "https://www.openstreetmap.org/way/234094189"
+      ]
+    },
+    {
+      "nom": "Collège catholique Saint Jean-Baptiste",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "Collège catholique Sainte Cécile",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "97449858",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4190059089"
+      ]
+    },
+    {
+      "nom": "Collège Châteaubriand",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4403052125"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général l'Océan",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "460 12.164",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3726500351"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général Le Lac",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "22321326",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/426128620"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général Le Littoral",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/498886470"
+      ]
+    },
+    {
+      "nom": "Collège de la paix",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4351623418"
+      ]
+    },
+    {
+      "nom": "Collège La Flèche",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "21301313",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3934012004"
+      ]
+    },
+    {
+      "nom": "Collège Pacôme YAMADJAKO",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "21383010",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5799355053"
+      ]
+    },
+    {
+      "nom": "Collège Saint-Roger",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4210824197"
+      ]
+    },
+    {
+      "nom": "Cours Secondaire Notre Dame des Apôtres",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "21301374",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/234098277"
+      ]
+    },
+    {
+      "nom": "Lycée technique Coulibaly",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "+22921310835",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+        "https://www.openstreetmap.org/way/825885612"
+      ]
+    }
+  ]
+}

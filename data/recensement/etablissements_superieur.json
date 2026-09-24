@@ -1,0 +1,700 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "tous (enseignement supérieur)",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 36
+  },
+  "etablissements": [
+    {
+      "nom": "École Normale Supérieure de Natitingou - Université de Parakou",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Natitingou",
+      "departement": "Atacora",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2014",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/265749421"
+      ]
+    },
+    {
+      "nom": "Amphithéâtre Idriss Déby ITNO (Université d'Abomey Calavi-Bénin)",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6423150588"
+      ]
+    },
+    {
+      "nom": "EPAC Village",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/347695356"
+      ]
+    },
+    {
+      "nom": "Faculté de Droit et Sciences Politiques",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3091038116"
+      ]
+    },
+    {
+      "nom": "Faculté de Lettres, Arts et Sciences Humaines",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3091038117"
+      ]
+    },
+    {
+      "nom": "Faculté des Sciences Agronomiques",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3091038118"
+      ]
+    },
+    {
+      "nom": "HECM",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4403415323",
+        "https://www.openstreetmap.org/way/797867457"
+      ]
+    },
+    {
+      "nom": "ISM Anonaï",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3896288639"
+      ]
+    },
+    {
+      "nom": "Université d'Abomey-Calavi",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/347214829"
+      ]
+    },
+    {
+      "nom": "Université Le \"FAUCON\"",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/13474434148",
+        "https://www.openstreetmap.org/way/737882916"
+      ]
+    },
+    {
+      "nom": "Université Virtuelle Africaine (UVA)",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "+229 21141988",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4403228628"
+      ]
+    },
+    {
+      "nom": "École supérieure de formation et de recyclage des enseignants (ESFRE)",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10970528373"
+      ]
+    },
+    {
+      "nom": "ISM Adonaï",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5325289024"
+      ]
+    },
+    {
+      "nom": "Université de Parakou - Centre universitaire de Parakou",
+      "sigle": "UP",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/231647273"
+      ]
+    },
+    {
+      "nom": "University HECM",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Parakou",
+      "departement": "Borgou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/9759156617"
+      ]
+    },
+    {
+      "nom": "École Supérieure d'Administration et d'Économie, de Journalisme et des Métiers de l'audiovisuel - Site principal de Cotonou",
+      "sigle": "ESAE",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5020753623"
+      ]
+    },
+    {
+      "nom": "École Supérieure de Génie Télécoms et TIC",
+      "sigle": "SupTélécoms BJ",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "+229 21377094",
+      "email": "contact@suptelecoms.bj",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/829770360"
+      ]
+    },
+    {
+      "nom": "Ecole Supérieure de Gestion d’Informatique et des Sciences",
+      "sigle": "ESGIS",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "21 32 47 73",
+      "email": "esgis.benin@esgis.org",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3578049596"
+      ]
+    },
+    {
+      "nom": "École Supérieure de Management",
+      "sigle": "ESM Benin",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3872881843"
+      ]
+    },
+    {
+      "nom": "ECOLE SUPÉRIEURE DES TECHNOLOGIES AVACEES ET DE MANAGEMENT",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3907699947"
+      ]
+    },
+    {
+      "nom": "École Supérieure des Télécommunications du Bénin",
+      "sigle": "ESTB",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "+229 21330333",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/826857116"
+      ]
+    },
+    {
+      "nom": "Faculté des Sciences de la Santé",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/relation/11292029"
+      ]
+    },
+    {
+      "nom": "ISM Adonai",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/797637916"
+      ]
+    },
+    {
+      "nom": "Université Africaine de Développement Coopératif (UADC)",
+      "sigle": "UADC",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/relation/11321791"
+      ]
+    },
+    {
+      "nom": "Université Africaine de Technologie et de Management",
+      "sigle": "UATM GASA FORMATION",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/234098281"
+      ]
+    },
+    {
+      "nom": "Université Catholique de l'Afrique de l'Ouest",
+      "sigle": "UCAO",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "+229 21305118",
+      "email": "ucaobenin@ucaobenin.com",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4389290239"
+      ]
+    },
+    {
+      "nom": "Université Sunu",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Cotonou",
+      "departement": "Littoral",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5962984391"
+      ]
+    },
+    {
+      "nom": "Université catholique bilingue",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10990014499"
+      ]
+    },
+    {
+      "nom": "Université Protestante de l’Afrique de l'Ouest (UPAO)",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/798034296"
+      ]
+    },
+    {
+      "nom": "Institut Supérieur Technique",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4207539024"
+      ]
+    },
+    {
+      "nom": "ISM Adonaï",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/829412189"
+      ]
+    },
+    {
+      "nom": "Université des Sciences et Technologies du Bénin",
+      "sigle": "USTB",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "+229 21336011",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/591442875"
+      ]
+    },
+    {
+      "nom": "Université Nationale d’Agriculture (UNA)",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Kétou",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10565958269"
+      ]
+    },
+    {
+      "nom": "Université d'agriculture de Sakété",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Sakété",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5537892524"
+      ]
+    },
+    {
+      "nom": "Université Nationale d'Agriculture - Campus de Sakété",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Sakété",
+      "departement": "Plateau",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/relation/11228777"
+      ]
+    },
+    {
+      "nom": "HECM",
+      "sigle": "",
+      "type": "superieur",
+      "cycles": [],
+      "statut": "",
+      "commune": "Bohicon",
+      "departement": "Zou",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5001300686"
+      ]
+    }
+  ]
+}

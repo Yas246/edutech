@@ -1,0 +1,1128 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Ouémé",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 57
+  },
+  "etablissements": [
+    {
+      "nom": "CEG 1 Adjarra",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [
+        "premier_cycle"
+      ],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national"
+      ]
+    },
+    {
+      "nom": "Ceg Aglogbe",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/11079055640"
+      ]
+    },
+    {
+      "nom": "CEG ANAVIE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10899100816"
+      ]
+    },
+    {
+      "nom": "CEG de odo-hongla",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/11083336773"
+      ]
+    },
+    {
+      "nom": "CEG de yevie",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Ceg Yevie"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/10989991202",
+        "https://www.openstreetmap.org/node/10990058176"
+      ]
+    },
+    {
+      "nom": "CEG Epp Kpota",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10980410360"
+      ]
+    },
+    {
+      "nom": "CEG les élites d'adjarra",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "65900011",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10980423163"
+      ]
+    },
+    {
+      "nom": "CEG Malanhoui",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2025",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4508195757"
+      ]
+    },
+    {
+      "nom": "CEG Mindédjonou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5358677928"
+      ]
+    },
+    {
+      "nom": "CEG1/ADJARRA",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4357678152"
+      ]
+    },
+    {
+      "nom": "collège '' LA DECISION ''",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/533209478"
+      ]
+    },
+    {
+      "nom": "Collège Privé d'enseignement général Étoile D'orient",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "97387341",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10980437963"
+      ]
+    },
+    {
+      "nom": "Collège privé Pyramide des arts",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "96267990",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10980374172"
+      ]
+    },
+    {
+      "nom": "Collège technique les jumeaux",
+      "sigle": "",
+      "type": "college_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/11067699029"
+      ]
+    },
+    {
+      "nom": "Collège vision d'Afrique",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10992637172"
+      ]
+    },
+    {
+      "nom": "Complexe scolaire acendance (collège)",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10992751825"
+      ]
+    },
+    {
+      "nom": "Complexe Scolaire Collège Privé ( Enseignement Général et Industriel)",
+      "sigle": "",
+      "type": "college_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "privé",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10992903910"
+      ]
+    },
+    {
+      "nom": "CP Les Chevaliers",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "École secondaire d'odo",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/11083339629"
+      ]
+    },
+    {
+      "nom": "Lycée technique (le leader)",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Adjarra",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "97646171",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10990136866"
+      ]
+    },
+    {
+      "nom": "CEG Azowlisse",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Adjohoun",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6933224214"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général Zoungamè",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Aguégués",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4112965165"
+      ]
+    },
+    {
+      "nom": "CEG 1 MISSERETE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Akpro-Missérété",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12146164607"
+      ]
+    },
+    {
+      "nom": "CEG Danto",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "public",
+      "commune": "Akpro-Missérété",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "Collège privé d'enseignement général saint Luc",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Akpro-Missérété",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12145761713"
+      ]
+    },
+    {
+      "nom": "CPEG Saint Luc",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "premier_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Akpro-Missérété",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national"
+      ]
+    },
+    {
+      "nom": "Unité Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Akpro-Missérété",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2012",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863987"
+      ]
+    },
+    {
+      "nom": "CEG1 d'Avrankou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Avrankou",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6329214286"
+      ]
+    },
+    {
+      "nom": "COLLEGE ROBERT DJIDONOU",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Avrankou",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10899117705"
+      ]
+    },
+    {
+      "nom": "CEG Kodonou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Dangbo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4326340084"
+      ]
+    },
+    {
+      "nom": "Akpassa Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2012",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863977"
+      ]
+    },
+    {
+      "nom": "Anavie Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Ecole Secondaire"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863978"
+      ]
+    },
+    {
+      "nom": "Applicatíon Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863984"
+      ]
+    },
+    {
+      "nom": "Bio-Guéra Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863991"
+      ]
+    },
+    {
+      "nom": "CEG d'Agbokou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/359442571"
+      ]
+    },
+    {
+      "nom": "CEG KOUTONGBE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/359541238"
+      ]
+    },
+    {
+      "nom": "Collège catholique Notre-Dame de Dowa",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "Collège catholique Notre-Dame de Lourdes d'akonaboe",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12159475553"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général de Djassin",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/434857097"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Secondaire Application",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/11412521450"
+      ]
+    },
+    {
+      "nom": "Collège Robert Djidonou",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5764235847"
+      ]
+    },
+    {
+      "nom": "Davié Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863989"
+      ]
+    },
+    {
+      "nom": "Djassín Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863981"
+      ]
+    },
+    {
+      "nom": "Djégan-Kpévi Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2012",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863972"
+      ]
+    },
+    {
+      "nom": "Les Cocobers Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863992"
+      ]
+    },
+    {
+      "nom": "Lycée Béhanzin",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycée Behanzín Ecole Secondaire"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863986",
+        "https://www.openstreetmap.org/relation/11258944"
+      ]
+    },
+    {
+      "nom": "Lycée des jeunes filles Toffa 1",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/817594565"
+      ]
+    },
+    {
+      "nom": "Ouando Ecole Secondaire",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2012",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/1684863976"
+      ]
+    },
+    {
+      "nom": "PASE DROP PPN 10 CEG DJASSIN",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Porto-Novo",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/9280159417"
+      ]
+    },
+    {
+      "nom": "CEG AGBLANGANDAN",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4215354363"
+      ]
+    },
+    {
+      "nom": "CEG Segbeya",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/822813056"
+      ]
+    },
+    {
+      "nom": "CEG Sekandji",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4207422046"
+      ]
+    },
+    {
+      "nom": "CEG SURU LERE",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4172313361"
+      ]
+    },
+    {
+      "nom": "Collège BON CHEMIN EKPE",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/378675041"
+      ]
+    },
+    {
+      "nom": "Collège La Soif",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/8478569250"
+      ]
+    },
+    {
+      "nom": "CP UFUK Bénin",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "Lycée Technique de Kpondehoun",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "",
+      "commune": "Sèmè-Podji",
+      "departement": "Ouémé",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/591442874"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1033 @@
+{
+  "meta": {
+    "date_generation": "2026-09-12",
+    "annee_rentree": "2026-2027",
+    "departement": "Atlantique",
+    "sources_globales": [
+      "https://www.openstreetmap.org/",
+      "https://www.enseignementsecondaire.gouv.bj/volet-enseignements/enseignement-secondaire-general",
+      "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+      "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+      "https://www.geoboundaries.org/api/current/gbOpen/BEN/ADM2/"
+    ],
+    "total_etablissements": 51
+  },
+  "etablissements": [
+    {
+      "nom": "CEG 1 de Cocotomey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "21 04 59 57",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/353475636"
+      ]
+    },
+    {
+      "nom": "CEG Adjagbo",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4555414279"
+      ]
+    },
+    {
+      "nom": "CEG D'Abomey-calavi",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/421712753"
+      ]
+    },
+    {
+      "nom": "CEG Kpanroun",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4310949927"
+      ]
+    },
+    {
+      "nom": "CEG La verdure",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4403223584"
+      ]
+    },
+    {
+      "nom": "CEG Le Plateau",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/418396608"
+      ]
+    },
+    {
+      "nom": "CEG PAHOU",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Terrain Sport CEG PAHOU"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/9137658218"
+      ]
+    },
+    {
+      "nom": "CEG Sô ava",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/7215818588"
+      ]
+    },
+    {
+      "nom": "Collège Catholique Père Aupiere",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2015",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3896288638"
+      ]
+    },
+    {
+      "nom": "Collège catholique Pierre Joseph de Clorivière",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "premier_cycle",
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "(229)23141562/96451919",
+      "email": "collegecatholiquepjc@gmail.com",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national",
+        "https://www.openstreetmap.org/node/3975334638"
+      ]
+    },
+    {
+      "nom": "Collège catholique Sainte-Thérèse de l'Enfant Jésus",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "premier_cycle",
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/",
+        "https://www.banouto.bj/societe/article/20260723-bepc-2026-au-benin-liste-des-12-premiers-au-plan-national"
+      ]
+    },
+    {
+      "nom": "Collège d’Enseignement Général Godomey",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3878035825"
+      ]
+    },
+    {
+      "nom": "Collège d’enseignement général Houeto",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2022",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4016303981"
+      ]
+    },
+    {
+      "nom": "Collège d’enseignement général Jean Piaget 1",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "(+229)21350699/90912112/97987374",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4307041165"
+      ]
+    },
+    {
+      "nom": "Collège d’Enseignement Général Kansounkpa",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4684366049"
+      ]
+    },
+    {
+      "nom": "Collège Jean Michel le Faucon",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3896289015"
+      ]
+    },
+    {
+      "nom": "Collège La Plénitude",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3878035826"
+      ]
+    },
+    {
+      "nom": "Collège le Messie",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/8560697658",
+        "https://www.openstreetmap.org/way/923764608"
+      ]
+    },
+    {
+      "nom": "Collège Martin Luther King",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/418306473"
+      ]
+    },
+    {
+      "nom": "College Privé Sainte Gisele Affoue",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2017",
+      "adresse": "",
+      "telephone": "95032558",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4961258133"
+      ]
+    },
+    {
+      "nom": "Cours Secondaire Sainte Bakhita",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5559918379"
+      ]
+    },
+    {
+      "nom": "CP La Clé de la Réussite",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "CP La Grande Académie",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "CP Les Champions de Demain",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "CP Sainte Félicité",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [
+        "second_cycle"
+      ],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "ouvert",
+      "derniere_preuve": "2026",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://beninwebtv.bj/benin-les-classements-des-20-meilleurs-au-bac-session-de-juin-2026/"
+      ]
+    },
+    {
+      "nom": "CS Danale les prince (cours secondaire)",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5015070846"
+      ]
+    },
+    {
+      "nom": "Ecole secondaire et ENI Bakhita",
+      "sigle": "",
+      "type": "autre",
+      "cycles": [],
+      "statut": "",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5559918438"
+      ]
+    },
+    {
+      "nom": "Lycée technique d'amitié sino-béninoise d'Akassato",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycée technique d’amitié sino-beninoise"
+      ],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_du_d%C3%A9partement_de_l%27Atlantique",
+        "https://www.openstreetmap.org/node/4174167794"
+      ]
+    },
+    {
+      "nom": "Lycée technique et professionnel d'économie familiale et sociale d'Akassato",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_du_d%C3%A9partement_de_l%27Atlantique"
+      ]
+    },
+    {
+      "nom": "Lycée technique privé industriel saint Barthélémy",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "technique_professionnel"
+      ],
+      "statut": "privé",
+      "commune": "Abomey-Calavi",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2023",
+      "adresse": "",
+      "telephone": "62387477",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/10848340508"
+      ]
+    },
+    {
+      "nom": "CEG Allada Togoudo",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Allada",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "Togoudo",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12422908197"
+      ]
+    },
+    {
+      "nom": "CEG ATTOGON",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Allada",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12422958084"
+      ]
+    },
+    {
+      "nom": "CEG Ayou",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Allada",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12423027174"
+      ]
+    },
+    {
+      "nom": "CEG Hinvi",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Allada",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12061581804",
+        "https://www.openstreetmap.org/node/12062935392"
+      ]
+    },
+    {
+      "nom": "Collège Catholique Sainte Jeanne d'Arc d'Allada",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Allada",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "97746893",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12061617154"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Allada",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/12061618827"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement général 1 d'Allada",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Allada",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/814273769"
+      ]
+    },
+    {
+      "nom": "Lycée agricole Mèdji de Sékou",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Allada",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycée Agricole Mèdji de Sékou (LAMS)"
+      ],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_du_d%C3%A9partement_de_l%27Atlantique",
+        "https://www.openstreetmap.org/way/814512018"
+      ]
+    },
+    {
+      "nom": "CEG kpomasse",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Kpomassè",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5584104674"
+      ]
+    },
+    {
+      "nom": "CEG Ouidah",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouidah",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6152908589"
+      ]
+    },
+    {
+      "nom": "CEG1 Ouidah",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouidah",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6020495288"
+      ]
+    },
+    {
+      "nom": "Collège d'Enseignement Général Bertrand d'Agnon",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Ouidah",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2014",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3261626167"
+      ]
+    },
+    {
+      "nom": "Collège de Grece",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Ouidah",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2016",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3926195580"
+      ]
+    },
+    {
+      "nom": "Collège KIng Leton Annexe III",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Ouidah",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2014",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/3261626166"
+      ]
+    },
+    {
+      "nom": "Lycee des jeunes filles de Ouidah",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [],
+      "statut": "",
+      "commune": "Ouidah",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2020",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6020492881"
+      ]
+    },
+    {
+      "nom": "Lycée Epam",
+      "sigle": "",
+      "type": "lycee",
+      "cycles": [],
+      "statut": "",
+      "commune": "Ouidah",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/6042617320"
+      ]
+    },
+    {
+      "nom": "Lycée technique et professionnel de Ouidah",
+      "sigle": "",
+      "type": "lycee_technique",
+      "cycles": [
+        "second_cycle",
+        "technique_professionnel"
+      ],
+      "statut": "public",
+      "commune": "Ouidah",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2021",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "Lycee Technique Ouidah"
+      ],
+      "sources": [
+        "https://fr.wikipedia.org/wiki/Liste_des_lyc%C3%A9es_du_d%C3%A9partement_de_l%27Atlantique",
+        "https://www.openstreetmap.org/node/6020489927"
+      ]
+    },
+    {
+      "nom": "CEG de Ganvié",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Sô-Ava",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [
+        "CEG ganvié"
+      ],
+      "sources": [
+        "https://www.openstreetmap.org/node/4313202180",
+        "https://www.openstreetmap.org/node/6480950996"
+      ]
+    },
+    {
+      "nom": "Collège Vekky",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Sô-Ava",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2019",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/4313216718"
+      ]
+    },
+    {
+      "nom": "Collège d'enseignement généraln de SEHOUE",
+      "sigle": "",
+      "type": "college_prive",
+      "cycles": [],
+      "statut": "privé",
+      "commune": "Toffo",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2024",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/way/814107984"
+      ]
+    },
+    {
+      "nom": "CEG tori cada",
+      "sigle": "",
+      "type": "ceg",
+      "cycles": [],
+      "statut": "public",
+      "commune": "Tori-Bossito",
+      "departement": "Atlantique",
+      "quartier": "",
+      "etat": "incertain",
+      "derniere_preuve": "2018",
+      "adresse": "",
+      "telephone": "",
+      "email": "",
+      "alias": [],
+      "sources": [
+        "https://www.openstreetmap.org/node/5538678310"
+      ]
+    }
+  ]
+}
