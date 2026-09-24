@@ -92,6 +92,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                 {utilisateur && (
                   <li>
                     <Link
+                      href="/coach"
+                      className="rounded-lg px-3 py-2 font-medium text-vert-fonce hover:bg-vert-clair"
+                    >
+                      Coach
+                    </Link>
+                  </li>
+                )}
+                {utilisateur && (
+                  <li>
+                    <Link
                       href="/fil"
                       className="rounded-lg px-3 py-2 font-medium text-vert-fonce hover:bg-vert-clair"
                     >
