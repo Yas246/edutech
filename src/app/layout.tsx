@@ -36,6 +36,16 @@ function Drapeau() {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const utilisateur = await utilisateurCourant();
 
+  // Le lien principal dépend de la place de chacun.
+  const liensParRole: Record<string, { href: string; titre: string } | undefined> = {
+    direction: { href: "/mon-ecole", titre: "Mon école" },
+    ministere: { href: "/ministere", titre: "Ministère" },
+    parent: { href: "/mes-enfants", titre: "Mes enfants" },
+    enseignant: undefined,
+    eleve: undefined,
+  };
+  const lienPrive = utilisateur ? liensParRole[utilisateur.role] : undefined;
+
   return (
     <html lang="fr" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
@@ -60,6 +70,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                     Établissements
                   </Link>
                 </li>
+                {lienPrive && (
+                  <li>
+                    <Link
+                      href={lienPrive.href}
+                      className="rounded-lg px-3 py-2 font-medium text-vert-fonce hover:bg-vert-clair"
+                    >
+                      {lienPrive.titre}
+                    </Link>
+                  </li>
+                )}
                 {utilisateur ? (
                   <>
                     <li>
