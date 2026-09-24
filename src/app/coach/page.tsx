@@ -1,54 +1,56 @@
 import type { Metadata } from "next";
-import { asc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { messagesCoach } from "@/db/schema";
+import { conversationsCoach, messagesCoach } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 import { EnTetePage } from "@/components/ui/en-tete";
-import ChatCoach from "./chat";
+import CoachEspace from "./coach-espace";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = { title: "Mon coach" };
 
 export default async function Coach() {
   const utilisateur = await exiger();
 
-  const historique = await db
-    .select({ role: messagesCoach.role, contenu: messagesCoach.contenu })
+  // Toutes les discussions du compte, et les fils qui vont avec : le
+  // basculement d'un fil à l'autre se fait alors sans rechargement.
+  const discussions = await db
+    .select({ id: conversationsCoach.id, titre: conversationsCoach.titre })
+    .from(conversationsCoach)
+    .where(eq(conversationsCoach.userId, utilisateur.id))
+    .orderBy(desc(conversationsCoach.id))
+    .limit(50);
+
+  const messages = await db
+    .select({
+      id: messagesCoach.id,
+      conversationId: messagesCoach.conversationId,
+      role: messagesCoach.role,
+      contenu: messagesCoach.contenu,
+    })
     .from(messagesCoach)
     .where(eq(messagesCoach.userId, utilisateur.id))
     .orderBy(asc(messagesCoach.id))
-    .limit(40);
+    .limit(600);
+
+  const fils = discussions.map((d) => ({
+    id: d.id,
+    titre: d.titre,
+    messages: messages
+      .filter((m) => m.conversationId === d.id)
+      .map((m) => ({ role: m.role as "user" | "assistant", contenu: m.contenu })),
+  }));
 
   return (
-    <div className="mx-auto w-full max-w-2xl px-4 py-10">
+    <div className="mx-auto w-full max-w-5xl px-4 py-10">
       <EnTetePage
         titre="Mon coach"
-        sousTitre="Un accompagnement adapté à votre place sur la plateforme : orientation, méthodes, vie scolaire."
+        sousTitre="Vos discussions, chacune sur son fil : orientation, méthodes, vie scolaire, registres de votre établissement."
       />
       <div className="mt-8">
-        <ChatCoach questionInitiale={undefined} />
+        <CoachEspace fils={fils} />
       </div>
-      {historique.length > 0 && (
-        <details className="mt-8 rounded-2xl border border-ligne bg-white p-4 text-sm">
-          <summary className="cursor-pointer font-semibold">
-            Historique de mes conversations ({historique.length} messages)
-          </summary>
-          <ul className="mt-3 space-y-2">
-            {historique.map((m, i) => (
-              <li
-                key={i}
-                className={`rounded-xl px-3 py-2 ${
-                  m.role === "user" ? "bg-vert-clair/60" : "bg-papier"
-                }`}
-              >
-                <span className="block text-xs font-medium text-encre-doux">
-                  {m.role === "user" ? "Vous" : "Coach"}
-                </span>
-                {m.contenu}
-              </li>
-            ))}
-          </ul>
-        </details>
-      )}
     </div>
   );
 }

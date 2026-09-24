@@ -645,11 +645,24 @@ export const tickets = pgTable("tickets", {
 /* Coach                                                               */
 /* ------------------------------------------------------------------ */
 
+/** Une discussion du coach, façon fil : titre pris sur la première question. */
+export const conversationsCoach = pgTable("conversations_coach", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  titre: text("titre").default("").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const messagesCoach = pgTable("messages_coach", {
   id: serial("id").primaryKey(),
   userId: integer("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  conversationId: integer("conversation_id")
+    .notNull()
+    .references(() => conversationsCoach.id, { onDelete: "cascade" }),
   /** user | assistant */
   role: text("role").notNull(),
   contenu: text("contenu").notNull(),
