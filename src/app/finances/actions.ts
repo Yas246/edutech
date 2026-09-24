@@ -6,6 +6,8 @@ import { db } from "@/db";
 import {
   classes,
   delegations,
+  fraisEleves,
+  journal,
   etablissements,
   factures,
   frais,
@@ -51,6 +53,16 @@ async function gardeFinances(idEtablissement: number) {
 }
 
 /** L'établissement rattaché à la direction connectée, pour les gardes. */
+/** Inscrit un geste financier au journal de l établissement. */
+async function inscrireAuJournal(
+  idEtablissement: number,
+  auteurId: number,
+  action: string,
+  detail: string,
+) {
+  await db.insert(journal).values({ etablissementId: idEtablissement, auteurUserId: auteurId, action, detail });
+}
+
 async function idEcoleDeLaDirection(): Promise<number | null> {
   const utilisateur = await exiger("direction");
   const [ecole] = await db
@@ -75,36 +87,72 @@ export async function creerFrais(_prec: Retour, donnees: FormData): Promise<Reto
   const cibleClasseId = Number(donnees.get("cibleClasseId")) || null;
   const cibleNiveau = String(donnees.get("cibleNiveau") ?? "").trim();
   const periodeId = Number(donnees.get("periodeId")) || null;
+  const elevesDesignes = donnees
+    .getAll("elevesDesignes")
+    .map((v) => Number(v))
+    .filter((v) => Number.isInteger(v) && v > 0);
 
   if (!Number.isInteger(montant) || montant <= 0) {
     return { erreur: "Indiquez un montant en francs CFA entier, supérieur à zéro." };
   }
   if (cibleType === "classe" && !cibleClasseId) return { erreur: "Choisissez la classe visée." };
   if (cibleType === "niveau" && !cibleNiveau) return { erreur: "Indiquez le niveau visé." };
+  if (cibleType === "eleves" && elevesDesignes.length === 0) {
+    return { erreur: "Cochez au moins un élève." };
+  }
   if (categorie === "autre" && !libelle) {
     return { erreur: "Pour un autre frais, donnez son nom libre." };
   }
 
-  const [classeEcole] = cibleClasseId
-    ? await db
-        .select({ id: classes.id })
-        .from(classes)
-        .where(and(eq(classes.id, cibleClasseId), eq(classes.etablissementId, idEcole)))
-        .limit(1)
-    : [{ id: 1 }];
-  if (cibleClasseId && !classeEcole) return { erreur: "Cette classe n'est pas la vôtre." };
+  // Toute cible doit appartenir à l'établissement.
+  if (cibleClasseId) {
+    const [classeEcole] = await db
+      .select({ id: classes.id })
+      .from(classes)
+      .where(and(eq(classes.id, cibleClasseId), eq(classes.etablissementId, idEcole)))
+      .limit(1);
+    if (!classeEcole) return { erreur: "Cette classe n'est pas la vôtre." };
+  }
+  if (cibleType === "eleves") {
+    const elevesEcole = await db
+      .select({ id: inscriptions.eleveUserId })
+      .from(inscriptions)
+      .innerJoin(classes, eq(classes.id, inscriptions.classeId))
+      .where(eq(classes.etablissementId, idEcole));
+    const valides = new Set(elevesEcole.map((e) => e.id));
+    if (!elevesDesignes.every((id) => valides.has(id))) {
+      return { erreur: "Un des élèves cochés n'est pas inscrit chez vous." };
+    }
+  }
 
-  await db.insert(frais).values({
-    etablissementId: idEcole,
-    categorie,
-    libelle,
-    montant,
-    cibleType,
-    cibleClasseId: cibleType === "classe" ? cibleClasseId : null,
-    cibleNiveau: cibleType === "niveau" ? cibleNiveau : "",
-    periodeId,
-    creePar: utilisateur.id,
-  });
+  const [nouveauFrais] = await db
+    .insert(frais)
+    .values({
+      etablissementId: idEcole,
+      categorie,
+      libelle,
+      montant,
+      cibleType,
+      cibleClasseId: cibleType === "classe" ? cibleClasseId : null,
+      cibleNiveau: cibleType === "niveau" ? cibleNiveau : "",
+      periodeId,
+      creePar: utilisateur.id,
+    })
+    .returning({ id: frais.id });
+
+  if (cibleType === "eleves") {
+    await db
+      .insert(fraisEleves)
+      .values(elevesDesignes.map((eleveUserId) => ({ fraisId: nouveauFrais.id, eleveUserId })))
+      .onConflictDoNothing();
+  }
+
+  await inscrireAuJournal(
+    idEcole,
+    utilisateur.id,
+    "Frais posé",
+    `${categorie === "autre" ? libelle : categorie} : ${montant.toLocaleString("fr-FR")} F CFA`,
+  );
   revalidatePath("/finances");
   return { message: `Frais posé : ${montant.toLocaleString("fr-FR")} F CFA.` };
 }
@@ -178,6 +226,14 @@ export async function genererFactures(_prec: Retour, donnees: FormData): Promise
     creees += 1;
   }
 
+  await inscrireAuJournal(
+    idEcole,
+    utilisateur.id,
+    "Factures générées",
+    creees === 0
+      ? "Regénération : rien de nouveau"
+      : `${creees} facture(s), ${paires.length} tranche(s) par facture`,
+  );
   revalidatePath("/finances");
   return {
     message:
@@ -185,6 +241,73 @@ export async function genererFactures(_prec: Retour, donnees: FormData): Promise
         ? "Tous les élèves visés ont déjà leur facture : rien n'a été doublé."
         : `${creees} facture${creees > 1 ? "s" : ""} générée${creees > 1 ? "s" : ""} en ${paires.length} tranche${paires.length > 1 ? "s" : ""}.`,
   };
+}
+
+/** La facture manuelle : un seul élève, un objet libre, une échéance. */
+export async function factureManuelle(_prec: Retour, donnees: FormData): Promise<Retour> {
+  const idEcole = await idEcoleDeLaDirection();
+  if (!idEcole) return { erreur: "Aucun établissement rattaché à votre compte." };
+  const utilisateur = await exiger("direction");
+
+  const eleveUserId = Number(donnees.get("eleveUserId"));
+  const objet = String(donnees.get("objet") ?? "").trim();
+  const montant = Number(donnees.get("montant"));
+  const echeance = String(donnees.get("echeance") ?? "").trim();
+
+  if (!Number.isInteger(eleveUserId)) return { erreur: "Choisissez l'élève." };
+  if (!objet) return { erreur: "Indiquez l'objet de la facture." };
+  if (!Number.isInteger(montant) || montant <= 0) {
+    return { erreur: "Indiquez un montant entier supérieur à zéro." };
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(echeance)) return { erreur: "Choisissez l'échéance." };
+
+  // L'élève doit appartenir à l'établissement.
+  const [inscrit] = await db
+    .select({ id: inscriptions.eleveUserId })
+    .from(inscriptions)
+    .innerJoin(classes, eq(classes.id, inscriptions.classeId))
+    .where(and(eq(inscriptions.eleveUserId, eleveUserId), eq(classes.etablissementId, idEcole)))
+    .limit(1);
+  if (!inscrit) return { erreur: "Cet élève n'est pas inscrit chez vous." };
+
+  // Le frais ponctuel porte l'objet de la facture.
+  const [fraisPonctuel] = await db
+    .insert(frais)
+    .values({
+      etablissementId: idEcole,
+      categorie: "autre",
+      libelle: objet,
+      montant,
+      cibleType: "niveau",
+      cibleNiveau: "",
+      creePar: utilisateur.id,
+    })
+    .returning({ id: frais.id });
+  await db
+    .insert(fraisEleves)
+    .values({ fraisId: fraisPonctuel.id, eleveUserId })
+    .onConflictDoNothing();
+
+  const numero = await prochainNumero(idEcole, "factureSeq", "F");
+  const [facture] = await db
+    .insert(factures)
+    .values({ numero, eleveUserId, fraisId: fraisPonctuel.id })
+    .returning({ id: factures.id });
+  await db.insert(tranches).values({
+    factureId: facture.id,
+    ordre: 1,
+    montant,
+    echeance,
+  });
+
+  await inscrireAuJournal(
+    idEcole,
+    utilisateur.id,
+    "Facture manuelle",
+    `${numero} : ${objet}, ${montant.toLocaleString("fr-FR")} F CFA`,
+  );
+  revalidatePath("/finances");
+  return { message: `Facture ${numero} créée pour ${montant.toLocaleString("fr-FR")} F CFA.` };
 }
 
 /* ------------------------ Encaissement ------------------------ */
@@ -265,6 +388,12 @@ export async function encaisser(_prec: Retour, donnees: FormData): Promise<Retou
     );
   }
 
+  await inscrireAuJournal(
+    leFrais.etablissementId,
+    utilisateur.id,
+    "Paiement encaissé",
+    `${numeroRecu} : ${montant.toLocaleString("fr-FR")} F CFA`,
+  );
   revalidatePath(`/finances/factures/${idFacture}`);
   revalidatePath("/finances");
   return { message: `Encaissé ${montant.toLocaleString("fr-FR")} F CFA. Reçu ${numeroRecu}.` };
@@ -305,6 +434,12 @@ export async function annulerPaiement(_prec: Retour, donnees: FormData): Promise
     .set({ annule: true, motifAnnulation: motif })
     .where(eq(paiements.id, idPaiement));
 
+  await inscrireAuJournal(
+    leFrais.etablissementId,
+    utilisateur.id,
+    "Paiement annulé",
+    `${paiement.recuNumero} — motif : ${motif}`,
+  );
   revalidatePath(`/finances/factures/${paiement.factureId}`);
   revalidatePath("/finances");
   return {
@@ -329,6 +464,15 @@ export async function deleguerFinances(_prec: Retour, donnees: FormData): Promis
     .insert(delegations)
     .values({ etablissementId: idEcole, userId: idMembre, role: "finances" })
     .onConflictDoNothing();
+  const idEcole2 = await idEcoleDeLaDirection();
+  if (idEcole2) {
+    await inscrireAuJournal(
+      idEcole2,
+      membre.id,
+      "Délégation des finances",
+      `posée à ${membre.prenom} ${membre.nom}`,
+    );
+  }
   revalidatePath("/finances");
   return {
     message: `${membre.prenom} ${membre.nom} peut désormais tenir les finances de votre établissement.`,
@@ -348,6 +492,11 @@ export async function retirerDelegation(_prec: Retour, donnees: FormData): Promi
         eq(delegations.role, "finances"),
       ),
     );
+  const idEcole3 = await idEcoleDeLaDirection();
+  if (idEcole3) {
+    const utilisateur3 = await exiger("direction");
+    await inscrireAuJournal(idEcole3, utilisateur3.id, "Délégation des finances", "retirée");
+  }
   revalidatePath("/finances");
   return { message: "Délégation retirée." };
 }

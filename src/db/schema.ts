@@ -342,6 +342,48 @@ export const frais = pgTable("frais", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+
+export const fraisEleves = pgTable(
+  "frais_eleves",
+  {
+    fraisId: integer("frais_id")
+      .notNull()
+      .references(() => frais.id, { onDelete: "cascade" }),
+    eleveUserId: integer("eleve_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+  },
+  (t) => [unique("frais_eleves_unique").on(t.fraisId, t.eleveUserId)],
+);
+
+/** Chaque geste financier est inscrit au journal, avec son auteur. */
+export const journal = pgTable("journal", {
+  id: serial("id").primaryKey(),
+  etablissementId: integer("etablissement_id")
+    .notNull()
+    .references(() => etablissements.id, { onDelete: "cascade" }),
+  auteurUserId: integer("auteur_user_id")
+    .notNull()
+    .references(() => users.id),
+  action: text("action").notNull(),
+  detail: text("detail").default("").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+/** Une relance envoyée : l'unicité (tranche, parent, jalon) interdit les doublons. */
+export const relances = pgTable("relances", {
+  id: serial("id").primaryKey(),
+  trancheId: integer("tranche_id")
+    .notNull()
+    .references(() => tranches.id, { onDelete: "cascade" }),
+  parentUserId: integer("parent_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  /** Nombre de jours avant l'échéance : 14, 7 ou 3. */
+  jalon: integer("jalon").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const factures = pgTable("factures", {
   id: serial("id").primaryKey(),
   numero: text("numero").notNull().unique(),

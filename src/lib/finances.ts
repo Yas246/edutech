@@ -1,6 +1,6 @@
 import { and, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
-import { classes, etablissements, factures, frais, inscriptions, paiements, periodes, tranches, users } from "@/db/schema";
+import { classes, etablissements, factures, frais, fraisEleves, inscriptions, paiements, periodes, tranches, users } from "@/db/schema";
 
 export type EtatFacture =
   | "a_payer"
@@ -186,10 +186,18 @@ export async function detailFacture(idFacture: number): Promise<FactureDetail | 
 
 /** Les élèves visés par un frais, selon sa cible. */
 export async function elevesVises(f: {
+  id: number;
   cibleType: string;
   cibleClasseId: number | null;
   cibleNiveau: string;
 }): Promise<number[]> {
+  if (f.cibleType === "eleves") {
+    const lignes = await db
+      .select({ id: fraisEleves.eleveUserId })
+      .from(fraisEleves)
+      .where(eq(fraisEleves.fraisId, f.id));
+    return lignes.map((l) => l.id);
+  }
   if (f.cibleType === "classe" && f.cibleClasseId) {
     const lignes = await db
       .select({ id: inscriptions.eleveUserId })

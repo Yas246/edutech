@@ -6,6 +6,7 @@ import {
   creerFrais,
   deleguerFinances,
   encaisser,
+  factureManuelle,
   genererFactures,
   retirerDelegation,
   type Retour,
@@ -26,9 +27,11 @@ function Sortie({ retour }: { retour: Retour }) {
 export function FormulaireFrais({
   classesList,
   periodesList,
+  elevesList,
 }: {
   classesList: { id: number; nom: string }[];
   periodesList: { id: number; nom: string }[];
+  elevesList: { id: number; prenom: string; nom: string; classe: string }[];
 }) {
   const [etat, action, enCours] = useActionState(creerFrais, etatInitial);
   const [categorie, setCategorie] = useState("scolarite");
@@ -85,6 +88,7 @@ export function FormulaireFrais({
           >
             <option value="classe">Une classe</option>
             <option value="niveau">Un niveau</option>
+            <option value="eleves">Des élèves désignés</option>
           </select>
         </div>
         {cible === "classe" ? (
@@ -97,6 +101,28 @@ export function FormulaireFrais({
                 </option>
               ))}
             </select>
+          </div>
+        ) : cible === "eleves" ? (
+          <div className="sm:col-span-3">
+            <label className="block text-sm font-medium">
+              Élèves visés ({elevesList.length} inscrits)
+            </label>
+            <fieldset className="mt-1 max-h-44 overflow-y-auto rounded-xl border border-ligne p-2">
+              <legend className="sr-only">Élèves visés</legend>
+              {elevesList.length === 0 ? (
+                <p className="p-2 text-sm text-encre-doux">
+                  Aucun élève inscrit : inscrivez-les d'abord dans une classe.
+                </p>
+              ) : (
+                elevesList.map((e) => (
+                  <label key={e.id} className="flex items-center gap-2 px-2 py-1 text-sm">
+                    <input type="checkbox" name="elevesDesignes" value={e.id} />
+                    {e.prenom} {e.nom}
+                    <span className="text-encre-doux">({e.classe})</span>
+                  </label>
+                ))
+              )}
+            </fieldset>
           </div>
         ) : (
           <div>
@@ -185,6 +211,57 @@ export function FormulaireGeneration({
           {enCours ? "Génération…" : "Générer les factures"}
         </button>
       )}
+      <Sortie retour={etat} />
+    </form>
+  );
+}
+
+
+export function FormulaireManuelle({
+  elevesList,
+}: {
+  elevesList: { id: number; prenom: string; nom: string; classe: string }[];
+}) {
+  const [etat, action, enCours] = useActionState(factureManuelle, etatInitial);
+  return (
+    <form action={action} className="rounded-2xl border border-ligne bg-white p-4">
+      <p className="text-sm font-semibold">Facture manuelle (un seul élève)</p>
+      <div className="mt-2 grid gap-3 sm:grid-cols-2">
+        <div>
+          <label className="block text-sm font-medium">Élève</label>
+          <select name="eleveUserId" required className={champClasse}>
+            {elevesList.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.prenom} {e.nom} ({e.classe})
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Objet</label>
+          <input
+            name="objet"
+            required
+            placeholder="Ex. Remboursement de trop-perçu"
+            className={champClasse}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Montant (F CFA)</label>
+          <input name="montant" type="number" min={1} step={1} required className={champClasse} />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Échéance</label>
+          <input name="echeance" type="date" required className={champClasse} />
+        </div>
+      </div>
+      <button
+        type="submit"
+        disabled={enCours}
+        className="mt-3 rounded-xl bg-vert px-4 py-2 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60"
+      >
+        {enCours ? "Création…" : "Créer la facture"}
+      </button>
       <Sortie retour={etat} />
     </form>
   );

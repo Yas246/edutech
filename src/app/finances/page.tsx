@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import {
   classes,
   delegations,
+  inscriptions,
+  journal,
   etablissements,
   factures,
   frais,
@@ -22,6 +24,7 @@ import {
   FormulaireDelegation,
   FormulaireFrais,
   FormulaireGeneration,
+  FormulaireManuelle,
 } from "./formulaires";
 
 export const metadata: Metadata = { title: "Finances" };
@@ -58,6 +61,33 @@ export default async function PageFinances() {
     .from(classes)
     .where(eq(classes.etablissementId, idEcole))
     .orderBy(asc(classes.nom));
+
+  const elevesEcole = await db
+    .select({
+      id: users.id,
+      prenom: users.prenom,
+      nom: users.nom,
+      classe: classes.nom,
+    })
+    .from(inscriptions)
+    .innerJoin(users, eq(users.id, inscriptions.eleveUserId))
+    .innerJoin(classes, eq(classes.id, inscriptions.classeId))
+    .where(eq(classes.etablissementId, idEcole))
+    .orderBy(asc(users.nom));
+
+  const journalRecent = await db
+    .select({
+      action: journal.action,
+      detail: journal.detail,
+      date: journal.createdAt,
+      auteurPrenom: users.prenom,
+      auteurNom: users.nom,
+    })
+    .from(journal)
+    .innerJoin(users, eq(users.id, journal.auteurUserId))
+    .where(eq(journal.etablissementId, idEcole))
+    .orderBy(desc(journal.createdAt))
+    .limit(50);
 
   const mesPeriodes = await db
     .select({ id: periodes.id, nom: periodes.nom })
@@ -178,7 +208,7 @@ export default async function PageFinances() {
       </dl>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
-        <FormulaireFrais classesList={mesClasses} periodesList={mesPeriodes} />
+        <FormulaireFrais classesList={mesClasses} periodesList={mesPeriodes} elevesList={elevesEcole} />
         <FormulaireGeneration
           frais={mesFrais.map((f) => ({
             id: f.id,
@@ -191,6 +221,38 @@ export default async function PageFinances() {
           }))}
         />
       </div>
+
+      {/* Facture manuelle */}
+      <section className="mt-10">
+        <h2 className="text-xl font-bold tracking-tight">Facture manuelle</h2>
+        <div className="mt-3">
+          <FormulaireManuelle elevesList={elevesEcole} />
+        </div>
+      </section>
+
+      {/* Journal des opérations */}
+      <section className="mt-10">
+        <h2 className="text-xl font-bold tracking-tight">Journal des opérations</h2>
+        {journalRecent.length === 0 ? (
+          <p className="mt-3 rounded-2xl border border-dashed border-ligne bg-white p-5 text-sm text-encre-doux">
+            Aucun geste enregistré pour l'instant.
+          </p>
+        ) : (
+          <ul className="mt-3 divide-y divide-ligne rounded-2xl border border-ligne bg-white text-sm">
+            {journalRecent.map((j, i) => (
+              <li key={i} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2">
+                <span>
+                  <span className="font-medium">{j.action}</span>
+                  {j.detail ? <span className="text-encre-doux"> — {j.detail}</span> : null}
+                </span>
+                <span className="text-xs text-encre-doux">
+                  {j.auteurPrenom} {j.auteurNom} · {j.date.toISOString().slice(0, 16).replace("T", " ")}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {/* Les frais posés */}
       <section className="mt-10">
