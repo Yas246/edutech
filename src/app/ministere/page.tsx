@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { etablissements, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 import { BoutonsValidation } from "./formulaire-validation";
+import { statistiquesParDepartement } from "@/lib/nation";
 import { FormulaireEmploye } from "./employes";
 import { AgentsListe } from "./agents-liste";
 
@@ -87,6 +88,44 @@ export default async function EspaceMinistere({
           <dd className="text-2xl font-bold text-rouge">{totalRefuse.n}</dd>
         </div>
       </dl>
+
+      {/* Statistiques nationales */}
+      <section className="mt-10">
+        <h2 className="text-xl font-bold tracking-tight">La nation, département par département</h2>
+        <p className="mt-1 text-sm text-encre-doux">
+          Le recouvrement est un pourcentage global : les montants restent entre l'école et la famille.
+        </p>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[640px] rounded-2xl border border-ligne bg-white text-sm">
+            <caption className="sr-only">Statistiques par département</caption>
+            <thead>
+              <tr className="border-b border-ligne text-left text-encre-doux">
+                <th scope="col" className="px-4 py-2 font-medium">Département</th>
+                <th scope="col" className="px-4 py-2 font-medium">Écoles validées</th>
+                <th scope="col" className="px-4 py-2 font-medium">Élèves inscrits</th>
+                <th scope="col" className="px-4 py-2 font-medium">Absentéisme (non justifiés)</th>
+                <th scope="col" className="px-4 py-2 font-medium">Recouvrement</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(await statistiquesParDepartement()).map((d) => (
+                <tr key={d.departement} className="border-b border-ligne/60 last:border-0">
+                  <td className="px-4 py-2 font-medium">{d.departement}</td>
+                  <td className="px-4 py-2">{d.etablissements}</td>
+                  <td className="px-4 py-2">{d.eleves}</td>
+                  <td className="px-4 py-2">{d.tauxAbsenteisme === null ? "—" : d.tauxAbsenteisme + " %"}</td>
+                  <td className="px-4 py-2">{d.tauxRecouvrement === null ? "—" : d.tauxRecouvrement + " %"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3">
+          <Link href="/ministere/apprenants" className="text-sm font-medium text-vert underline hover:text-vert-fonce">
+            Consulter les apprenants (lecture seule)
+          </Link>
+        </p>
+      </section>
 
       <section className="mt-10">
         <h2 className="text-xl font-bold tracking-tight">Agents du ministère</h2>
