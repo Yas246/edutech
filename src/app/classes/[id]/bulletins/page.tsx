@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import { gardeClasse } from "@/lib/garde-classe";
 import { chargerBulletins, formaterMoyenne } from "@/lib/bulletins";
 import { publierBulletins } from "./actions";
+import { EnTetePage } from "@/components/ui/en-tete";
+import { EtatVide } from "@/components/ui/etat-vide";
+import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = { title: "Bulletins" };
 
@@ -22,26 +25,17 @@ export default async function PageBulletins({
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10">
-      <p className="text-sm text-encre-doux">
-        <Link href={`/classes/${classe.id}`} className="underline hover:text-vert">
-          {classe.nom}
-        </Link>{" "}
-        · bulletins
-      </p>
-      <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight">
-          Moyennes de {classe.nom}
-        </h1>
-        {donnees.publie ? (
-          <span className="rounded-full bg-vert-clair px-3 py-1 text-sm font-medium text-vert-fonce">
-            Publiés : les familles les voient
-          </span>
-        ) : (
-          <span className="rounded-full bg-jaune-clair px-3 py-1 text-sm text-encre">
-            Non publiés
-          </span>
-        )}
-      </div>
+      <EnTetePage
+        fil={[{ href: `/classes/${classe.id}`, label: classe.nom }]}
+        titre={<>Moyennes de {classe.nom}</>}
+        actions={
+          donnees.publie ? (
+            <Badge ton="vert">Publiés : les familles les voient</Badge>
+          ) : (
+            <Badge ton="jaune">Non publiés</Badge>
+          )
+        }
+      />
       <p className="mt-2 text-encre-doux">
         {donnees.periode
           ? `${donnees.periode.nom} (du ${donnees.periode.debut} au ${donnees.periode.fin})`
@@ -68,9 +62,7 @@ export default async function PageBulletins({
       )}
 
       {donnees.eleves.length === 0 ? (
-        <p className="mt-8 rounded-2xl border border-dashed border-ligne bg-white p-6 text-center text-encre-doux">
-          Aucun élève inscrit : les moyennes viendront avec les inscriptions.
-        </p>
+        <EtatVide>Aucun élève inscrit : les moyennes viendront avec les inscriptions.</EtatVide>
       ) : (
         <table className="mt-6 w-full rounded-2xl border border-ligne bg-white text-sm">
           <caption className="sr-only">Moyennes de la classe</caption>

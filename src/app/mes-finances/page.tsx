@@ -4,18 +4,12 @@ import { eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { factures, frais, liensFamille, periodes, tranches, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
-import { detailFacture, libelleFrais, libellesEtat, type EtatFacture } from "@/lib/finances";
+import { detailFacture, libelleFrais } from "@/lib/finances";
+import { BadgeEtatFacture } from "@/components/ui/badge";
+import { EtatVide } from "@/components/ui/etat-vide";
 import FormulaireMobileMoney from "./formulaire-mobile-money";
 
 export const metadata: Metadata = { title: "Mes finances" };
-
-const couleursEtat: Record<EtatFacture, string> = {
-  a_payer: "bg-papier text-encre-doux",
-  partiellement_paye: "bg-jaune-clair text-encre",
-  paye: "bg-vert-clair text-vert-fonce",
-  en_retard: "bg-rouge-clair text-rouge",
-  annule: "bg-papier text-encre-doux",
-};
 
 export default async function MesFinances() {
   const parent = await exiger("parent");
@@ -65,13 +59,13 @@ export default async function MesFinances() {
       </p>
 
       {enfants.length === 0 ? (
-        <p className="mt-8 rounded-2xl border border-dashed border-ligne bg-white p-6 text-center text-encre-doux">
+        <EtatVide>
           Aucun enfant relié à votre compte.{" "}
           <Link href="/mes-enfants" className="text-vert underline">
             Reliez votre premier enfant
           </Link>
           .
-        </p>
+        </EtatVide>
       ) : (
         <dl className="mt-6 grid grid-cols-3 gap-4">
           <div className="rounded-2xl border border-ligne bg-white p-4">
@@ -108,9 +102,7 @@ export default async function MesFinances() {
                     {d.paye.toLocaleString("fr-FR")} F
                   </p>
                 </div>
-                <span className={`rounded-full px-3 py-1 text-sm font-medium ${couleursEtat[d.etat]}`}>
-                  {libellesEtat[d.etat]}
-                </span>
+                <BadgeEtatFacture etat={d.etat} />
               </div>
 
               <ul className="mt-3 space-y-1 text-sm">

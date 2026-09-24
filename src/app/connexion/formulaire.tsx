@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { seConnecter, type EtatConnexion } from "./actions";
+import { Alerte } from "@/components/ui/alerte";
 
 const etatInitial: EtatConnexion = {};
 
@@ -11,14 +12,7 @@ export default function FormulaireConnexion() {
 
   return (
     <form action={action} className="mt-6 space-y-4">
-      {etat.erreur && (
-        <p
-          role="alert"
-          className="rounded-xl border border-rouge/30 bg-rouge-clair px-4 py-3 text-sm text-rouge"
-        >
-          {etat.erreur}
-        </p>
-      )}
+      <Alerte {...etat} />
       <div>
         <label htmlFor="email" className="block text-sm font-medium">
           Email

@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import Link from "next/link";
 import { roles } from "@/lib/roles";
 import { inscrire, type EtatInscription } from "./actions";
+import { Alerte } from "@/components/ui/alerte";
 
 const etatInitial: EtatInscription = {};
 
@@ -28,14 +29,7 @@ export default function FormulaireInscription() {
 
   return (
     <form action={action} className="space-y-5">
-      {etat.erreur && (
-        <p
-          role="alert"
-          className="rounded-xl border border-rouge/30 bg-rouge-clair px-4 py-3 text-sm text-rouge"
-        >
-          {etat.erreur}
-        </p>
-      )}
+      <Alerte {...etat} />
 
       <fieldset>
         <legend className="text-sm font-semibold">Votre place</legend>

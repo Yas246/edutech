@@ -10,26 +10,16 @@ import {
   retirerDelegation,
   type Retour,
 } from "./actions";
+import { Alerte } from "@/components/ui/alerte";
+import { champClasse } from "@/components/ui/formulaire";
 
 const etatInitial: Retour = {};
 
-const champ = "mt-1 w-full rounded-xl border border-ligne bg-white px-3 py-2 text-sm";
-const bouton =
-  "rounded-xl bg-vert px-4 py-2 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60";
-
 function Sortie({ retour }: { retour: Retour }) {
-  if (!retour.erreur && !retour.message) return null;
   return (
-    <p
-      role="alert"
-      className={`mt-2 rounded-xl px-3 py-2 text-sm ${
-        retour.erreur
-          ? "border border-rouge/30 bg-rouge-clair text-rouge"
-          : "border border-vert/30 bg-vert-clair text-vert-fonce"
-      }`}
-    >
-      {retour.erreur ?? retour.message}
-    </p>
+    <div className="mt-2">
+      <Alerte {...retour} />
+    </div>
   );
 }
 
@@ -53,7 +43,7 @@ export function FormulaireFrais({
             name="categorie"
             value={categorie}
             onChange={(e) => setCategorie(e.target.value)}
-            className={champ}
+            className={champClasse}
           >
             <option value="inscription">Inscription</option>
             <option value="scolarite">Scolarité</option>
@@ -70,7 +60,7 @@ export function FormulaireFrais({
         {categorie === "autre" && (
           <div>
             <label className="block text-sm font-medium">Nom du frais</label>
-            <input name="libelle" placeholder="Ex. Photos scolaires" className={champ} />
+            <input name="libelle" placeholder="Ex. Photos scolaires" className={champClasse} />
           </div>
         )}
         <div>
@@ -82,7 +72,7 @@ export function FormulaireFrais({
             step={1}
             required
             placeholder="Ex. 150000"
-            className={champ}
+            className={champClasse}
           />
         </div>
         <div>
@@ -91,7 +81,7 @@ export function FormulaireFrais({
             name="cibleType"
             value={cible}
             onChange={(e) => setCible(e.target.value)}
-            className={champ}
+            className={champClasse}
           >
             <option value="classe">Une classe</option>
             <option value="niveau">Un niveau</option>
@@ -100,7 +90,7 @@ export function FormulaireFrais({
         {cible === "classe" ? (
           <div>
             <label className="block text-sm font-medium">Classe</label>
-            <select name="cibleClasseId" className={champ}>
+            <select name="cibleClasseId" className={champClasse}>
               {classesList.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.nom}
@@ -111,12 +101,12 @@ export function FormulaireFrais({
         ) : (
           <div>
             <label className="block text-sm font-medium">Niveau</label>
-            <input name="cibleNiveau" placeholder="Ex. Terminale" className={champ} />
+            <input name="cibleNiveau" placeholder="Ex. Terminale" className={champClasse} />
           </div>
         )}
         <div>
           <label className="block text-sm font-medium">Période</label>
-          <select name="periodeId" className={champ}>
+          <select name="periodeId" className={champClasse}>
             <option value="">Toute l&apos;année</option>
             {periodesList.map((p) => (
               <option key={p.id} value={p.id}>
@@ -126,7 +116,7 @@ export function FormulaireFrais({
           </select>
         </div>
         <div className="flex items-end">
-          <button type="submit" disabled={enCours} className={`${bouton} w-full`}>
+          <button type="submit" disabled={enCours} className="w-full rounded-xl bg-vert px-4 py-2 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60">
             {enCours ? "…" : "Poser le frais"}
           </button>
         </div>
@@ -153,7 +143,7 @@ export function FormulaireGeneration({
         required
         value={idFrais}
         onChange={(e) => setIdFrais(e.target.value)}
-        className={champ}
+        className={champClasse}
       >
         <option value="">Choisir le frais…</option>
         {frais.map((f) => (
@@ -191,7 +181,7 @@ export function FormulaireGeneration({
       )}
 
       {choisi && (
-        <button type="submit" disabled={enCours} className={`${bouton} mt-3`}>
+        <button type="submit" disabled={enCours} className="mt-3 rounded-xl bg-vert px-4 py-2 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60">
           {enCours ? "Génération…" : "Générer les factures"}
         </button>
       )}
@@ -224,12 +214,12 @@ export function FormulaireEncaisser({ factureId, restant }: { factureId: number;
             max={restant}
             step={1}
             required
-            className={champ}
+            className={champClasse}
           />
         </div>
         <div>
           <label className="block text-sm font-medium">Mode</label>
-          <select name="mode" className={champ}>
+          <select name="mode" className={champClasse}>
             <option value="especes">Espèces</option>
             <option value="virement">Virement</option>
             <option value="mobile_money">Mobile Money</option>
@@ -237,9 +227,9 @@ export function FormulaireEncaisser({ factureId, restant }: { factureId: number;
         </div>
         <div className="flex-1">
           <label className="block text-sm font-medium">Note (talon, référence…)</label>
-          <input name="note" placeholder="Facultatif" className={champ} />
+          <input name="note" placeholder="Facultatif" className={champClasse} />
         </div>
-        <button type="submit" disabled={enCours} className={bouton}>
+        <button type="submit" disabled={enCours} className="rounded-xl bg-vert px-4 py-2 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60">
           {enCours ? "…" : "Encaisser"}
         </button>
       </div>
@@ -304,7 +294,7 @@ export function FormulaireDelegation({
               </option>
             ))}
           </select>
-          <button type="submit" disabled={enCoursPoser} className={bouton}>
+          <button type="submit" disabled={enCoursPoser} className="rounded-xl bg-vert px-4 py-2 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60">
             {enCoursPoser ? "…" : "Déléguer"}
           </button>
         </form>

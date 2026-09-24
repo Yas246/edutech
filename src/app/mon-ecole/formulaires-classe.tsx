@@ -6,31 +6,11 @@ import {
   ajouterMatiere,
   creerClasse,
   inscrireEleve,
-  type Retour,
 } from "./actions";
+import { Alerte, type Retour } from "@/components/ui/alerte";
+import { Bouton, champClasse } from "@/components/ui/formulaire";
 
 const etatInitial: Retour = {};
-
-const champ =
-  "mt-1 w-full rounded-xl border border-ligne bg-white px-3 py-2 text-sm";
-const bouton =
-  "mt-2 w-full rounded-xl bg-vert px-4 py-2 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60";
-
-function Retour({ retour }: { retour: Retour }) {
-  if (!retour.erreur && !retour.message) return null;
-  return (
-    <p
-      role="alert"
-      className={`mt-2 rounded-lg px-2 py-1.5 text-xs ${
-        retour.erreur
-          ? "border border-rouge/30 bg-rouge-clair text-rouge"
-          : "border border-vert/30 bg-vert-clair text-vert-fonce"
-      }`}
-    >
-      {retour.erreur ?? retour.message}
-    </p>
-  );
-}
 
 export function FormulaireMatiere({ classeId }: { classeId: number }) {
   const [etat, action, enCours] = useActionState(ajouterMatiere, etatInitial);
@@ -38,20 +18,27 @@ export function FormulaireMatiere({ classeId }: { classeId: number }) {
     <form action={action} className="rounded-xl border border-ligne p-3">
       <p className="text-sm font-semibold">Ajouter une matière</p>
       <input type="hidden" name="classeId" value={classeId} />
-      <input name="nom" placeholder="Ex. Mathématiques" required className={champ} />
+      <input
+        name="nom"
+        placeholder="Ex. Mathématiques"
+        required
+        className={champClasse}
+      />
       <input
         name="coefficient"
         type="number"
         min={1}
         max={10}
         defaultValue={1}
-        className={champ}
+        className={champClasse}
         aria-label="Coefficient"
       />
-      <button type="submit" disabled={enCours} className={bouton}>
+      <Bouton type="submit" disabled={enCours} className="mt-2 w-full">
         {enCours ? "Ajout…" : "Ajouter"}
-      </button>
-      <Retour retour={etat} />
+      </Bouton>
+      <div className="mt-2">
+        <Alerte {...etat} />
+      </div>
     </form>
   );
 }
@@ -67,7 +54,7 @@ export function FormulaireEnseignant({
   return (
     <form action={action} className="rounded-xl border border-ligne p-3">
       <p className="text-sm font-semibold">Confier une matière</p>
-      <select name="matiereId" required className={champ}>
+      <select name="matiereId" required className={champClasse}>
         <option value="">Choisir la matière…</option>
         {matieres.map((m) => (
           <option key={m.id} value={m.id}>
@@ -75,7 +62,7 @@ export function FormulaireEnseignant({
           </option>
         ))}
       </select>
-      <select name="enseignantId" required className={champ}>
+      <select name="enseignantId" required className={champClasse}>
         <option value="">Choisir l&apos;enseignant…</option>
         {enseignants.map((e) => (
           <option key={e.id} value={e.id}>
@@ -83,10 +70,12 @@ export function FormulaireEnseignant({
           </option>
         ))}
       </select>
-      <button type="submit" disabled={enCours} className={bouton}>
+      <Bouton type="submit" disabled={enCours} className="mt-2 w-full">
         {enCours ? "…" : "Confier"}
-      </button>
-      <Retour retour={etat} />
+      </Bouton>
+      <div className="mt-2">
+        <Alerte {...etat} />
+      </div>
     </form>
   );
 }
@@ -102,12 +91,14 @@ export function FormulaireEleve({ classeId }: { classeId: number }) {
         type="email"
         placeholder="Email du compte de l'élève"
         required
-        className={champ}
+        className={champClasse}
       />
-      <button type="submit" disabled={enCours} className={bouton}>
+      <Bouton type="submit" disabled={enCours} className="mt-2 w-full">
         {enCours ? "…" : "Inscrire"}
-      </button>
-      <Retour retour={etat} />
+      </Bouton>
+      <div className="mt-2">
+        <Alerte {...etat} />
+      </div>
     </form>
   );
 }
@@ -128,7 +119,7 @@ export function FormulaireClasse() {
           name="nom"
           placeholder="Ex. Première C"
           required
-          className={champ}
+          className={champClasse}
         />
       </div>
       <div>
@@ -140,18 +131,14 @@ export function FormulaireClasse() {
           name="niveau"
           placeholder="Ex. Première"
           required
-          className={champ}
+          className={champClasse}
         />
       </div>
-      <button
-        type="submit"
-        disabled={enCours}
-        className="rounded-xl bg-vert px-4 py-2 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60"
-      >
+      <Bouton type="submit" disabled={enCours} className="mt-6">
         {enCours ? "Création…" : "Créer la classe"}
-      </button>
+      </Bouton>
       <div className="w-full">
-        <Retour retour={etat} />
+        <Alerte {...etat} />
       </div>
     </form>
   );

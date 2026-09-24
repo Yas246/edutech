@@ -12,6 +12,11 @@ import {
 import { exiger, nomComplet } from "@/lib/auth";
 import { ecoleDeLaDirection } from "@/lib/ecole";
 import { retirerMatiere } from "./actions";
+import { Badge } from "@/components/ui/badge";
+import { Carte } from "@/components/ui/carte";
+import { EtatVide } from "@/components/ui/etat-vide";
+import { EnTetePage } from "@/components/ui/en-tete";
+import { champClasse } from "@/components/ui/formulaire";
 import {
   FormulaireClasse,
   FormulaireEleve,
@@ -20,15 +25,6 @@ import {
 } from "./formulaires-classe";
 
 export const metadata: Metadata = { title: "Mon école" };
-
-const etatBadge: Record<string, { texte: string; classe: string }> = {
-  valide: { texte: "Validé", classe: "bg-vert-clair text-vert-fonce" },
-  en_attente: { texte: "En attente du ministère", classe: "bg-jaune-clair text-encre" },
-  refuse: { texte: "Non validé", classe: "bg-rouge-clair text-rouge" },
-};
-
-const champ =
-  "mt-1 w-full rounded-xl border border-ligne bg-white px-3 py-2 text-sm";
 
 export default async function MonEcole() {
   const utilisateur = await exiger("direction");
@@ -69,26 +65,32 @@ export default async function MonEcole() {
     .where(eq(users.role, "enseignant"))
     .orderBy(asc(users.nom));
 
-  const badge = etatBadge[ecole.statut] ?? etatBadge.en_attente;
-
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10">
       {/* Fiche de l'établissement */}
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">{ecole.nom}</h1>
-          <p className="mt-1 text-encre-doux">
-            {[ecole.commune, ecole.departement].filter(Boolean).join(", ")} ·{" "}
-            {ecole.statutAdmin === "prive"
-              ? "Privé"
-              : ecole.statutAdmin === "confesse"
-                ? "Confessionnel"
-                : "Public"}
-          </p>
-        </div>
-        <span className={`rounded-full px-3 py-1 text-sm font-medium ${badge.classe}`}>
-          {badge.texte}
-        </span>
+        <EnTetePage
+          titre={ecole.nom}
+          sousTitre={
+            [
+              [ecole.commune, ecole.departement].filter(Boolean).join(", "),
+              ecole.statutAdmin === "prive"
+                ? "Privé"
+                : ecole.statutAdmin === "confesse"
+                  ? "Confessionnel"
+                  : "Public",
+            ].join(" · ")
+          }
+        />
+        <Badge
+          ton={ecole.statut === "valide" ? "vert" : ecole.statut === "refuse" ? "rouge" : "jaune"}
+        >
+          {ecole.statut === "valide"
+            ? "Validé"
+            : ecole.statut === "refuse"
+              ? "Non validé"
+              : "En attente du ministère"}
+        </Badge>
       </div>
 
       {/* Classes */}
@@ -99,9 +101,9 @@ export default async function MonEcole() {
 
         <div className="mt-4 space-y-6">
           {mesClasses.length === 0 && (
-            <p className="rounded-2xl border border-dashed border-ligne bg-white p-6 text-center text-encre-doux">
+            <EtatVide>
               Aucune classe pour l&apos;instant. Créez la première ci-dessous.
-            </p>
+            </EtatVide>
           )}
 
           {mesClasses.map((classe) => {

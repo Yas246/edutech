@@ -15,7 +15,9 @@ import {
   users,
 } from "@/db/schema";
 import { exiger } from "@/lib/auth";
-import { calculerEtat, libelleFrais, libellesEtat, type EtatFacture } from "@/lib/finances";
+import { calculerEtat, libelleFrais } from "@/lib/finances";
+import { BadgeEtatFacture } from "@/components/ui/badge";
+import { EtatVide } from "@/components/ui/etat-vide";
 import {
   FormulaireDelegation,
   FormulaireFrais,
@@ -23,14 +25,6 @@ import {
 } from "./formulaires";
 
 export const metadata: Metadata = { title: "Finances" };
-
-const couleursEtat: Record<EtatFacture, string> = {
-  a_payer: "bg-papier text-encre-doux",
-  partiellement_paye: "bg-jaune-clair text-encre",
-  paye: "bg-vert-clair text-vert-fonce",
-  en_retard: "bg-rouge-clair text-rouge",
-  annule: "bg-papier text-encre-doux line-through",
-};
 
 export default async function PageFinances() {
   const utilisateur = await exiger("direction", "enseignant");
@@ -270,9 +264,7 @@ export default async function PageFinances() {
                   <td className="px-4 py-2">{f.total.toLocaleString("fr-FR")} F</td>
                   <td className="px-4 py-2">{f.paye.toLocaleString("fr-FR")} F</td>
                   <td className="px-4 py-2">
-                    <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${couleursEtat[f.etat]}`}>
-                      {libellesEtat[f.etat]}
-                    </span>
+                    <BadgeEtatFacture etat={f.etat} />
                   </td>
                   <td className="px-4 py-2 text-right">
                     <Link

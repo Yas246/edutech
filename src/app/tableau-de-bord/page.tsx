@@ -22,6 +22,7 @@ import {
 import { exiger, nomComplet } from "@/lib/auth";
 import { libellesRole } from "@/lib/roles";
 import { seDeconnecter } from "@/app/deconnexion";
+import { EtatVide } from "@/components/ui/etat-vide";
 
 export const metadata: Metadata = { title: "Mon espace" };
 
@@ -265,13 +266,13 @@ export default async function TableauDeBord() {
         </p>
         <div className="mt-8 space-y-6">
           {enfants.length === 0 && (
-            <p className="rounded-2xl border border-dashed border-ligne bg-white p-6 text-center text-encre-doux">
+            <EtatVide>
               Aucun enfant relié à votre compte.{" "}
               <Link href="/mes-enfants" className="text-vert underline">
                 Reliez votre premier enfant
               </Link>
               .
-            </p>
+            </EtatVide>
           )}
           {cartes}
         </div>
