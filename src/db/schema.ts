@@ -257,6 +257,9 @@ export const presencesEnseignants = pgTable(
   "presences_enseignants",
   {
     id: serial("id").primaryKey(),
+    etablissementId: integer("etablissement_id")
+      .notNull()
+      .references(() => etablissements.id, { onDelete: "cascade" }),
     enseignantUserId: integer("enseignant_user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),

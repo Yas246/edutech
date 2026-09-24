@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { exiger } from "@/lib/auth";
-import { consulterApprenants, statistiquesParDepartement } from "@/lib/nation";
+import { consulterApprenants, statistiquesDepartement } from "@/lib/outils/ministere";
 import { EnTetePage } from "@/components/ui/en-tete";
 import { EtatVide } from "@/components/ui/etat-vide";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Suivi des apprenants" };
 
 const requetesPossibles = [
   { valeur: "", titre: "Tous les apprenants" },
-  { valeur: "moyenne15", titre: "Moyenne générale >= 15" },
+  { valeur: "excellents", titre: "Moyenne générale >= 15" },
   { valeur: "absents", titre: "Élèves ayant des absences non justifiées" },
 ];
 
@@ -23,10 +23,10 @@ export default async function Apprenants({
   await exiger("ministere");
   const { dep = "", requete = "" } = await searchParams;
 
-  const departements = (await statistiquesParDepartement()).map((d) => d.departement);
+  const departements = (await statistiquesDepartement()).map((d) => d.departement);
   const liste = await consulterApprenants({
     departement: dep || undefined,
-    requete: requete === "moyenne15" || requete === "absents" ? requete : undefined,
+    requete: requete === "excellents" || requete === "absents" ? requete : undefined,
   });
 
   function classeMoyenne(m: number | null) {

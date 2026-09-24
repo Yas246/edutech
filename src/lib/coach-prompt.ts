@@ -1,5 +1,5 @@
 import { nomComplet } from "@/lib/auth";
-import { consulterApprenants, statistiquesParDepartement } from "@/lib/nation";
+import { consulterApprenants, statistiquesDepartement } from "@/lib/outils/ministere";
 import type { Utilisateur } from "@/lib/auth";
 
 /**
@@ -26,8 +26,8 @@ export async function promptSysteme(utilisateur: Utilisateur): Promise<string> {
   }
 
   // Ministère : les registres réels, recopiés jamais inventés.
-  const stats = await statistiquesParDepartement();
-  const top = await consulterApprenants({ requete: "moyenne15" });
+  const stats = await statistiquesDepartement();
+  const top = await consulterApprenants({ requete: "excellents" });
   const tableauStats = stats
     .map(
       (d) =>

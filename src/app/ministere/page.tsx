@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { etablissements, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 import { BoutonsValidation } from "./formulaire-validation";
-import { statistiquesParDepartement } from "@/lib/nation";
+import { statistiquesDepartement } from "@/lib/outils/ministere";
 import { FormulaireEmploye } from "./employes";
 import { AgentsListe } from "./agents-liste";
 
@@ -108,7 +108,7 @@ export default async function EspaceMinistere({
               </tr>
             </thead>
             <tbody>
-              {(await statistiquesParDepartement()).map((d) => (
+              {(await statistiquesDepartement()).map((d) => (
                 <tr key={d.departement} className="border-b border-ligne/60 last:border-0">
                   <td className="px-4 py-2 font-medium">{d.departement}</td>
                   <td className="px-4 py-2">{d.etablissements}</td>

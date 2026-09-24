@@ -77,6 +77,11 @@ async function fixerSexe(email: string, sexe: string) {
   await db.update(users).set({ sexe }).where(eq(users.email, email));
 }
 
+/** Les intérêts déclarés aux premiers pas, rattrapés pour les comptes anciens. */
+async function fixerInterets(email: string, interets: string) {
+  await db.update(users).set({ interets }).where(eq(users.email, email));
+}
+
 async function importerRecensement() {
   // Les établissements confirmés du recensement arrivent validés ; les
   // autres rejoignent la file d'attente que le ministère traitera.
@@ -512,6 +517,17 @@ async function vivifierTerminaleD() {
     await fixerSexe(email, sexe);
   }
 
+  // Des intérêts déclarés, pour que la boussole d'orientation propose.
+  for (const [email, interets] of [
+    ["eleve.test@edutech.bj", "médecine, biologie"],
+    ["eleve1.test@edutech.bj", "enseigner, lecture"],
+    ["eleve2.test@edutech.bj", "informatique, ordinateur"],
+    ["eleve3.test@edutech.bj", "droit, débat"],
+    ["eleve5.test@edutech.bj", "commerce, vente"],
+  ] as const) {
+    await fixerInterets(email, interets);
+  }
+
   // Trois évaluations de mathématiques, une de physique-chimie.
   const [maths] = await db
     .select()
@@ -709,6 +725,7 @@ async function importerEquipePedagogique() {
       await db
         .insert(presencesEnseignants)
         .values({
+          etablissementId: idEcole,
           enseignantUserId: membre.enseignant,
           date: jour,
           statut: membre.incidents[jour] ?? "present",
