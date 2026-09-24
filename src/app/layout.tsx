@@ -36,15 +36,21 @@ function Drapeau() {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const utilisateur = await utilisateurCourant();
 
-  // Le lien principal dépend de la place de chacun.
-  const liensParRole: Record<string, { href: string; titre: string } | undefined> = {
-    direction: { href: "/mon-ecole", titre: "Mon école" },
-    ministere: { href: "/ministere", titre: "Ministère" },
-    parent: { href: "/mes-enfants", titre: "Mes enfants" },
+  // Les liens privés dépendent de la place de chacun.
+  const liensParRole: Record<string, { href: string; titre: string }[] | undefined> = {
+    direction: [
+      { href: "/mon-ecole", titre: "Mon école" },
+      { href: "/mon-ecole/agenda", titre: "Agenda" },
+    ],
+    ministere: [{ href: "/ministere", titre: "Ministère" }],
+    parent: [
+      { href: "/mes-enfants", titre: "Mes enfants" },
+      { href: "/calendrier", titre: "Calendrier" },
+    ],
     enseignant: undefined,
-    eleve: undefined,
+    eleve: [{ href: "/calendrier", titre: "Calendrier" }],
   };
-  const lienPrive = utilisateur ? liensParRole[utilisateur.role] : undefined;
+  const liensPrives = utilisateur ? (liensParRole[utilisateur.role] ?? []) : [];
 
   return (
     <html lang="fr" className="h-full antialiased">
@@ -70,16 +76,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                     Établissements
                   </Link>
                 </li>
-                {lienPrive && (
-                  <li>
+                {liensPrives.map((lien) => (
+                  <li key={lien.href}>
                     <Link
-                      href={lienPrive.href}
+                      href={lien.href}
                       className="rounded-lg px-3 py-2 font-medium text-vert-fonce hover:bg-vert-clair"
                     >
-                      {lienPrive.titre}
+                      {lien.titre}
                     </Link>
                   </li>
-                )}
+                ))}
                 {utilisateur ? (
                   <>
                     <li>

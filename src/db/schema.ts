@@ -135,6 +135,23 @@ export const creneaux = pgTable("creneaux", {
   heureFin: text("heure_fin").notNull(),
 });
 
+/** Un événement posé par la direction : conseil de classe, réunion… */
+export const evenements = pgTable("evenements", {
+  id: serial("id").primaryKey(),
+  etablissementId: integer("etablissement_id")
+    .notNull()
+    .references(() => etablissements.id, { onDelete: "cascade" }),
+  titre: text("titre").notNull(),
+  description: text("description").default("").notNull(),
+  date: date("date").notNull(),
+  /** etablissement | classe */
+  portee: text("portee").default("etablissement").notNull(),
+  classeId: integer("classe_id").references(() => classes.id, { onDelete: "cascade" }),
+  creePar: integer("cree_par")
+    .notNull()
+    .references(() => users.id),
+});
+
 export const devoirs = pgTable("devoirs", {
   id: serial("id").primaryKey(),
   classeId: integer("classe_id")
