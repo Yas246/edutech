@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { and, asc, count, eq, ilike } from "drizzle-orm";
 import { db } from "@/db";
-import { etablissements } from "@/db/schema";
+import { etablissements, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 import { BoutonsValidation } from "./formulaire-validation";
+import { FormulaireEmploye } from "./employes";
+import { AgentsListe } from "./agents-liste";
 
 export const metadata: Metadata = { title: "Espace ministère" };
 
@@ -85,6 +87,15 @@ export default async function EspaceMinistere({
           <dd className="text-2xl font-bold text-rouge">{totalRefuse.n}</dd>
         </div>
       </dl>
+
+      <section className="mt-10">
+        <h2 className="text-xl font-bold tracking-tight">Agents du ministère</h2>
+        <p className="mt-1 text-sm text-encre-doux">
+          Vos collègues ont les mêmes pouvoirs : valider les écoles et lire la nation.
+        </p>
+        <FormulaireEmploye />
+        <AgentsListe />
+      </section>
 
       <section className="mt-10">
         <h2 className="text-xl font-bold tracking-tight">

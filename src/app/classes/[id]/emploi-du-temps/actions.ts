@@ -5,41 +5,25 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { classes, creneaux, devoirs, enseignements, etablissements, matieres, salles, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
+import { gardeEdtEtablissement } from "@/lib/garde-classe";
 import { estHeureValide, seChevauchent } from "@/lib/vie-scolaire";
 import type { Retour } from "@/components/ui/alerte";
 
 const joursValides = new Set([1, 2, 3, 4, 5, 6]);
 
-/**
- * Qui peut poser un créneau : la direction de l'établissement de la
- * classe (l'espace « emploi du temps » sera délégable plus loin).
- */
 async function gardeEdt(idClasse: number) {
-  const utilisateur = await exiger("direction", "enseignant");
   const [classe] = await db
     .select({
       id: classes.id,
       nom: classes.nom,
       etablissementId: classes.etablissementId,
-      directionUserId: etablissements.directionUserId,
     })
     .from(classes)
-    .innerJoin(etablissements, eq(etablissements.id, classes.etablissementId))
     .where(eq(classes.id, idClasse))
     .limit(1);
   if (!classe) return null;
-  if (utilisateur.role === "direction") {
-    if (classe.directionUserId !== utilisateur.id) return null;
-  } else {
-    const lie = await db
-      .select({ id: enseignements.id })
-      .from(enseignements)
-      .where(
-        and(eq(enseignements.classeId, idClasse), eq(enseignements.enseignantUserId, utilisateur.id)),
-      )
-      .limit(1);
-    if (lie.length === 0) return null;
-  }
+  const utilisateur = await gardeEdtEtablissement(classe.etablissementId);
+  if (!utilisateur) return null;
   return { utilisateur, classe };
 }
 

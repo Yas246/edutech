@@ -40,7 +40,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const liensParRole: Record<string, { href: string; titre: string }[] | undefined> = {
     direction: [
       { href: "/mon-ecole", titre: "Mon école" },
-      { href: "/mon-ecole/agenda", titre: "Agenda" },
+      { href: "/delegations", titre: "Délégations" },
     ],
     ministere: [{ href: "/ministere", titre: "Ministère" }],
     parent: [
