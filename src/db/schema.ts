@@ -84,7 +84,7 @@ export const etablissements = pgTable("etablissements", {
   factureSeq: integer("facture_seq").default(0).notNull(),
   recuSeq: integer("recu_seq").default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+}, (t) => [unique("etablissements_nom_commune").on(t.nom, t.commune)]);
 
 export const classes = pgTable("classes", {
   id: serial("id").primaryKey(),
