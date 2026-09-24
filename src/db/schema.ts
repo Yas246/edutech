@@ -300,6 +300,8 @@ export const paiements = pgTable("paiements", {
   /** especes | virement | mobile_money */
   mode: text("mode").notNull(),
   note: text("note").default("").notNull(),
+  /** Reçu numéroté par établissement : REC-<etab>-<seq>. */
+  recuNumero: text("recu_numero").default("").notNull(),
   auteurUserId: integer("auteur_user_id")
     .notNull()
     .references(() => users.id),

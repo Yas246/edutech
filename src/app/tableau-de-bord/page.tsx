@@ -6,6 +6,10 @@ import {
   classes,
   enseignements,
   evaluations,
+  factures,
+  frais,
+  paiements,
+  tranches,
   inscriptions,
   liensFamille,
   matieres,
@@ -292,6 +296,34 @@ export default async function TableauDeBord() {
         .limit(1),
     ]);
     const classe = monInscription[0];
+  const echeances: { libelle: string; echeance: string; etat: "respectee" | "manquee" | "a_venir" }[] = [];
+  if (classe) {
+    const mesFactures = await db
+      .select({ id: factures.id, categorie: frais.categorie, libelle: frais.libelle })
+      .from(factures)
+      .innerJoin(frais, eq(frais.id, factures.fraisId))
+      .where(eq(factures.eleveUserId, utilisateur.id));
+    const aujourdhui = new Date().toISOString().slice(0, 10);
+    for (const mf of mesFactures) {
+      const ts = await db.select().from(tranches).where(eq(tranches.factureId, mf.id));
+      const ps = await db
+        .select({ montant: paiements.montant, annule: paiements.annule })
+        .from(paiements)
+        .where(eq(paiements.factureId, mf.id));
+      const paye = ps.filter((p) => !p.annule).reduce((a, p) => a + p.montant, 0);
+      let reste = paye;
+      const categories: Record<string, string> = { scolarite: "Scolarité", inscription: "Inscription", tenue: "Tenue scolaire", cantine: "Cantine", transport: "Transport", examen: "Examen", td: "Travaux dirigés", fournitures: "Fournitures", etude_dossier: "Étude de dossier", autre: "Frais" };
+      for (const t of ts.sort((a, b) => a.ordre - b.ordre)) {
+        const couvert = Math.min(reste, t.montant);
+        reste -= couvert;
+        echeances.push({
+          libelle: mf.categorie === "autre" && mf.libelle ? mf.libelle : (categories[mf.categorie] ?? "Frais") + " — tranche " + t.ordre,
+          echeance: t.echeance,
+          etat: couvert >= t.montant ? "respectee" : t.echeance < aujourdhui ? "manquee" : "a_venir",
+        });
+      }
+    }
+  }
     const [publication] = classe
       ? await db
           .select({ id: publicationsBulletins.id })
@@ -357,6 +389,39 @@ export default async function TableauDeBord() {
             )}
           </section>
         </div>
+
+
+        {classe && (
+          <section className="mt-6 rounded-2xl border border-ligne bg-white p-5">
+            <h2 className="font-semibold">Mes échéances de paiement</h2>
+            {echeances.length === 0 ? (
+              <p className="mt-2 text-sm text-encre-doux">Aucune échéance enregistrée.</p>
+            ) : (
+              <ul className="mt-2 space-y-1.5 text-sm">
+                {echeances.map((e, i) => (
+                  <li key={i} className="flex justify-between gap-2">
+                    <span>{e.libelle}</span>
+                    <span
+                      className={
+                        e.etat === "manquee"
+                          ? "font-medium text-rouge"
+                          : e.etat === "respectee"
+                            ? "font-medium text-vert-fonce"
+                            : "font-medium"
+                      }
+                    >
+                      {e.etat === "respectee" ? "Respectée" : e.etat === "manquee" ? "Manquée" : "À venir"} · {formaterDate(e.echeance)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="mt-2 text-xs text-encre-doux">
+              Les échéances se règlent entre l'établissement et vos parents :
+              les montants ne sont pas affichés ici.
+            </p>
+          </section>
+        )}
 
         {classe && publication && (
           <p className="mt-6">
@@ -436,6 +501,7 @@ export default async function TableauDeBord() {
     utilisateur.role === "direction"
       ? [
           { href: "/mon-ecole", titre: "Mon école", texte: "Classes, programme, inscriptions." },
+          { href: "/finances", titre: "Finances", texte: "Frais, factures, encaissements, délégation." },
         ]
       : [
           {
