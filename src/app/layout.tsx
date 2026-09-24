@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { utilisateurCourant, nomComplet } from "@/lib/auth";
+import { seDeconnecter } from "@/app/deconnexion";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -31,7 +33,9 @@ function Drapeau() {
   );
 }
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const utilisateur = await utilisateurCourant();
+
   return (
     <html lang="fr" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
@@ -56,22 +60,47 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                     Établissements
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="/connexion"
-                    className="rounded-lg px-3 py-2 text-encre-doux hover:bg-vert-clair hover:text-vert-fonce"
-                  >
-                    Connexion
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/inscription"
-                    className="rounded-lg bg-vert px-3 py-2 font-medium text-white hover:bg-vert-fonce"
-                  >
-                    Créer un compte
-                  </Link>
-                </li>
+                {utilisateur ? (
+                  <>
+                    <li>
+                      <Link
+                        href="/tableau-de-bord"
+                        className="rounded-lg px-3 py-2 font-medium text-vert-fonce hover:bg-vert-clair"
+                      >
+                        {nomComplet(utilisateur)}
+                      </Link>
+                    </li>
+                    <li>
+                      <form action={seDeconnecter}>
+                        <button
+                          type="submit"
+                          className="rounded-lg border border-ligne px-3 py-2 text-encre-doux hover:bg-papier"
+                        >
+                          Déconnexion
+                        </button>
+                      </form>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link
+                        href="/connexion"
+                        className="rounded-lg px-3 py-2 text-encre-doux hover:bg-vert-clair hover:text-vert-fonce"
+                      >
+                        Connexion
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/inscription"
+                        className="rounded-lg bg-vert px-3 py-2 font-medium text-white hover:bg-vert-fonce"
+                      >
+                        Créer un compte
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </nav>
           </div>

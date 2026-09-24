@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
+import FormulaireInscription from "./formulaire";
 
-export const metadata: Metadata = { title: "Créer un compte" };
+export const metadata: Metadata = {
+  title: "Créer un compte",
+  description:
+    "Élève, parent, enseignant ou direction d'établissement : créez votre compte EduTech.",
+};
 
-export default function Inscription() {
+export default function PageInscription() {
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-16">
-      <h1 className="text-2xl font-bold tracking-tight">Créer un compte</h1>
-      <p className="mt-3 rounded-2xl border border-dashed border-ligne bg-white p-6 text-encre-doux">
-        L&apos;inscription des élèves, parents, enseignants et directions arrive avec la prochaine
-        étape de construction.
+    <div className="mx-auto w-full max-w-2xl px-4 py-14">
+      <h1 className="text-3xl font-bold tracking-tight">Créer un compte</h1>
+      <p className="mt-2 text-encre-doux">
+        Choisissez votre place : chacun voit ce qui le concerne, et rien d&apos;autre.
       </p>
+      <div className="mt-6 rounded-2xl border border-ligne bg-white p-6">
+        <FormulaireInscription />
+      </div>
     </div>
   );
 }
