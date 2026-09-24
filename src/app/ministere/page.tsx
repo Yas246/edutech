@@ -120,9 +120,12 @@ export default async function EspaceMinistere({
             </tbody>
           </table>
         </div>
-        <p className="mt-3">
+        <p className="mt-3 flex flex-wrap gap-4">
           <Link href="/ministere/apprenants" className="text-sm font-medium text-vert underline hover:text-vert-fonce">
             Consulter les apprenants (lecture seule)
+          </Link>
+          <Link href="/ministere/indicateurs" className="text-sm font-medium text-vert underline hover:text-vert-fonce">
+            Indicateurs nationaux (parité, ratio, assiduité)
           </Link>
         </p>
       </section>

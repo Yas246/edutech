@@ -284,7 +284,6 @@ export type LigneRatio = { perimetre: string; eleves: number; enseignants: numbe
 export async function ratioElevesEnseignant(
   departement?: string,
 ): Promise<LigneRatio[]> {
-  const filtre = departement ? sql`WHERE e.departement = ${departement}` : sql``;
   const resultat = await db.execute(sql`
     SELECT e.departement AS perimetre,
       (SELECT count(*) FROM inscriptions i

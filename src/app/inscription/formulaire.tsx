@@ -115,6 +115,24 @@ export default function FormulaireInscription() {
       </div>
 
       <div>
+        <label htmlFor="sexe" className="block text-sm font-medium">
+          Sexe <span className="font-normal text-encre-doux">(facultatif)</span>
+        </label>
+        <select
+          id="sexe"
+          name="sexe"
+          className="mt-1 w-full rounded-xl border border-ligne bg-white px-3 py-2 sm:w-56"
+        >
+          <option value="">Je préfère ne pas le dire</option>
+          <option value="F">Féminin</option>
+          <option value="M">Masculin</option>
+        </select>
+        <p className="mt-1 text-xs text-encre-doux">
+          Sert uniquement aux indicateurs de parité du ministère (filles/garçons).
+        </p>
+      </div>
+
+      <div>
         <label htmlFor="motDePasse" className="block text-sm font-medium">
           Mot de passe
         </label>

@@ -189,6 +189,7 @@ export default async function MonEcole() {
       </section>
 
       <nav className="mt-8 flex flex-wrap gap-3 text-sm" aria-label="Gestion de l'école">
+        <Link href="/mon-ecole/assiduite" className="rounded-xl border border-ligne bg-white px-4 py-2 font-medium hover:bg-papier">Assiduité</Link>
         <Link href="/mon-ecole/salles" className="rounded-xl border border-ligne bg-white px-4 py-2 font-medium hover:bg-papier">Salles</Link>
         <Link href="/mon-ecole/agenda" className="rounded-xl border border-ligne bg-white px-4 py-2 font-medium hover:bg-papier">Agenda</Link>
       </nav>

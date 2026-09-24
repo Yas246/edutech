@@ -21,6 +21,8 @@ export async function inscrire(
   const email = String(donnees.get("email") ?? "").trim().toLowerCase();
   const telephone = String(donnees.get("telephone") ?? "").trim();
   const motDePasse = String(donnees.get("motDePasse") ?? "");
+  const sexeBrut = String(donnees.get("sexe") ?? "").trim().toUpperCase();
+  const sexe = sexeBrut === "F" || sexeBrut === "M" ? sexeBrut : "";
 
   if (!roles.some((r) => r.valeur === role)) {
     return { erreur: "Choisissez votre place sur la plateforme." };
@@ -68,6 +70,7 @@ export async function inscrire(
         nom,
         prenom,
         telephone,
+        sexe,
         role: role as Role,
       })
       .returning({ id: users.id });
