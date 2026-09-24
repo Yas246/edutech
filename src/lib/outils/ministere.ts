@@ -26,7 +26,7 @@ export async function statistiquesDepartement(
       d.departement,
       (SELECT count(*) FROM etablissements e
         WHERE e.departement = d.departement AND e.statut = 'valide') AS etablissements,
-      (SELECT count(*) FROM inscriptions i
+      (SELECT count(DISTINCT i.eleve_user_id) FROM inscriptions i
         JOIN classes c ON c.id = i.classe_id
         JOIN etablissements e ON e.id = c.etablissement_id
         WHERE e.departement = d.departement) AS eleves,
@@ -257,9 +257,9 @@ export async function effectifsParNiveau(
   const filtre = departement ? sql`AND e.departement = ${departement}` : sql``;
   const resultat = await db.execute(sql`
     SELECT c.niveau,
-      count(*) AS effectifs,
-      count(*) FILTER (WHERE u.sexe = 'F') AS filles,
-      count(*) FILTER (WHERE u.sexe = 'M') AS garcons
+      count(DISTINCT u.id) AS effectifs,
+      count(DISTINCT u.id) FILTER (WHERE u.sexe = 'F') AS filles,
+      count(DISTINCT u.id) FILTER (WHERE u.sexe = 'M') AS garcons
     FROM inscriptions i
     JOIN classes c ON c.id = i.classe_id
     JOIN etablissements e ON e.id = c.etablissement_id
@@ -338,9 +338,9 @@ export async function pariteGenre(filtres: {
   if (filtres.niveau) conditions.push(sql`c.niveau = ${filtres.niveau}`);
   const resultat = await db.execute(sql`
     SELECT
-      count(*) FILTER (WHERE u.sexe = 'F') AS filles,
-      count(*) FILTER (WHERE u.sexe = 'M') AS garcons,
-      count(*) FILTER (WHERE u.sexe NOT IN ('F','M')) AS non_renseigne
+      count(DISTINCT u.id) FILTER (WHERE u.sexe = 'F') AS filles,
+      count(DISTINCT u.id) FILTER (WHERE u.sexe = 'M') AS garcons,
+      count(DISTINCT u.id) FILTER (WHERE u.sexe NOT IN ('F','M')) AS non_renseigne
     FROM users u
     JOIN inscriptions i ON i.eleve_user_id = u.id
     JOIN classes c ON c.id = i.classe_id

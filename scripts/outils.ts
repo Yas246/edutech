@@ -320,15 +320,24 @@ async function principal() {
   const parite = (await executerOutil("parite_genre", ministere, {})) as {
     ok: boolean; donnees?: { filles: number; garcons: number; indiceParite: number };
   };
-  const indiceAttendu = nombre(compteEcole.garcons) > 0
-    ? Number((nombre(compteEcole.filles) / nombre(compteEcole.garcons)).toFixed(2))
+  // Vérité nationale : chaque apprenant compte UNE fois, même s'il est
+  // inscrit dans deux établissements (élève transféré).
+  const [pariteDirect] = await db
+    .select({
+      filles: sql<number>`count(DISTINCT id) FILTER (WHERE sexe = 'F')`,
+      garcons: sql<number>`count(DISTINCT id) FILTER (WHERE sexe = 'M')`,
+    })
+    .from(users)
+    .where(eq(users.role, "eleve"));
+  const indiceDirect = nombre(pariteDirect.garcons) > 0
+    ? Number((nombre(pariteDirect.filles) / nombre(pariteDirect.garcons)).toFixed(2))
     : null;
   verifier(
-    "parité conforme (nation = école de démonstration)",
-    parite.donnees?.filles === nombre(compteEcole.filles) &&
-      parite.donnees?.garcons === nombre(compteEcole.garcons) &&
-      parite.donnees?.indiceParite === indiceAttendu,
-    `outil ${JSON.stringify(parite.donnees)} vs base ${nombre(compteEcole.filles)}/${nombre(compteEcole.garcons)}`,
+    "parité nationale conforme (apprenants comptés une fois)",
+    parite.donnees?.filles === nombre(pariteDirect.filles) &&
+      parite.donnees?.garcons === nombre(pariteDirect.garcons) &&
+      parite.donnees?.indiceParite === indiceDirect,
+    `outil ${JSON.stringify(parite.donnees)} vs base ${nombre(pariteDirect.filles)}/${nombre(pariteDirect.garcons)}`,
   );
 
   const assiduite = (await executerOutil("assiduite_enseignants", ministere, {})) as {
