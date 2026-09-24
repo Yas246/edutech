@@ -51,7 +51,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       { href: "/calendrier", titre: "Calendrier" },
     ],
     enseignant: undefined,
-    eleve: [{ href: "/calendrier", titre: "Calendrier" }],
+    eleve: [
+      { href: "/orientation", titre: "Mon orientation" },
+      { href: "/calendrier", titre: "Calendrier" },
+    ],
   };
   const liensPrives = utilisateur ? (liensParRole[utilisateur.role] ?? []) : [];
 

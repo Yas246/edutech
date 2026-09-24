@@ -1,0 +1,768 @@
+{
+ "_note": "Localisations des établissements. Sources : cartographie 'Enseignement Supérieur au Bénin' + université.csv + recherche utilisateur (villes_a_completer.md, 2026-08-23). Confiance : verifie (source institutionnelle ou officielle) / plausible (annuaires, à recouper) / absent (jamais deviné). Les clés sont des sous-chaînes insensibles à la casse/accents, évaluées DANS L'ORDRE (spécifique avant générique) : exceptions d'établissement d'abord, puis institutions, puis détection de ville dans le nom.",
+ "_interets": "Les écoles inter-états du guide sont hors Bénin : pays précisé, la ville s'affiche avec le pays.",
+ "exceptions_etablissement": [
+  {
+   "cle": "sante fss",
+   "ville": "Cotonou",
+   "confiance": "verifie",
+   "source": "cartographie UAC (Champ de Foire)"
+  },
+  {
+   "cle": "sciences de la sante",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": " fss ",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "eneam",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "medico sanitaire",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "ine mes",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "assistants sociaux",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "kinesitherapie",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "injeps",
+   "ville": "Porto-Novo",
+   "confiance": "verifie"
+  },
+  {
+   "cle": " irsp",
+   "ville": "Ouidah",
+   "confiance": "verifie"
+  },
+  {
+   "cle": " imsp",
+   "ville": "Dangbo",
+   "confiance": "verifie"
+  },
+  {
+   "cle": " iut ",
+   "ville": "Lokossa",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "enam",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": " enset",
+   "ville": "Lokossa",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "technologies industrielles",
+   "ville": "Lokossa",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "sciences et medecine",
+   "ville": "Dakar",
+   "pays": "Sénégal",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "architecture et de l urbani",
+   "ville": "Lomé",
+   "pays": "Togo",
+   "confiance": "verifie"
+  },
+  {
+   "cle": " esmt",
+   "ville": "Dakar",
+   "pays": "Sénégal",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "demographique",
+   "ville": "Yaoundé",
+   "pays": "Cameroun",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "casablanca",
+   "ville": "Casablanca",
+   "pays": "Maroc",
+   "confiance": "verifie"
+  }
+ ],
+ "institutions": [
+  {
+   "cle": "seme city",
+   "ville": "Sèmè-Podji",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "abomey calavi",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "parakou",
+   "ville": "Parakou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "sciences technologie",
+   "ville": "Abomey",
+   "confiance": "verifie",
+   "note": "UNSTIM : sites Lokossa, Natitingou, Dassa-Zoumè gérés par exceptions et nom"
+  },
+  {
+   "cle": "agriculture",
+   "ville": "Kétou",
+   "confiance": "verifie",
+   "note": "UNA : siège administratif à Porto-Novo, campus principal à Kétou, site à Sakété"
+  },
+  {
+   "cle": "developpement cooperatif",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "inter etats",
+   "ville": null,
+   "confiance": "verifie",
+   "note": "résolu par exceptions d'établissement (hors Bénin)"
+  },
+  {
+   "cle": "hecm",
+   "ville": "Cotonou",
+   "villes": [
+    "Cotonou",
+    "Abomey-Calavi",
+    "Porto-Novo",
+    "Bohicon",
+    "Parakou",
+    "Natitingou"
+   ],
+   "confiance": "verifie",
+   "source": "Wikipédia + annuaire MESRS"
+  },
+  {
+   "cle": " esm)",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "de management esm",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "pigier",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "escae",
+   "ville": "Cotonou",
+   "villes": [
+    "Cotonou",
+    "Porto-Novo"
+   ],
+   "confiance": "verifie"
+  },
+  {
+   "cle": "sainte felicite",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "west african",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "esae",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "paul de tarse",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "citoyen",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "mathefineco",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "hensa",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "cerco",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "tossi",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "fopase",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "esperanza",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "esfre",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "notre dame",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "obiang",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "estag",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "kpessou",
+   "ville": "Kpessou",
+   "confiance": "plausible",
+   "note": "commune à confirmer"
+  },
+  {
+   "cle": "futuristes",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "ajavon",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "estim",
+   "ville": "Abomey-Calavi",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "estam",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "professorat",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "hecomet",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "africain du benin",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "du benin iub",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": " iub ",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "adrien et anselme",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "commerce de lyon",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "epuma",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "pharaon",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "gnon gani",
+   "ville": null,
+   "confiance": "absent",
+   "note": "aucune source fiable — à ne pas deviner"
+  },
+  {
+   "cle": "falah",
+   "ville": "Porto-Novo",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "tourisme",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "hcub",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "edexcel",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "touristique et hoteliere",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "international de management",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "beaux",
+   "ville": "Porto-Novo",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "iuseba",
+   "ville": "Parakou",
+   "confiance": "verifie",
+   "note": "les deux orthographes du guide, même établissement"
+  },
+  {
+   "cle": "economiques et biologiques",
+   "ville": "Parakou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "african school",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "al wafaa",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "elites du numerique",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "esfam",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "hazoume",
+   "ville": "Porto-Novo",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "immersion professionnelle",
+   "ville": "Parakou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "langue et des sciences",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "metiers d avenir",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "la grace",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "lanem",
+   "ville": null,
+   "confiance": "absent",
+   "note": "aucune source fiable"
+  },
+  {
+   "cle": "audiovisuel",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "graphisme",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "funeraire",
+   "ville": "Ouidah",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "cadres et techniciens",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "la pratique",
+   "ville": "Zogbodomey",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "ibn batouta",
+   "ville": "Porto-Novo",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "matteo ricci",
+   "ville": null,
+   "confiance": "absent",
+   "note": "localisation non vérifiée"
+  },
+  {
+   "cle": "afrique de l ouest",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "golden",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "geostrategie",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "audacia",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "polytechnique esp",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "clements",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "irfp",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "agro pastoral",
+   "ville": "Cotonou",
+   "villes": [
+    "Cotonou",
+    "Dan"
+   ],
+   "confiance": "verifie"
+  },
+  {
+   "cle": "nouvelle esperance",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "enseignement professionnel",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "expertise comptable",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "marie stella",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "laura vicuna",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "polytech ada",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "theatre",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "geometres",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "iscom",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "mathematiques de la decision",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "esmath",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "ucao",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "catholique",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "adonai",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "uatm",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "gasa",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "cours sonou",
+   "ville": "Cotonou",
+   "villes": [
+    "Cotonou",
+    "Abomey-Calavi",
+    "Porto-Novo",
+    "Bohicon",
+    "Parakou"
+   ],
+   "confiance": "verifie"
+  },
+  {
+   "cle": "berger",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "jean",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "iscg",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "verechaguine",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "salomon",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "protestante",
+   "ville": "Porto-Novo",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "esgis",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "irgib",
+   "ville": "Cotonou",
+   "villes": [
+    "Cotonou",
+    "Porto-Novo"
+   ],
+   "confiance": "verifie"
+  },
+  {
+   "cle": "iseg",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "esmer",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "isgg",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "esgt",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "panafricain",
+   "ville": "Porto-Novo",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "cifec",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "estg",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "weldios",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "epta",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "sapientia",
+   "ville": "Porto-Novo",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "senghor",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "ESGTIC",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "ESPAM",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "Houdégbé North American University Benin (HNAUB)",
+   "ville": "Sèmè-Podji",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "Centre de Formation Professionnelle aux Métiers des Médias (CFPMM)",
+   "ville": "Porto-Novo",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "EPS « La Cité »",
+   "ville": "Cotonou",
+   "confiance": "plausible"
+  },
+  {
+   "cle": "Haute École de Gestion et de Technologie (HEGT)",
+   "ville": "Abomey-Calavi",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "Institut Supérieur des Sciences de l'Information et de la Communication (ISSIC)",
+   "ville": "Cotonou",
+   "confiance": "verifie"
+  },
+  {
+   "cle": "Pinnacle African Institute",
+   "ville": "Porto-Novo",
+   "confiance": "verifie"
+  }
+ ],
+ "villes_detectables_dans_le_nom": [
+  "Cotonou",
+  "Porto-Novo",
+  "Abomey-Calavi",
+  "Abomey",
+  "Parakou",
+  "Dassa-Zoumè",
+  "Kétou",
+  "Ouidah",
+  "Bohicon",
+  "Natitingou",
+  "Lokossa",
+  "Djougou",
+  "Kandi",
+  "Sakété",
+  "Sèmè-Podji",
+  "Zogbodomey"
+ ]
+}

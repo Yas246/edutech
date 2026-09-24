@@ -642,6 +642,41 @@ export const tickets = pgTable("tickets", {
 });
 
 /* ------------------------------------------------------------------ */
+/* Orientation : le relevé du candidat et son profil canonique          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Le relevé de notes du baccalauréat, tel qu'extrait d'une photo puis
+ * corrigé par l'élève. Les coefficients viennent toujours du barème
+ * officiel de la série ; la moyenne et la mention sont recalculées ici,
+ * jamais recopiées. `matieres` : { "MATHEMATIQUES": { note, points } }.
+ */
+export const relevesOrientation = pgTable("releves_orientation", {
+  id: serial("id").primaryKey(),
+  eleveUserId: integer("eleve_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  serie: text("serie").default("").notNull(),
+  nom: text("nom").default("").notNull(),
+  numTable: text("num_table").default("").notNull(),
+  moyenne: numeric("moyenne", { precision: 5, scale: 2 }),
+  mention: text("mention").default("").notNull(),
+  decision: text("decision").default("").notNull(),
+  matieres: jsonb("matieres")
+    .$type<Record<string, { note: number | null; points: number | null; coeff: number | null }>>()
+    .default({})
+    .notNull(),
+  /** Ce que la lecture de la photo a renvoyé, avant correction. */
+  brut: jsonb("brut"),
+  /** Les incohérences détectées par le contrôle arithmétique. */
+  controle: jsonb("controle").$type<{ champ: string; probleme: string }[]>().default([]).notNull(),
+  fichier: text("fichier").default("").notNull(),
+  /** extrait | valide */
+  statut: text("statut").default("extrait").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+/* ------------------------------------------------------------------ */
 /* Coach                                                               */
 /* ------------------------------------------------------------------ */
 

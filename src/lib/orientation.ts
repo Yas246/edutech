@@ -18,7 +18,7 @@ export type FamilleMetier = {
   metiers: string[];
 };
 
-const FAMILLES: FamilleMetier[] = [
+export const FAMILLES: FamilleMetier[] = [
   {
     famille: "Santé",
     motsCles: [
