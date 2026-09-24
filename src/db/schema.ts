@@ -24,6 +24,10 @@ export const users = pgTable("users", {
   telephone: text("telephone").default("").notNull(),
   /** ministere | direction | enseignant | parent | eleve */
   role: text("role").notNull(),
+  /** Le parcours premiers pas a été parcouru ou ignoré. */
+  onboardingFait: boolean("onboarding_fait").default(false).notNull(),
+  /** Centres d'intérêts de l'élève, séparés par des virgules (le coach les lit). */
+  interets: text("interets").default("").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

@@ -92,5 +92,5 @@ export async function inscrire(
     .where(eq(users.email, email))
     .limit(1);
   await creerSession(nouveau.id);
-  redirect("/tableau-de-bord");
+  redirect("/premiers-pas");
 }

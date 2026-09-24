@@ -30,5 +30,5 @@ export async function seConnecter(
   }
 
   await creerSession(utilisateur.id);
-  redirect("/tableau-de-bord");
+  redirect(utilisateur.onboardingFait ? "/tableau-de-bord" : "/premiers-pas");
 }
