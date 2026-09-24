@@ -7,12 +7,15 @@ import {
   classes,
   enseignements,
   etablissements,
+  evaluations,
   frais,
   inscriptions,
   liensFamille,
   lignesTransport,
   matieres,
+  notes,
   periodes,
+  presences,
   users,
 } from "../src/db/schema";
 import {
@@ -426,10 +429,161 @@ async function importerTransport(idEleve: number) {
   console.log(`Transport : ${lignes.length} lignes réelles, ticket à 200 F.`);
 }
 
+/**
+ * Vie de classe de démonstration : cinq élèves supplémentaires en
+ * Terminale D, des évaluations notées et des présences variées, pour
+ * que moyennes, rangs et statistiques nationales aient du sens.
+ */
+async function vivifierTerminaleD() {
+  const [tleD] = await db
+    .select()
+    .from(classes)
+    .where(and(eq(classes.etablissementId, await idEcoleDemo()), eq(classes.nom, "Terminale D")))
+    .limit(1);
+  if (!tleD) throw new Error("Terminale D introuvable");
+
+  const [prof] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, "prof.test@edutech.bj"))
+    .limit(1);
+
+  const camarades = [
+    { email: "eleve1.test@edutech.bj", prenom: "Rachidatou", nom: "Alassane" },
+    { email: "eleve2.test@edutech.bj", prenom: "Kossi", nom: "Amoussou" },
+    { email: "eleve3.test@edutech.bj", prenom: "Bernadette", nom: "Houngbo" },
+    { email: "eleve4.test@edutech.bj", prenom: "Sylvain", nom: "Tokponto" },
+    { email: "eleve5.test@edutech.bj", prenom: "Fatou", nom: "Bello" },
+  ];
+  const idsCamarades: number[] = [];
+  for (const c of camarades) {
+    idsCamarades.push(
+      await idUtilisateur(c.email, { prenom: c.prenom, nom: c.nom, role: "eleve" }),
+    );
+  }
+  const [awa] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, "eleve.test@edutech.bj"))
+    .limit(1);
+  const tous = [awa.id, ...idsCamarades];
+  for (const id of tous) {
+    await db
+      .insert(inscriptions)
+      .values({ classeId: tleD.id, eleveUserId: id })
+      .onConflictDoNothing();
+  }
+
+  // Trois évaluations de mathématiques, une de physique-chimie.
+  const [maths] = await db
+    .select()
+    .from(matieres)
+    .where(and(eq(matieres.classeId, tleD.id), eq(matieres.nom, "Mathématiques")))
+    .limit(1);
+  const [pc] = await db
+    .select()
+    .from(matieres)
+    .where(
+      and(eq(matieres.classeId, tleD.id), eq(matieres.nom, "Physique-Chimie")),
+    )
+    .limit(1);
+  const listeEvals = [
+    { matiereId: maths.id, titre: "Interrogation n°1", type: "interrogation", bareme: 20, date: "2026-09-22" },
+    { matiereId: maths.id, titre: "Interrogation n°2", type: "interrogation", bareme: 20, date: "2026-10-06" },
+    { matiereId: maths.id, titre: "Devoir surveillé n°1", type: "devoir", bareme: 20, date: "2026-10-20" },
+    { matiereId: pc.id, titre: "Interrogation n°1", type: "interrogation", bareme: 20, date: "2026-09-29" },
+  ];
+  for (const e of listeEvals) {
+    const [existe] = await db
+      .select({ id: evaluations.id })
+      .from(evaluations)
+      .where(and(eq(evaluations.classeId, tleD.id), eq(evaluations.titre, e.titre), eq(evaluations.date, e.date)))
+      .limit(1);
+    if (existe) continue;
+    const [cree] = await db
+      .insert(evaluations)
+      .values({
+        classeId: tleD.id,
+        matiereId: e.matiereId,
+        titre: e.titre,
+        type: e.type,
+        bareme: e.bareme,
+        date: e.date,
+        creePar: prof.id,
+      })
+      .returning();
+
+    // Notes par élève (sur 20), volontairement inégales.
+    const relevé: Record<string, number[]> = {
+      [awa.id]: [12, 9.5, 11, 13],
+      [idsCamarades[0]]: [15, 14, 16.5, 12],
+      [idsCamarades[1]]: [8, 10, 9, 7.5],
+      [idsCamarades[2]]: [16, 17.5, 15, 14.5],
+      [idsCamarades[3]]: [6.5, 5, 8, 9],
+      [idsCamarades[4]]: [11, 13.5, 12.5, 10],
+    };
+    for (const [eleveId, notesDeLeleve] of Object.entries(relevé)) {
+      // L'interrogation n°2 est notée seulement pour une partie de la classe.
+      const rang = listeEvals.findIndex((x) => x.titre === e.titre && x.date === e.date);
+      const valeur = notesDeLeleve[rang];
+      if (valeur === undefined) continue;
+      await db
+        .insert(notes)
+        .values({ evaluationId: cree.id, eleveUserId: Number(eleveId), valeur: valeur.toFixed(2) })
+        .onConflictDoNothing();
+    }
+  }
+
+  // Présences du mois : quelques retards et absences.
+  const relevéPresence: Record<number, { date: string; statut: string; motif?: string }[]> = {
+    [awa.id]: [
+      { date: "2026-09-24", statut: "absent", motif: "Non parvenue" },
+      { date: "2026-10-02", statut: "retard" },
+      { date: "2026-10-14", statut: "absent_justifie", motif: "Certificat médical" },
+    ],
+    [idsCamarades[1]]: [
+      { date: "2026-10-02", statut: "absent" },
+      { date: "2026-10-03", statut: "absent" },
+      { date: "2026-10-09", statut: "retard" },
+    ],
+    [idsCamarades[3]]: [
+      { date: "2026-09-28", statut: "absent_justifie", motif: "Deuil familial" },
+    ],
+  };
+  for (const [eleveId, entrees] of Object.entries(relevéPresence)) {
+    for (const entree of entrees) {
+      await db
+        .insert(presences)
+        .values({
+          classeId: tleD.id,
+          eleveUserId: Number(eleveId),
+          date: entree.date,
+          statut: entree.statut,
+          motif: entree.motif ?? "",
+          saisiPar: prof.id,
+        })
+        .onConflictDoNothing();
+    }
+  }
+
+  console.log(`Terminale D vivante : ${tous.length} élèves, évaluations notées, présences.`);
+}
+
+async function idEcoleDemo(): Promise<number> {
+  const [ecole] = await db
+    .select({ id: etablissements.id })
+    .from(etablissements)
+    .where(and(eq(etablissements.nom, "Lycée Béhanzin"), eq(etablissements.commune, "Porto-Novo")))
+    .limit(1);
+  if (!ecole) throw new Error("Lycée Béhanzin introuvable : lancez le seed principal");
+  return ecole.id;
+}
+
 async function principal() {
   await importerRecensement();
   const { idEleve } = await importerEcoleDemo();
   await importerTransport(idEleve);
+  await vivifierTerminaleD();
   console.log("Seed terminé. Comptes de démonstration, mot de passe unique : EduTest-2026");
   process.exit(0);
 }

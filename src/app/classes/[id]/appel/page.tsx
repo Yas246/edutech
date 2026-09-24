@@ -3,8 +3,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { and, asc, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { classes, enseignements, inscriptions, presences, users } from "@/db/schema";
-import { exiger, nomComplet } from "@/lib/auth";
+import { inscriptions, presences, users } from "@/db/schema";
+import { nomComplet } from "@/lib/auth";
+import { gardeClasse } from "@/lib/garde-classe";
 import FormulaireAppel from "./formulaire-appel";
 
 export const metadata: Metadata = { title: "Appel" };
@@ -25,38 +26,11 @@ export default async function PageAppel({
 }) {
   const { id } = await params;
   const { date: dateDemandee } = await searchParams;
-  const idClasse = Number(id);
-  const utilisateur = await exiger("direction", "enseignant");
-  if (!Number.isInteger(idClasse)) redirect("/tableau-de-bord");
-
-  const [classe] = await db
-    .select({
-      id: classes.id,
-      nom: classes.nom,
-      niveau: classes.niveau,
-      etablissementId: classes.etablissementId,
-    })
-    .from(classes)
-    .where(eq(classes.id, idClasse))
-    .limit(1);
-  if (!classe) redirect("/tableau-de-bord");
-
-  // Garde : direction de l'école, ou enseignant de cette classe.
-  if (utilisateur.role === "direction") {
-    if (classe.etablissementId !== utilisateur.id) redirect("/tableau-de-bord");
-  } else {
-    const lie = await db
-      .select({ id: enseignements.id })
-      .from(enseignements)
-      .where(
-        and(
-          eq(enseignements.classeId, idClasse),
-          eq(enseignements.enseignantUserId, utilisateur.id),
-        ),
-      )
-      .limit(1);
-    if (lie.length === 0) redirect("/tableau-de-bord");
-  }
+  const contexte = await gardeClasse(Number(id));
+  if (!contexte) redirect("/tableau-de-bord");
+  const utilisateur = contexte.utilisateur;
+  const classe = contexte.classe;
+  const idClasse = classe.id;
 
   const date = /^\d{4}-\d{2}-\d{2}$/.test(dateDemandee ?? "")
     ? (dateDemandee as string)

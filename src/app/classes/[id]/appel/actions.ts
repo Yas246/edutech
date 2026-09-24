@@ -3,42 +3,18 @@
 import { and, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { classes, enseignements, inscriptions, liensFamille, notifications, presences, users } from "@/db/schema";
-import { exiger } from "@/lib/auth";
+import { enseignements, inscriptions, liensFamille, notifications, presences, users } from "@/db/schema";
+import { gardeClasse } from "@/lib/garde-classe";
 
 export type Retour = { erreur?: string; message?: string };
 
 const statutsValides = new Set(["present", "retard", "absent", "absent_justifie"]);
 
-/** Qui a le droit de faire l'appel : direction de l'école ou enseignant de la classe. */
-async function garde(idClasse: number) {
-  const utilisateur = await exiger("direction", "enseignant");
-  const [classe] = await db
-    .select({ id: classes.id, nom: classes.nom, etablissementId: classes.etablissementId })
-    .from(classes)
-    .where(eq(classes.id, idClasse))
-    .limit(1);
-  if (!classe) return null;
-
-  if (utilisateur.role === "direction") {
-    if (classe.etablissementId !== utilisateur.id) return null;
-  } else {
-    const lie = await db
-      .select({ id: enseignements.id })
-      .from(enseignements)
-      .where(
-        and(eq(enseignements.classeId, idClasse), eq(enseignements.enseignantUserId, utilisateur.id)),
-      )
-      .limit(1);
-    if (lie.length === 0) return null;
-  }
-  return { utilisateur, classe };
-}
 
 /** Enregistre l'appel du jour : une ligne par élève, refait sans doubler. */
 export async function enregistrerAppel(_prec: Retour, donnees: FormData): Promise<Retour> {
   const idClasse = Number(donnees.get("classeId"));
-  const contexte = await garde(idClasse);
+  const contexte = await gardeClasse(idClasse);
   if (!contexte) return { erreur: "Vous ne faites pas partie de l'équipe de cette classe." };
 
   const date = String(donnees.get("date") ?? "").trim();

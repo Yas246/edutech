@@ -3,39 +3,16 @@
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { classes, enseignements, evaluations, inscriptions, matieres, notes } from "@/db/schema";
+import { evaluations, inscriptions, matieres, notes } from "@/db/schema";
+import { gardeClasse } from "@/lib/garde-classe";
 import { exiger } from "@/lib/auth";
 
 export type Retour = { erreur?: string; message?: string };
 
-/** Même garde que l'appel : direction de l'école ou enseignant de la classe. */
-async function garde(idClasse: number) {
-  const utilisateur = await exiger("direction", "enseignant");
-  const [classe] = await db
-    .select({ id: classes.id, nom: classes.nom, etablissementId: classes.etablissementId })
-    .from(classes)
-    .where(eq(classes.id, idClasse))
-    .limit(1);
-  if (!classe) return null;
-  if (utilisateur.role === "direction") {
-    if (classe.etablissementId !== utilisateur.id) return null;
-  } else {
-    const lie = await db
-      .select({ id: enseignements.id })
-      .from(enseignements)
-      .where(
-        and(eq(enseignements.classeId, idClasse), eq(enseignements.enseignantUserId, utilisateur.id)),
-      )
-      .limit(1);
-    if (lie.length === 0) return null;
-  }
-  return { utilisateur, classe };
-}
-
 /** Créer une évaluation dans une matière de la classe. */
 export async function creerEvaluation(_prec: Retour, donnees: FormData): Promise<Retour> {
   const idClasse = Number(donnees.get("classeId"));
-  const contexte = await garde(idClasse);
+  const contexte = await gardeClasse(idClasse);
   if (!contexte) return { erreur: "Vous ne faites pas partie de l'équipe de cette classe." };
 
   const matiereId = Number(donnees.get("matiereId"));
@@ -88,7 +65,7 @@ export async function enregistrerNotes(_prec: Retour, donnees: FormData): Promis
     .where(eq(evaluations.id, idEvaluation))
     .limit(1);
   if (!evaluation) return { erreur: "Évaluation introuvable." };
-  const contexte = await garde(evaluation.classeId);
+  const contexte = await gardeClasse(evaluation.classeId);
   if (!contexte) return { erreur: "Vous ne faites pas partie de l'équipe de cette classe." };
 
   // Champs note_<idEleve> : vides = pas de note (élève absent à l'épreuve).

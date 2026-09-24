@@ -48,3 +48,16 @@ body {
   outline: 3px solid var(--color-vert);
   outline-offset: 2px;
 }
+
+/* Impression : seuls les documents (bulletins, reçus) sortent,
+   sans la barre ni le pied de page du site. */
+@media print {
+  header,
+  footer,
+  .evitement {
+    display: none !important;
+  }
+  body {
+    background: #ffffff;
+  }
+}
