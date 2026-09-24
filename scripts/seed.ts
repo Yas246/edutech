@@ -56,6 +56,8 @@ async function idUtilisateur(
       prenom: donnees.prenom,
       nom: donnees.nom,
       telephone: donnees.telephone ?? "",
+      // Les comptes de démonstration sont des comptes établis.
+      onboardingFait: true,
     })
     .onConflictDoNothing({ target: users.email })
     .returning({ id: users.id });

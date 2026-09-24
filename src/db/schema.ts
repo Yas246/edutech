@@ -314,6 +314,7 @@ export const notes = pgTable(
   (t) => [unique("notes_unique").on(t.evaluationId, t.eleveUserId)],
 );
 
+
 /* ------------------------------------------------------------------ */
 /* Finances                                                            */
 /* ------------------------------------------------------------------ */
@@ -506,6 +507,30 @@ export const notifications = pgTable("notifications", {
 /* ------------------------------------------------------------------ */
 /* Transport                                                           */
 /* ------------------------------------------------------------------ */
+
+
+export const conversations = pgTable("conversations", {
+  id: serial("id").primaryKey(),
+  userA: integer("user_a")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  userB: integer("user_b")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+}, (t) => [unique("conversations_paire").on(t.userA, t.userB)]);
+
+export const messages = pgTable("messages", {
+  id: serial("id").primaryKey(),
+  conversationId: integer("conversation_id")
+    .notNull()
+    .references(() => conversations.id, { onDelete: "cascade" }),
+  auteurUserId: integer("auteur_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  contenu: text("contenu").notNull(),
+  lu: boolean("lu").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
 
 export const lignesTransport = pgTable("lignes_transport", {
   id: serial("id").primaryKey(),
