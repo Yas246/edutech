@@ -97,6 +97,62 @@ export const classes = pgTable("classes", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+/* ------------------------------------------------------------------ */
+/* Vie scolaire : salles, emploi du temps, devoirs                     */
+/* ------------------------------------------------------------------ */
+
+export const salles = pgTable("salles", {
+  id: serial("id").primaryKey(),
+  etablissementId: integer("etablissement_id")
+    .notNull()
+    .references(() => etablissements.id, { onDelete: "cascade" }),
+  nom: text("nom").notNull(),
+  capacite: integer("capacite").default(0).notNull(),
+});
+
+/**
+ * Un créneau de l'emploi du temps : les chevauchements sur une même
+ * salle, classe ou enseignant sont refusés à la pose.
+ */
+export const creneaux = pgTable("creneaux", {
+  id: serial("id").primaryKey(),
+  classeId: integer("classe_id")
+    .notNull()
+    .references(() => classes.id, { onDelete: "cascade" }),
+  matiereId: integer("matiere_id")
+    .notNull()
+    .references(() => matieres.id, { onDelete: "cascade" }),
+  enseignantUserId: integer("enseignant_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  salleId: integer("salle_id")
+    .notNull()
+    .references(() => salles.id, { onDelete: "cascade" }),
+  /** 1 = lundi … 6 = samedi */
+  jour: integer("jour").notNull(),
+  /** Heure de début, format 24 h : « 08:00 » */
+  heureDebut: text("heure_debut").notNull(),
+  heureFin: text("heure_fin").notNull(),
+});
+
+export const devoirs = pgTable("devoirs", {
+  id: serial("id").primaryKey(),
+  classeId: integer("classe_id")
+    .notNull()
+    .references(() => classes.id, { onDelete: "cascade" }),
+  matiereId: integer("matiere_id")
+    .notNull()
+    .references(() => matieres.id, { onDelete: "cascade" }),
+  enseignantUserId: integer("enseignant_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  titre: text("titre").notNull(),
+  consigne: text("consigne").default("").notNull(),
+  donneLe: date("donne_le").notNull(),
+  aRendreLe: date("a_rendre_le").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const matieres = pgTable(
   "matieres",
   {

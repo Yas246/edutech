@@ -6,6 +6,7 @@ import {
   classes,
   enseignements,
   evaluations,
+  devoirs,
   factures,
   frais,
   paiements,
@@ -66,6 +67,28 @@ async function notesDeLeleve(idEleve: number, limite = 6): Promise<LigneNote[]> 
     .limit(limite);
 }
 
+/** Les devoirs récents de la classe d'un élève. */
+async function devoirsDeLEleve(idEleve: number, limite = 3) {
+  const [inscription] = await db
+    .select({ classeId: inscriptions.classeId })
+    .from(inscriptions)
+    .where(eq(inscriptions.eleveUserId, idEleve))
+    .limit(1);
+  if (!inscription) return [];
+  return db
+    .select({
+      id: devoirs.id,
+      titre: devoirs.titre,
+      aRendreLe: devoirs.aRendreLe,
+      matiere: matieres.nom,
+    })
+    .from(devoirs)
+    .innerJoin(matieres, eq(matieres.id, devoirs.matiereId))
+    .where(eq(devoirs.classeId, inscription.classeId))
+    .orderBy(desc(devoirs.aRendreLe))
+    .limit(limite);
+}
+
 /** Les dernières présences signalées d'un élève. */
 async function presencesDeLeleve(idEleve: number, limite = 4) {
   return db
@@ -97,6 +120,7 @@ function CarteEnfant({
   publie,
   notes: sesNotes,
   presences: sesPresences,
+  devoirs: sesDevoirs,
 }: {
   enfant: { id: number; prenom: string; nom: string };
   classeId: number | null;
@@ -105,6 +129,7 @@ function CarteEnfant({
   publie: boolean;
   notes: LigneNote[];
   presences: Awaited<ReturnType<typeof presencesDeLeleve>>;
+  devoirs: Awaited<ReturnType<typeof devoirsDeLEleve>>;
 }) {
   return (
     <article className="rounded-2xl border border-ligne bg-white p-5">
@@ -170,6 +195,24 @@ function CarteEnfant({
           )}
         </section>
       </div>
+
+      <section className="mt-4 border-t border-ligne pt-3">
+        <h4 className="text-sm font-semibold">Derniers devoirs</h4>
+        {sesDevoirs.length === 0 ? (
+          <p className="mt-1 text-sm text-encre-doux">Aucun devoir en cours.</p>
+        ) : (
+          <ul className="mt-1 space-y-1 text-sm">
+            {sesDevoirs.map((d) => (
+              <li key={d.id} className="flex justify-between gap-2">
+                <span>
+                  <span className="font-medium">{d.matiere}</span> {d.titre}
+                </span>
+                <span className="text-encre-doux">pour le {formaterDate(d.aRendreLe)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <p className="mt-4 text-sm">
         {publie ? (
@@ -253,6 +296,7 @@ export default async function TableauDeBord() {
           publie={publications.some((p) => p.classeId === inscription?.classeId)}
           notes={await notesDeLeleve(enfant.id)}
           presences={await presencesDeLeleve(enfant.id)}
+          devoirs={await devoirsDeLEleve(enfant.id)}
         />,
       );
     }

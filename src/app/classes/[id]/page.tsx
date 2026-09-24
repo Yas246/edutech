@@ -102,6 +102,27 @@ export default async function PageClasse({
         )}
       </section>
 
+      <nav className="mt-6 flex flex-wrap gap-3 text-sm" aria-label="Outils de la classe">
+        <Link
+          href={`/classes/${classe.id}/emploi-du-temps`}
+          className="rounded-xl bg-vert px-4 py-2 font-medium text-white hover:bg-vert-fonce"
+        >
+          Emploi du temps
+        </Link>
+        <Link
+          href={`/classes/${classe.id}/devoirs`}
+          className="rounded-xl border border-ligne bg-white px-4 py-2 font-medium hover:bg-papier"
+        >
+          Cahier de textes
+        </Link>
+        <Link
+          href={`/classes/${classe.id}/bulletins`}
+          className="rounded-xl border border-ligne bg-white px-4 py-2 font-medium hover:bg-papier"
+        >
+          Bulletins
+        </Link>
+      </nav>
+
       <section className="mt-8">
         <h2 className="text-xl font-bold tracking-tight">
           Élèves ({eleves.length})
