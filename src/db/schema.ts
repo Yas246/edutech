@@ -28,6 +28,8 @@ export const users = pgTable("users", {
   onboardingFait: boolean("onboarding_fait").default(false).notNull(),
   /** Centres d'intérêts de l'élève, séparés par des virgules (le coach les lit). */
   interets: text("interets").default("").notNull(),
+  /** F ou M, renseigné quand la personne l'accepte (indicateurs de parité). */
+  sexe: text("sexe").default("").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -246,6 +248,60 @@ export const presences = pgTable(
   },
   (t) => [unique("presences_par_jour").on(t.classeId, t.eleveUserId, t.date)],
 );
+
+/**
+ * La pointage d'un enseignant pour une journée, saisi par la direction
+ * (ou son délégué). Unique par enseignant et par date.
+ */
+export const presencesEnseignants = pgTable(
+  "presences_enseignants",
+  {
+    id: serial("id").primaryKey(),
+    enseignantUserId: integer("enseignant_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    date: date("date").notNull(),
+    /** present | retard | absent */
+    statut: text("statut").notNull(),
+    saisiPar: integer("saisi_par")
+      .notNull()
+      .references(() => users.id),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [unique("presences_enseignants_par_jour").on(t.enseignantUserId, t.date)],
+);
+
+/**
+ * Un transfert d'élève entre établissements, à la manière du système
+ * national : la direction d'accueil demande, le ministère valide.
+ * Tant que le transfert n'est pas validé, l'élève ne peut pas être
+ * inscrit dans la classe d'accueil.
+ */
+export const transferts = pgTable("transferts", {
+  id: serial("id").primaryKey(),
+  eleveUserId: integer("eleve_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  etablissementDepart: integer("etablissement_depart")
+    .notNull()
+    .references(() => etablissements.id),
+  etablissementArrivee: integer("etablissement_arrivee")
+    .notNull()
+    .references(() => etablissements.id),
+  /** redoublant | passant : l'état de l'élève à son arrivée. */
+  statutArrivee: text("statut_arrivee").notNull(),
+  classeArriveeId: integer("classe_arrivee_id").references(() => classes.id, {
+    onDelete: "set null",
+  }),
+  motif: text("motif").default("").notNull(),
+  /** demande | valide | refuse */
+  statut: text("statut").default("demande").notNull(),
+  demandePar: integer("demande_par")
+    .notNull()
+    .references(() => users.id),
+  decidePar: integer("decide_par").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
 
 export const periodes = pgTable("periodes", {
   id: serial("id").primaryKey(),

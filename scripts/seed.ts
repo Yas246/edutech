@@ -16,6 +16,7 @@ import {
   notes,
   periodes,
   presences,
+  presencesEnseignants,
   users,
 } from "../src/db/schema";
 import {
@@ -39,7 +40,7 @@ const typesConnus: Record<string, string> = {
 
 async function idUtilisateur(
   email: string,
-  donnees: { prenom: string; nom: string; role: string; telephone?: string },
+  donnees: { prenom: string; nom: string; role: string; telephone?: string; sexe?: string },
 ): Promise<number> {
   const [existant] = await db
     .select({ id: users.id })
@@ -56,6 +57,7 @@ async function idUtilisateur(
       prenom: donnees.prenom,
       nom: donnees.nom,
       telephone: donnees.telephone ?? "",
+      sexe: donnees.sexe ?? "",
       // Les comptes de démonstration sont des comptes établis.
       onboardingFait: true,
     })
@@ -68,6 +70,11 @@ async function idUtilisateur(
     .where(eq(users.email, email))
     .limit(1);
   return relu.id;
+}
+
+/** Les comptes créés avant la colonne sexe sont rattrapés. */
+async function fixerSexe(email: string, sexe: string) {
+  await db.update(users).set({ sexe }).where(eq(users.email, email));
 }
 
 async function importerRecensement() {
@@ -140,6 +147,7 @@ async function importerEcoleDemo() {
     nom: "Gbaguidi",
     role: "direction",
     telephone: "97 11 22 33",
+    sexe: "F",
   });
   // Le lycée de démonstration est opérationnel : validé et rattaché à sa
   // direction, même s'il était reparti de la file du recensement.
@@ -153,27 +161,41 @@ async function importerEcoleDemo() {
     nom: "Ministère de l'Éducation",
     role: "ministere",
   });
+
+  for (const [email, sexe] of [
+    ["admin-etab.test@edutech.bj", "F"],
+    ["prof.test@edutech.bj", "M"],
+    ["eleve.test@edutech.bj", "F"],
+    ["collegien.test@edutech.bj", "M"],
+    ["parent.test@edutech.bj", "M"],
+  ] as const) {
+    await fixerSexe(email, sexe);
+  }
   const idProf = await idUtilisateur("prof.test@edutech.bj", {
     prenom: "Aimé",
     nom: "Zinsou",
     role: "enseignant",
     telephone: "96 44 55 66",
+    sexe: "M",
   });
   const idEleve = await idUtilisateur("eleve.test@edutech.bj", {
     prenom: "Awa",
     nom: "Dossa",
     role: "eleve",
+    sexe: "F",
   });
   const idSecond = await idUtilisateur("collegien.test@edutech.bj", {
     prenom: "Marc",
     nom: "Sagbo",
     role: "eleve",
+    sexe: "M",
   });
   const idParent = await idUtilisateur("parent.test@edutech.bj", {
     prenom: "Idriss",
     nom: "Dossa",
     role: "parent",
     telephone: "97 00 11 22",
+    sexe: "M",
   });
 
   // Le parent reste relié à ses deux enfants.
@@ -451,16 +473,21 @@ async function vivifierTerminaleD() {
     .limit(1);
 
   const camarades = [
-    { email: "eleve1.test@edutech.bj", prenom: "Rachidatou", nom: "Alassane" },
-    { email: "eleve2.test@edutech.bj", prenom: "Kossi", nom: "Amoussou" },
-    { email: "eleve3.test@edutech.bj", prenom: "Bernadette", nom: "Houngbo" },
-    { email: "eleve4.test@edutech.bj", prenom: "Sylvain", nom: "Tokponto" },
-    { email: "eleve5.test@edutech.bj", prenom: "Fatou", nom: "Bello" },
+    { email: "eleve1.test@edutech.bj", prenom: "Rachidatou", nom: "Alassane", sexe: "F" },
+    { email: "eleve2.test@edutech.bj", prenom: "Kossi", nom: "Amoussou", sexe: "M" },
+    { email: "eleve3.test@edutech.bj", prenom: "Bernadette", nom: "Houngbo", sexe: "F" },
+    { email: "eleve4.test@edutech.bj", prenom: "Sylvain", nom: "Tokponto", sexe: "M" },
+    { email: "eleve5.test@edutech.bj", prenom: "Fatou", nom: "Bello", sexe: "F" },
   ];
   const idsCamarades: number[] = [];
   for (const c of camarades) {
     idsCamarades.push(
-      await idUtilisateur(c.email, { prenom: c.prenom, nom: c.nom, role: "eleve" }),
+      await idUtilisateur(c.email, {
+        prenom: c.prenom,
+        nom: c.nom,
+        role: "eleve",
+        sexe: c.sexe,
+      }),
     );
   }
   const [awa] = await db
@@ -474,6 +501,15 @@ async function vivifierTerminaleD() {
       .insert(inscriptions)
       .values({ classeId: tleD.id, eleveUserId: id })
       .onConflictDoNothing();
+  }
+  for (const [email, sexe] of [
+    ["eleve1.test@edutech.bj", "F"],
+    ["eleve2.test@edutech.bj", "M"],
+    ["eleve3.test@edutech.bj", "F"],
+    ["eleve4.test@edutech.bj", "M"],
+    ["eleve5.test@edutech.bj", "F"],
+  ] as const) {
+    await fixerSexe(email, sexe);
   }
 
   // Trois évaluations de mathématiques, une de physique-chimie.
@@ -581,11 +617,118 @@ async function idEcoleDemo(): Promise<number> {
   return ecole.id;
 }
 
+/**
+ * L'équipe pédagogique complète et son pointage : deux enseignants de
+ * plus (français, physique-chimie), leurs attributions dans les deux
+ * classes, puis les pointages des trois semaines écoulées. La direction
+ * y retrouve une équipe entière sur son écran d'assiduité.
+ */
+async function importerEquipePedagogique() {
+  const idEcole = await idEcoleDemo();
+  const listeClasses = await db
+    .select()
+    .from(classes)
+    .where(eq(classes.etablissementId, idEcole));
+  const tleD = listeClasses.find((c) => c.nom === "Terminale D");
+  const secondeA = listeClasses.find((c) => c.nom === "Seconde A");
+  if (!tleD || !secondeA) throw new Error("Classes de démonstration introuvables");
+
+  const idLea = await idUtilisateur("prof2.test@edutech.bj", {
+    prenom: "Léa",
+    nom: "Adjovi",
+    role: "enseignant",
+    telephone: "95 21 43 65",
+    sexe: "F",
+  });
+  const idBouraima = await idUtilisateur("prof3.test@edutech.bj", {
+    prenom: "Bouraïma",
+    nom: "Tairou",
+    role: "enseignant",
+    telephone: "94 08 76 21",
+    sexe: "M",
+  });
+  await fixerSexe("prof2.test@edutech.bj", "F");
+
+  // Attributions : le français en deux classes pour Léa, la
+  // physique-chimie pour Bouraïma (les mathématiques sont déjà à Aimé).
+  async function attribuer(
+    classeId: number,
+    nomMatiere: string,
+    enseignantUserId: number,
+  ) {
+    const [matiere] = await db
+      .select({ id: matieres.id })
+      .from(matieres)
+      .where(and(eq(matieres.classeId, classeId), eq(matieres.nom, nomMatiere)))
+      .limit(1);
+    if (!matiere) return;
+    await db
+      .insert(enseignements)
+      .values({ classeId, matiereId: matiere.id, enseignantUserId })
+      .onConflictDoNothing();
+  }
+  await attribuer(tleD.id, "Français", idLea);
+  await attribuer(secondeA.id, "Français", idLea);
+  await attribuer(tleD.id, "Physique-Chimie", idBouraima);
+
+  // Pointage des trois semaines écoulées : jours ouvrés du 7 au 24
+  // septembre 2026, avec quelques incidents pour que les taux parlent.
+  const joursOuvres = [
+    "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11",
+    "2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18",
+    "2026-09-21", "2026-09-22", "2026-09-23", "2026-09-24",
+  ];
+  const incidents: Record<number, Record<string, string>> = {
+    [idLea]: { "2026-09-10": "retard" },
+  };
+  const incidentsAime: Record<string, string> = {
+    "2026-09-15": "absent",
+    "2026-09-18": "retard",
+  };
+  const incidentsBouraima: Record<string, string> = { "2026-09-21": "absent" };
+  const [aime] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.email, "prof.test@edutech.bj"))
+    .limit(1);
+  const idDirection = (
+    await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, "admin-etab.test@edutech.bj"))
+      .limit(1)
+  )[0].id;
+
+  const equipes: { enseignant: number; incidents: Record<string, string> }[] = [
+    { enseignant: aime.id, incidents: incidentsAime },
+    { enseignant: idLea, incidents: incidents[idLea] ?? {} },
+    { enseignant: idBouraima, incidents: incidentsBouraima },
+  ];
+  for (const membre of equipes) {
+    for (const jour of joursOuvres) {
+      await db
+        .insert(presencesEnseignants)
+        .values({
+          enseignantUserId: membre.enseignant,
+          date: jour,
+          statut: membre.incidents[jour] ?? "present",
+          saisiPar: idDirection,
+        })
+        .onConflictDoNothing();
+    }
+  }
+
+  console.log(
+    `Équipe pédagogique : 3 enseignants pointés sur ${joursOuvres.length} jours.`,
+  );
+}
+
 async function principal() {
   await importerRecensement();
   const { idEleve } = await importerEcoleDemo();
   await importerTransport(idEleve);
   await vivifierTerminaleD();
+  await importerEquipePedagogique();
   console.log("Seed terminé. Comptes de démonstration, mot de passe unique : EduTest-2026");
   process.exit(0);
 }
