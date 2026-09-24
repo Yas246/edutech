@@ -67,7 +67,7 @@ export default async function MesFinances() {
           .
         </EtatVide>
       ) : (
-        <dl className="mt-6 grid grid-cols-3 gap-4">
+        <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
           <div className="rounded-2xl border border-ligne bg-white p-4">
             <dt className="text-sm text-encre-doux">Attendu</dt>
             <dd className="text-xl font-bold">{attendu.toLocaleString("fr-FR")} F</dd>

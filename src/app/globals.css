@@ -18,8 +18,9 @@
   --color-papier: #fafaf7;
   --color-ligne: #e3e6e1;
 
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+  --font-sans: var(--font-texte), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-affichage), var(--font-texte), ui-sans-serif, system-ui,
     sans-serif;
 }
 
@@ -27,6 +28,35 @@ body {
   background: var(--color-papier);
   color: var(--color-encre);
   font-family: var(--font-sans);
+}
+
+/* Les titres portent la voix d'affichage ; les chiffres des tableaux
+   s'alignent verticalement pour se comparer d'un coup d'œil. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cases et boutons radio aux couleurs de la charte. */
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: var(--color-vert);
+}
+
+/* Sur petit écran, un tableau large défile horizontalement plutôt que
+   de s'écraser : la règle est ici une fois pour toutes. */
+@media (max-width: 640px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Lien d'évitement : première tabulation, invisible tant que absent. */
@@ -49,11 +79,12 @@ body {
   outline-offset: 2px;
 }
 
-/* Impression : seuls les documents (bulletins, reçus) sortent,
-   sans la barre ni le pied de page du site. */
+/* Impression : seuls les documents (bulletins, reçus) sortent, sans
+   la barre latérale, la barre du haut ni le pied de page du site. */
 @media print {
   header,
   footer,
+  aside,
   .evitement {
     display: none !important;
   }

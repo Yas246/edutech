@@ -74,7 +74,7 @@ export default async function EspaceMinistere({
         scolaires restent entre l&apos;école et la famille.
       </p>
 
-      <dl className="mt-6 grid grid-cols-3 gap-4">
+      <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         <div className="rounded-2xl border border-ligne bg-white p-4">
           <dt className="text-sm text-encre-doux">Validés</dt>
           <dd className="text-2xl font-bold text-vert">{totalValidé.n}</dd>
