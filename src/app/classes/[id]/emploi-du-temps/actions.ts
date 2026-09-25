@@ -1,9 +1,9 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { classes, creneaux, devoirs, enseignements, etablissements, matieres, salles, users } from "@/db/schema";
+import { classes, creneaux, devoirs, enseignements, etablissements, inscriptions, liensFamille, matieres, notifications, salles, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 import { gardeEdtEtablissement } from "@/lib/garde-classe";
 import { estHeureValide, seChevauchent } from "@/lib/vie-scolaire";
@@ -182,6 +182,41 @@ export async function creerDevoir(_prec: Retour, donnees: FormData): Promise<Ret
     donneLe,
     aRendreLe,
   });
+
+  // Les parents des élèves de la classe sont prévenus une fois.
+  const [matiere] = await db
+    .select({ nom: matieres.nom })
+    .from(matieres)
+    .where(eq(matieres.id, matiereId))
+    .limit(1);
+  const familles = await db
+    .select({ parentUserId: liensFamille.parentUserId })
+    .from(inscriptions)
+    .innerJoin(liensFamille, eq(liensFamille.eleveUserId, inscriptions.eleveUserId))
+    .where(eq(inscriptions.classeId, idClasse));
+  const texte = `Nouveau devoir en ${matiere?.nom ?? "classe"} : « ${titre} », à rendre le ${aRendreLe}`;
+  const dejaLa =
+    familles.length > 0
+      ? await db
+          .select({ userId: notifications.userId, texte: notifications.texte })
+          .from(notifications)
+          .where(
+            and(
+              inArray(
+                notifications.userId,
+                familles.map((f) => f.parentUserId),
+              ),
+              eq(notifications.texte, texte),
+            ),
+          )
+      : [];
+  const alertes = familles
+    .filter((f) => !dejaLa.some((d) => d.userId === f.parentUserId))
+    .map((f) => ({ userId: f.parentUserId, texte, lien: "/tableau-de-bord" }));
+  if (alertes.length > 0) {
+    await db.insert(notifications).values(alertes);
+  }
+
   revalidatePath(`/classes/${idClasse}/devoirs`);
   return { message: `Devoir « ${titre} » posé : les familles le voient.` };
 }

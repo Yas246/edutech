@@ -314,6 +314,37 @@ export default async function Calendrier({
           <span className="inline-block h-3 w-3 rounded bg-vert-clair" /> Événements de l&apos;école
         </span>
       </p>
+
+      {/* La liste « à venir » : ce qui approche, toutes sources mêlées. */}
+      <section className="mt-10">
+        <h2 className="text-lg font-bold tracking-tight">À venir</h2>
+        {(() => {
+          const prochains = entrees
+            .filter((e) => e.date >= aujourdhui)
+            .sort((a, b) => a.date.localeCompare(b.date))
+            .slice(0, 8);
+          if (prochains.length === 0) {
+            return (
+              <p className="mt-3 text-sm text-encre-doux">
+                Rien de prévu dans les prochaines dates affichées.
+              </p>
+            );
+          }
+          return (
+            <ul className="mt-3 divide-y divide-ligne rounded-2xl border border-ligne bg-white">
+              {prochains.map((e, i) => (
+                <li key={`${e.date}-${i}`} className="flex items-center justify-between gap-3 p-3 text-sm">
+                  <span>
+                    <span className="font-medium">{e.titre}</span>
+                    {e.detail && <span className="text-encre-doux"> · {e.detail}</span>}
+                  </span>
+                  <span className="shrink-0 text-encre-doux">{jourAffiche(e.date)}/{e.date.slice(5, 7)}</span>
+                </li>
+              ))}
+            </ul>
+          );
+        })()}
+      </section>
     </div>
   );
 }
