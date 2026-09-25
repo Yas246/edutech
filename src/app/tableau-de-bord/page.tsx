@@ -712,6 +712,27 @@ async function TableauParent(utilisateur: Utilisateur) {
     });
   }
 
+  // La vue d'ensemble des finances des enfants.
+  const finances = idsEnfants.length
+    ? (
+        await db
+          .select({
+            attendu: sql<number>`COALESCE(SUM(x.attendu), 0)`,
+            paye: sql<number>`COALESCE(SUM(x.paye), 0)`,
+            retard: sql<number>`count(*) FILTER (WHERE x.paye < x.attendu AND x.premiere < CURRENT_DATE)`,
+          })
+          .from(
+            sql`(SELECT f2.id,
+              (SELECT COALESCE(SUM(t.montant), 0) FROM tranches t WHERE t.facture_id = f2.id) AS attendu,
+              (SELECT COALESCE(SUM(p.montant), 0) FROM paiements p WHERE p.facture_id = f2.id AND p.annule = false) AS paye,
+              (SELECT MIN(t.echeance) FROM tranches t WHERE t.facture_id = f2.id) AS premiere
+              FROM factures f2 WHERE f2.eleve_user_id IN ${idsEnfants}) x`,
+          )
+      )[0]
+    : null;
+
+  const gros = (n: number) => String(Number(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
   return (
     <>
       <div className="space-y-4">
@@ -830,7 +851,23 @@ async function TableauParent(utilisateur: Utilisateur) {
         )}
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        <Widget titre="Finances consolidées" lien="/mes-finances">
+          {finances ? (
+            <>
+              <Ligne gauche="Total facturé" droite={gros(finances.attendu) + " F"} />
+              <Ligne gauche="Total payé" droite={gros(finances.paye) + " F"} ton="text-vert-fonce" />
+              <Ligne gauche="Restant dû" droite={gros(Number(finances.attendu) - Number(finances.paye)) + " F"} />
+              <Ligne
+                gauche="Factures en retard"
+                droite={String(Number(finances.retard))}
+                ton={Number(finances.retard) > 0 ? "text-rouge" : ""}
+              />
+            </>
+          ) : (
+            <Vide texte="Aucune facture pour vos enfants." />
+          )}
+        </Widget>
         <Widget titre="Prochaines échéances de scolarité" lien="/mes-finances">
           {echeances.length === 0 ? (
             <Vide texte="Aucune échéance à venir." />

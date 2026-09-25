@@ -53,6 +53,18 @@ export async function enregistrerAppel(_prec: Retour, donnees: FormData): Promis
   }
 
   // Une seule ligne par élève et par jour : l'appel refait met à jour.
+  // Les parents ne sont alertés que des signalements NOUVEAUX : on
+  // relève d'abord les statuts déjà posés pour ce jour.
+  const dejaLa = await db
+    .select({ eleveUserId: presences.eleveUserId, statut: presences.statut })
+    .from(presences)
+    .where(
+      and(
+        eq(presences.classeId, idClasse),
+        eq(presences.date, date),
+        inArray(presences.eleveUserId, lignes.map((l) => l.eleveUserId)),
+      ),
+    );
   for (const l of lignes) {
     await db
       .insert(presences)
@@ -71,7 +83,12 @@ export async function enregistrerAppel(_prec: Retour, donnees: FormData): Promis
   }
 
   // Alerte des parents pour les retards et absences non justifiées.
-  const aAlerter = lignes.filter((l) => l.statut === "retard" || l.statut === "absent");
+  const aAlerter = lignes.filter((l) => {
+    if (l.statut !== 'retard' && l.statut !== 'absent') return false;
+    const avant = dejaLa.find((d) => d.eleveUserId === l.eleveUserId);
+    // Déjà signalé la dernière fois : pas de nouvelle alerte.
+    return !avant || avant.statut === 'present' || avant.statut === 'absent_justifie';
+  });
   if (aAlerter.length > 0) {
     const eleves = await db
       .select({ id: users.id, prenom: users.prenom, nom: users.nom })

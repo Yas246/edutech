@@ -29,6 +29,21 @@ export async function inscrire(
     return { erreur: "Choisissez votre place sur la plateforme." };
   }
   if (!prenom || !nom) return { erreur: "Indiquez votre prénom et votre nom." };
+
+  // Le téléphone est requis pour l'équipe et les familles ; l'élève en
+  // est dispensé. Un numéro ne peut appartenir qu'à un seul compte.
+  let telephoneNormalise = '';
+  if (telephone) {
+    let chiffres = telephone.replace(/[^0-9]/g, '');
+    if (chiffres.startsWith('00229')) chiffres = chiffres.slice(5);
+    else if (chiffres.startsWith('229') && chiffres.length > 10) chiffres = chiffres.slice(3);
+    if (chiffres.length < 8 || chiffres.length > 15) {
+      return { erreur: 'Ce numéro de téléphone ne semble pas valide.' };
+    }
+    telephoneNormalise = chiffres;
+  } else if (role !== 'eleve') {
+    return { erreur: 'Votre numéro de téléphone est requis.' };
+  }
   if (!emailsValide.test(email)) return { erreur: "Cet email ne semble pas valide." };
   if (motDePasse.length < 8) {
     return { erreur: "Le mot de passe doit compter au moins 8 caractères." };
@@ -80,7 +95,7 @@ export async function inscrire(
         passwordHash: empreinte,
         nom,
         prenom,
-        telephone,
+        telephone: telephoneNormalise,
         sexe,
         pseudo,
         role: role as Role,

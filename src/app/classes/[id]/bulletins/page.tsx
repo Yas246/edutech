@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { and, eq } from "drizzle-orm";
+import { db } from "@/db";
+import { inscriptions, liensFamille } from "@/db/schema";
+import { utilisateurCourant } from "@/lib/auth";
 import { gardeClasse } from "@/lib/garde-classe";
 import { chargerBulletins, formaterMoyenne } from "@/lib/bulletins";
 import { publierBulletins } from "./actions";
@@ -10,6 +14,46 @@ import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = { title: "Bulletins" };
 
+/**
+ * Le tableau de la classe est réservé à l'équipe. Un élève ou un
+ * parent qui l'ouvre est conduit à SON bulletin — jamais refusé sec.
+ */
+async function bulletinPerso(idClasse: number): Promise<number | null> {
+  const utilisateur = await utilisateurCourant();
+  if (!utilisateur) return null;
+
+  if (utilisateur.role === "eleve") {
+    const [sienne] = await db
+      .select({ id: inscriptions.id })
+      .from(inscriptions)
+      .where(
+        and(
+          eq(inscriptions.classeId, idClasse),
+          eq(inscriptions.eleveUserId, utilisateur.id),
+        ),
+      )
+      .limit(1);
+    return sienne ? utilisateur.id : null;
+  }
+
+  if (utilisateur.role === "parent") {
+    const [enfant] = await db
+      .select({ id: liensFamille.eleveUserId })
+      .from(liensFamille)
+      .innerJoin(inscriptions, eq(inscriptions.eleveUserId, liensFamille.eleveUserId))
+      .where(
+        and(
+          eq(liensFamille.parentUserId, utilisateur.id),
+          eq(inscriptions.classeId, idClasse),
+        ),
+      )
+      .limit(1);
+    return enfant?.id ?? null;
+  }
+
+  return null;
+}
+
 export default async function PageBulletins({
   params,
 }: {
@@ -18,7 +62,10 @@ export default async function PageBulletins({
   const { id } = await params;
   const idClasse = Number(id);
   const contexte = await gardeClasse(idClasse);
-  if (!contexte) redirect("/tableau-de-bord");
+  if (!contexte) {
+    const perso = await bulletinPerso(idClasse);
+    redirect(perso ? `/classes/${idClasse}/bulletins/${perso}` : "/tableau-de-bord");
+  }
   const { utilisateur, classe } = contexte;
 
   const donnees = await chargerBulletins(idClasse);
@@ -59,6 +106,17 @@ export default async function PageBulletins({
             {donnees.publie ? "Republier les bulletins" : "Publier les bulletins"}
           </button>
         </form>
+      )}
+
+      {donnees.eleves.length > 0 && (
+        <p className="mt-4">
+          <Link
+            href={`/classes/${classe.id}/bulletins/serie`}
+            className="rounded-xl border border-ligne bg-white px-4 py-2 text-sm font-medium hover:bg-papier"
+          >
+            Imprimer la série de bulletins ({donnees.eleves.length})
+          </Link>
+        </p>
       )}
 
       {donnees.eleves.length === 0 ? (
