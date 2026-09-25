@@ -76,11 +76,11 @@ export default function LiensNav({
 
   return (
     <nav aria-label="Navigation principale" onClick={onNavigation}>
-      <ul className="space-y-4">
+      <ul className="space-y-5">
         {groupes.map((groupe, i) => (
           <li key={groupe.titre ?? `g${i}`}>
             {groupe.titre && (
-              <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-encre-doux/70">
+              <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-discret">
                 {groupe.titre}
               </p>
             )}
@@ -93,10 +93,10 @@ export default function LiensNav({
                     <Link
                       href={lien.href}
                       aria-current={estActif ? "page" : undefined}
-                      className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm transition ${
+                      className={`flex h-10 items-center gap-3 rounded-xl px-3 text-sm transition ${
                         estActif
-                          ? "bg-vert font-semibold text-white shadow-sm"
-                          : "font-medium text-encre-doux hover:bg-vert-clair hover:text-vert-fonce"
+                          ? "bg-vert-clair font-semibold text-vert-fonce"
+                          : "font-medium text-encre-doux hover:bg-papier hover:text-encre"
                       }`}
                     >
                       {Icône && <Icône className="h-[18px] w-[18px] shrink-0" stroke={1.7} />}

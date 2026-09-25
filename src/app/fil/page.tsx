@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+  IconClipboardCheck,
+  IconMessageCircle,
+  IconSend,
+  IconThumbUp,
+  IconUsersGroup,
+} from "@tabler/icons-react";
 import { and, asc, desc, eq, gte, inArray, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import {
@@ -22,7 +29,7 @@ import {
   mesClassesMembre,
 } from "@/lib/espace";
 import { EtatVide } from "@/components/ui/etat-vide";
-import { Bouton, champClasse } from "@/components/ui/formulaire";
+import { Bouton } from "@/components/ui/formulaire";
 import {
   cerclesDeLecture,
   cerclesDePublication,
@@ -227,10 +234,10 @@ export default async function Fil() {
         {cercles.length > 0 ? (
           <form
             action={publier}
-            className="mt-6 rounded-2xl border border-ligne bg-white p-4"
+            className="mt-6 rounded-2xl border border-ligne bg-white shadow-xs"
           >
-            <div className="flex gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-vert text-sm font-bold text-white">
+            <div className="flex gap-3 p-4 pb-2">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-vert to-vert-fonce text-sm font-bold text-white">
                 {utilisateur.prenom.charAt(0)}
                 {utilisateur.nom.charAt(0)}
               </span>
@@ -240,20 +247,25 @@ export default async function Fil() {
                 rows={2}
                 maxLength={2000}
                 placeholder="Quoi de neuf ? Partagez avec votre classe, votre école ou une communauté…"
-                className={champClasse}
+                className="w-full resize-none rounded-xl bg-papier px-4 py-3 text-sm text-encre placeholder:text-discret focus:outline-none"
               />
             </div>
-            <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
-              <div className="w-64">
-                <label className="block text-sm font-medium">Publier dans</label>
-                <select name="cercle" required className={champClasse}>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-ligne/70 px-4 py-2.5">
+              <label className="flex items-center gap-2 text-sm text-encre-doux">
+                <IconUsersGroup className="h-[18px] w-[18px] text-vert" stroke={1.7} />
+                <span className="sr-only">Publier dans</span>
+                <select
+                  name="cercle"
+                  required
+                  className="max-w-56 rounded-lg border-0 bg-papier px-2 py-1.5 text-sm font-medium text-encre focus:outline-none"
+                >
                   {cercles.map((c) => (
                     <option key={`${c.type}:${c.id}`} value={`${c.type}:${c.id}`}>
                       {c.nom}
                     </option>
                   ))}
                 </select>
-              </div>
+              </label>
               <Bouton type="submit">Publier</Bouton>
             </div>
           </form>
@@ -281,13 +293,14 @@ export default async function Fil() {
               return (
                 <article
                   key={`devoir-${d.id}`}
-                  className="rounded-2xl border border-vert/30 bg-vert-clair/40 p-5"
+                  className="rounded-2xl border border-vert/20 bg-vert-clair/50 p-5 shadow-xs"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-vert-fonce">
+                    <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-vert-fonce">
+                      <IconClipboardCheck className="h-4 w-4" stroke={1.7} />
                       Devoir à rendre · {d.classeNom}
                     </p>
-                    <span className="rounded-full bg-jaune px-2.5 py-0.5 text-xs font-bold text-encre">
+                    <span className="rounded-full border border-jaune/40 bg-jaune-clair px-2.5 py-0.5 text-xs font-bold text-encre">
                       pour le {jour(d.aRendreLe)}
                     </span>
                   </div>
@@ -312,9 +325,9 @@ export default async function Fil() {
                 publier: false,
               };
             return (
-              <article key={p.id} className="rounded-2xl border border-ligne bg-white p-5">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-vert text-sm font-bold text-white">
+              <article key={p.id} className="rounded-2xl border border-ligne bg-white shadow-xs">
+                <div className="flex items-center gap-3 p-4 pb-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-vert to-vert-fonce text-sm font-bold text-white">
                     {p.auteurPrenom.charAt(0)}
                     {p.auteurNom.charAt(0)}
                   </span>
@@ -322,60 +335,82 @@ export default async function Fil() {
                     <p className="truncate text-sm font-semibold">
                       {p.auteurPrenom} {p.auteurNom}
                     </p>
-                    <p className="truncate text-xs text-encre-doux">
-                      {porteeAffichee(p.porteeType, p.porteeId)} · {depuis(p.date)}
+                    <p className="flex items-center gap-1 truncate text-xs text-discret">
+                      {porteeAffichee(p.porteeType, p.porteeId)}
+                      <span aria-hidden="true">·</span>
+                      {depuis(p.date)}
                     </p>
                   </div>
                 </div>
-                <p className="mt-3 whitespace-pre-line text-sm">{p.contenu}</p>
+                <p className="whitespace-pre-line px-4 pb-3 text-[15px] leading-relaxed">
+                  {p.contenu}
+                </p>
 
-                <div className="mt-3 flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-2 border-t border-ligne/70 px-3 py-2 text-sm">
                   {droitsIci.reagir && (
                     <form action={reagir}>
                       <input type="hidden" name="publicationId" value={p.id} />
                       <button
                         type="submit"
-                        className={`rounded-full px-3 py-1 font-medium ${
+                        className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 font-medium transition ${
                           dejaReagi
-                            ? "bg-jaune-clair text-encre"
-                            : "border border-ligne text-encre-doux hover:bg-papier"
+                            ? "bg-vert-clair text-vert-fonce"
+                            : "text-encre-doux hover:bg-papier"
                         }`}
                       >
-                        Utile · {sesReactions.length}
+                        <IconThumbUp className="h-[18px] w-[18px]" stroke={1.7} />
+                        Utile
+                        {sesReactions.length > 0 && (
+                          <span className="tabular-nums">· {sesReactions.length}</span>
+                        )}
                       </button>
                     </form>
                   )}
-                  <span className="text-encre-doux">
+                  <span className="flex items-center gap-1.5 px-2 py-1.5 text-encre-doux">
+                    <IconMessageCircle className="h-[18px] w-[18px]" stroke={1.7} />
                     {sesCommentaires.length} commentaire{sesCommentaires.length > 1 ? "s" : ""}
                   </span>
                 </div>
 
                 {sesCommentaires.length > 0 && (
-                  <ul className="mt-3 space-y-1.5 border-t border-ligne/60 pt-3 text-sm">
+                  <ul className="space-y-2 px-4 pb-3 text-sm">
                     {sesCommentaires.map((c) => (
-                      <li key={c.id}>
-                        <span className="font-medium">
-                          {c.auteurPrenom} {c.auteurNom}
-                        </span>{" "}
-                        {c.contenu}
+                      <li key={c.id} className="flex items-start gap-2">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-papier text-[10px] font-bold text-encre-doux">
+                          {c.auteurPrenom.charAt(0)}
+                          {c.auteurNom.charAt(0)}
+                        </span>
+                        <span className="min-w-0 rounded-2xl bg-papier px-3 py-2">
+                          <span className="font-medium">
+                            {c.auteurPrenom} {c.auteurNom}
+                          </span>{" "}
+                          {c.contenu}
+                        </span>
                       </li>
                     ))}
                   </ul>
                 )}
 
                 {droitsIci.commenter && (
-                  <form action={commenter} className="mt-3 flex items-center gap-2">
+                  <form
+                    action={commenter}
+                    className="flex items-center gap-2 border-t border-ligne/70 px-4 py-2.5"
+                  >
                     <input type="hidden" name="publicationId" value={p.id} />
                     <input
                       name="contenu"
                       required
                       maxLength={500}
                       placeholder="Écrire un commentaire…"
-                      className="flex-1 rounded-xl border border-ligne bg-white px-3 py-2 text-sm"
+                      className="flex-1 rounded-full border border-ligne bg-papier px-4 py-2 text-sm focus:border-vert/40 focus:bg-white focus:outline-none"
                     />
-                    <Bouton taille="petit" type="submit">
-                      Envoyer
-                    </Bouton>
+                    <button
+                      type="submit"
+                      aria-label="Envoyer le commentaire"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-vert text-white transition hover:bg-vert-fonce"
+                    >
+                      <IconSend className="h-4 w-4" stroke={1.8} />
+                    </button>
                   </form>
                 )}
               </article>

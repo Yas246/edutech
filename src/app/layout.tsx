@@ -53,7 +53,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </a>
           <div className="lg:grid lg:grid-cols-[264px_1fr]">
             <aside className="hidden w-[264px] shrink-0 border-r border-ligne bg-white lg:sticky lg:top-0 lg:block lg:h-dvh">
-              <BarreLaterale utilisateur={utilisateur} cloche={cloche} />
+              <BarreLaterale utilisateur={utilisateur} />
             </aside>
             <div className="flex min-h-dvh flex-col">
               <TiroirMobile
@@ -65,19 +65,20 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   </>
                 }
               />
+              {/* La barre du haut, ordinateur : le sceau national et la
+                  cloche, flottant au-dessus du canevas. */}
+              <header className="sticky top-0 z-30 hidden items-center justify-between gap-3 border-b border-ligne bg-white/80 px-6 py-2.5 backdrop-blur-md lg:flex">
+                <p className="flex items-center gap-2 text-xs font-medium text-encre-doux">
+                  <Drapeau />
+                  République du Bénin
+                  <span aria-hidden="true" className="text-ligne">·</span>
+                  Portail éducatif national
+                </p>
+                <div className="flex items-center gap-2">{cloche}</div>
+              </header>
               <main id="contenu" className="flex-1">
                 {children}
               </main>
-              <footer className="border-t border-ligne bg-white">
-                <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-5 text-sm text-encre-doux sm:flex-row sm:items-center sm:justify-between">
-                  <p className="flex items-center gap-2">
-                    <Drapeau />
-                    <span className="font-medium text-encre">EduTech</span>
-                    — la plateforme éducative du Bénin
-                  </p>
-                  <p>Données d&apos;établissements : recensement national, sources officielles citées.</p>
-                </div>
-              </footer>
             </div>
           </div>
         </body>
@@ -133,16 +134,6 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <main id="contenu" className="flex-1">
           {children}
         </main>
-        <footer className="border-t border-ligne bg-white">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-5 text-sm text-encre-doux sm:flex-row sm:items-center sm:justify-between">
-            <p className="flex items-center gap-2">
-              <Drapeau />
-              <span className="font-medium text-encre">EduTech</span>
-              — la plateforme éducative du Bénin
-            </p>
-            <p>Données d&apos;établissements : recensement national, sources officielles citées.</p>
-          </div>
-        </footer>
       </body>
     </html>
   );

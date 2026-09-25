@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { IconLogout } from "@tabler/icons-react";
 import { libellesRole, type Role } from "@/lib/roles";
 import { seDeconnecter } from "@/app/deconnexion";
@@ -14,19 +13,14 @@ function initiales(prenom: string, nom: string) {
 }
 
 /**
- * La barre latérale du compte connecté : logo et navigation en haut,
- * la place de la personne en bas, avec sa sortie de session.
+ * La barre latérale du compte connecté : le sceau du produit en haut,
+ * la navigation au centre, la place de la personne épinglée en bas.
  */
-export default function BarreLaterale({
-  utilisateur,
-  cloche,
-}: {
-  utilisateur: Utilisateur;
-  cloche: ReactNode;
-}) {
+export default function BarreLaterale({ utilisateur }: { utilisateur: Utilisateur }) {
   const role = utilisateur.role as Role;
   const prenom = utilisateur.prenom;
   const nom = utilisateur.nom;
+
   return (
     <div className="flex h-dvh flex-col">
       <Link
@@ -43,8 +37,13 @@ export default function BarreLaterale({
             <span className="h-1/2 w-full bg-rouge" />
           </span>
         </span>
-        <span className="text-lg font-bold tracking-tight">
-          Edu<span className="text-vert">Tech</span>
+        <span>
+          <span className="block text-lg leading-tight font-bold tracking-tight">
+            Edu<span className="text-vert">Tech</span>
+          </span>
+          <span className="block text-[10px] font-medium tracking-wide text-discret">
+            République du Bénin · Portail éducatif
+          </span>
         </span>
       </Link>
 
@@ -59,30 +58,27 @@ export default function BarreLaterale({
           className="flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-vert-clair"
           title="Mon espace : mes informations"
         >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-vert text-sm font-bold text-white">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-vert to-vert-fonce text-sm font-bold text-white">
             {initiales(prenom, nom)}
           </span>
           <span className="min-w-0">
             <span className="block truncate text-sm font-semibold text-encre">
               {prenom} {nom}
             </span>
-            <span className="block truncate text-xs text-encre-doux">
+            <span className="block truncate text-xs text-discret">
               {libellesRole[role] ?? role} · mon espace
             </span>
           </span>
         </Link>
-        <div className="mt-1 flex items-center gap-1 px-1 pb-1">
-          {cloche}
-          <form action={seDeconnecter} className="flex-1">
-            <button
-              type="submit"
-              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-encre-doux transition hover:bg-rouge-clair hover:text-rouge"
-            >
-              <IconLogout className="h-[18px] w-[18px]" stroke={1.7} />
-              Déconnexion
-            </button>
-          </form>
-        </div>
+        <form action={seDeconnecter} className="mt-1">
+          <button
+            type="submit"
+            className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-encre-doux transition hover:bg-rouge-clair hover:text-rouge"
+          >
+            <IconLogout className="h-[18px] w-[18px]" stroke={1.7} />
+            Déconnexion
+          </button>
+        </form>
       </div>
     </div>
   );

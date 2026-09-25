@@ -1,22 +1,24 @@
 @import "tailwindcss";
 
 /*
-  Charte EduTech : les couleurs nationales du Bénin.
-  Le vert porte l'identité (en-têtes, boutons, liens), le jaune
-  signale et souligne, le rouge reste réservé aux erreurs et alertes.
+  Charte EduTech : un GovTech moderne. Le canevas est gris ardoise
+  très clair (les cartes blanches s'en détachent), le vert émeraude
+  porte l'action, l'ambre signale, le rosé alerte — jamais criard.
 */
 @theme {
-  --color-vert: #046a38;
-  --color-vert-fonce: #03512b;
-  --color-vert-clair: #e8f4ee;
-  --color-jaune: #fcd116;
-  --color-jaune-clair: #fef8dc;
-  --color-rouge: #e8112d;
-  --color-rouge-clair: #fdeaec;
-  --color-encre: #1c2420;
-  --color-encre-doux: #4b5a52;
-  --color-papier: #fafaf7;
-  --color-ligne: #e3e6e1;
+  --color-vert: #059669;
+  --color-vert-fonce: #047857;
+  --color-vert-clair: #ecfdf5;
+  --color-jaune: #f59e0b;
+  --color-jaune-clair: #fffbeb;
+  --color-rouge: #be123c;
+  --color-rouge-clair: #fff1f2;
+  --color-encre: #0f172a;
+  --color-encre-doux: #475569;
+  /* Le gris des métadonnées : dates, comptes, textes tertiaires. */
+  --color-discret: #94a3b8;
+  --color-papier: #f8fafc;
+  --color-ligne: #e2e8f0;
 
   --font-sans: var(--font-texte), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -30,13 +32,14 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Les titres portent la voix d'affichage ; les chiffres des tableaux
-   s'alignent verticalement pour se comparer d'un coup d'œil. */
+/* Les titres portent la voix d'affichage, resserrée ; les chiffres
+   des tableaux s'alignent verticalement pour se comparer d'un coup
+   d'œil. */
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 table {
@@ -75,17 +78,24 @@ input[type="checkbox"] {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-vert);
+  outline: 2px solid var(--color-vert);
   outline-offset: 2px;
+  border-radius: 0.375rem;
 }
 
-/* Impression : seuls les documents (bulletins, reçus) sortent, sans
-   la barre latérale, la barre du haut ni le pied de page du site. */
+/* La barre de défilement, discrète, aux teintes du canevas. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Impression : seuls les documents (bulletins, reçus, listes)
+   sortent, sans l'habillage de l'application. */
 @media print {
   header,
-  footer,
   aside,
-  .evitement {
+  .evitement,
+  .print\:hidden {
     display: none !important;
   }
   body {
