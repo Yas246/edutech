@@ -286,8 +286,29 @@ export async function retirerCreneau(_prec: Retour, donnees: FormData): Promise<
 
 export async function creerDevoir(_prec: Retour, donnees: FormData): Promise<Retour> {
   const idClasse = Number(donnees.get("classeId"));
-  const contexte = await gardeEdt(idClasse);
-  if (!contexte) return { erreur: "Vous ne faites pas partie de l'équipe de cette classe." };
+  let contexte = await gardeEdt(idClasse);
+  if (!contexte) {
+    // L'ENSEIGNANT de la matière dans cette classe donne aussi les
+    // devoirs : c'est même sa voie normale.
+    const utilisateur = await exiger("direction", "enseignant");
+    const [attr] = await db
+      .select({ id: enseignements.id })
+      .from(enseignements)
+      .where(
+        and(
+          eq(enseignements.classeId, idClasse),
+          eq(enseignements.enseignantUserId, utilisateur.id),
+        ),
+      )
+      .limit(1);
+    if (!attr) {
+      return { erreur: "Seul l'enseignant d'une matière de la classe (ou la direction) donne un devoir." };
+    }
+    contexte = {
+      utilisateur,
+      classe: { id: idClasse, nom: "", etablissementId: 0 },
+    };
+  }
 
   const matiereId = Number(donnees.get("matiereId"));
   const titre = String(donnees.get("titre") ?? "").trim();
@@ -295,19 +316,22 @@ export async function creerDevoir(_prec: Retour, donnees: FormData): Promise<Ret
   const aRendreLe = String(donnees.get("aRendreLe") ?? "").trim();
   const donneLe = String(donnees.get("donneLe") ?? "").trim();
 
-  const [attribution] = await db
-    .select({ id: enseignements.id })
-    .from(enseignements)
-    .where(
-      and(
-        eq(enseignements.classeId, idClasse),
-        eq(enseignements.matiereId, matiereId),
-        eq(enseignements.enseignantUserId, contexte.utilisateur.id),
-      ),
-    )
-    .limit(1);
-  if (!attribution && contexte.utilisateur.role !== "direction") {
-    return { erreur: "Seul l'enseignant de la matière (ou la direction) donne un devoir." };
+  if (contexte.utilisateur.role === "enseignant") {
+    // L'enseignant ne pose des devoirs que sur SES matières de la classe.
+    const [attribution] = await db
+      .select({ id: enseignements.id })
+      .from(enseignements)
+      .where(
+        and(
+          eq(enseignements.classeId, idClasse),
+          eq(enseignements.matiereId, matiereId),
+          eq(enseignements.enseignantUserId, contexte.utilisateur.id),
+        ),
+      )
+      .limit(1);
+    if (!attribution) {
+      return { erreur: "Seul l'enseignant de la matière (ou la direction) donne un devoir." };
+    }
   }
   if (!matiereId) return { erreur: "Choisissez la matière." };
   if (!titre) return { erreur: "Donnez un titre au devoir." };

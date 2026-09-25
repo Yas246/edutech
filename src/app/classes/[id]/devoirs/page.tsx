@@ -3,10 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, asc, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { classes, devoirs, inscriptions, liensFamille, matieres, users } from "@/db/schema";
+import { classes, devoirs, enseignements, inscriptions, liensFamille, matieres, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 import { EnTetePage } from "@/components/ui/en-tete";
 import { EtatVide } from "@/components/ui/etat-vide";
+import { FormulaireDevoir } from "../emploi-du-temps/formulaire-creneau";
 
 export const metadata: Metadata = { title: "Cahier de textes" };
 
@@ -58,7 +59,36 @@ export default async function CahierDeTextes({
     if (!lien) notFound();
   }
 
-  const liste = await db
+  // Qui peut donner un devoir ici : la direction, ou l'enseignant
+  // d'une matière de la classe (avec SES matières seulement).
+  let peutCreer = false;
+  let matieresCreer: { id: number; nom: string }[] = [];
+  if (utilisateur.role === "direction") {
+    peutCreer = true;
+    matieresCreer = await db
+      .select({ id: matieres.id, nom: matieres.nom })
+      .from(matieres)
+      .where(eq(matieres.classeId, idClasse))
+      .orderBy(asc(matieres.nom));
+  } else if (utilisateur.role === "enseignant") {
+    const sesAttributions = await db
+      .select({ id: matieres.id, nom: matieres.nom })
+      .from(enseignements)
+      .innerJoin(matieres, eq(matieres.id, enseignements.matiereId))
+      .where(
+        and(
+          eq(enseignements.classeId, idClasse),
+          eq(enseignements.enseignantUserId, utilisateur.id),
+        ),
+      )
+      .orderBy(asc(matieres.nom));
+    if (sesAttributions.length > 0) {
+      peutCreer = true;
+      matieresCreer = sesAttributions;
+    }
+  }
+
+    const liste = await db
     .select({
       id: devoirs.id,
       titre: devoirs.titre,
@@ -82,6 +112,19 @@ export default async function CahierDeTextes({
         titre={`Cahier de textes de ${classe.nom}`}
         sousTitre="Les devoirs donnés, dans l'ordre des remises. Les familles y accèdent depuis leur espace."
       />
+
+      {peutCreer && (
+        <section className="mt-6 rounded-2xl border border-ligne bg-white p-5">
+          <h2 className="font-semibold">Donner un devoir</h2>
+          <p className="mt-1 text-sm text-encre-doux">
+            Il part au cahier de textes de la classe, dans le fil des
+            membres, au calendrier des élèves, et prévient les parents.
+          </p>
+          <div className="mt-3">
+            <FormulaireDevoir classeId={idClasse} matieres={matieresCreer} />
+          </div>
+        </section>
+      )}
 
       {liste.length === 0 ? (
         <div className="mt-8">
