@@ -25,7 +25,8 @@ export type IconeNav =
   | "apprenants"
   | "orientation"
   | "transport"
-  | "enfants";
+  | "enfants"
+  | "rejoindre";
 
 export type LienNav = { href: string; titre: string; icone: IconeNav };
 export type GroupeNav = { titre: string | null; liens: LienNav[] };
@@ -68,6 +69,7 @@ export function navigationPour(role: Role): GroupeNav[] {
       titre: "Mon école",
       liens: [
         { href: "/mon-ecole", titre: "Vue d'ensemble", icone: "ecole" },
+        { href: "/mon-ecole/equipe", titre: "Mon équipe", icone: "delegations" },
         { href: "/finances", titre: "Finances", icone: "finances" },
         { href: "/mon-ecole/assiduite", titre: "Assiduité", icone: "assiduite" },
         { href: "/mon-ecole/transferts", titre: "Transferts", icone: "transferts" },
@@ -94,6 +96,7 @@ export function navigationPour(role: Role): GroupeNav[] {
         { href: "/orientation", titre: "Mon orientation", icone: "orientation" },
         { href: "/calendrier", titre: "Calendrier", icone: "calendrier" },
         { href: "/transport", titre: "Transport", icone: "transport" },
+        { href: "/mon-code", titre: "Mon code famille", icone: "enfants" },
       ],
     });
   }
@@ -114,6 +117,7 @@ export function navigationPour(role: Role): GroupeNav[] {
   ];
   if (role !== "ministere") {
     communaute.push({ href: "/messagerie", titre: "Messagerie", icone: "messagerie" });
+    communaute.push({ href: "/rejoindre", titre: "Rejoindre (code)", icone: "rejoindre" });
   }
   communaute.push({ href: "/notifications", titre: "Notifications", icone: "notifications" });
   groupes.push({ titre: "Communauté", liens: communaute });

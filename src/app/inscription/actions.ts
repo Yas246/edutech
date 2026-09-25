@@ -6,6 +6,7 @@ import { db } from "@/db";
 import { etablissements, users } from "@/db/schema";
 import { creerSession, hasher, type Role } from "@/lib/auth";
 import { roles } from "@/lib/roles";
+import { genererPseudo } from "@/lib/codes";
 
 export type EtatInscription = { erreur?: string };
 
@@ -60,6 +61,16 @@ export async function inscrire(
   }
 
   const empreinte = await hasher(motDePasse);
+  const pseudo = await genererPseudo(prenom, nom, async (candidat) =>
+    Boolean(
+      await db
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.pseudo, candidat))
+        .limit(1)
+        .then((r) => r.length),
+    ),
+  );
 
   await db.transaction(async (tx) => {
     const [utilisateur] = await tx
@@ -71,6 +82,7 @@ export async function inscrire(
         prenom,
         telephone,
         sexe,
+        pseudo,
         role: role as Role,
       })
       .returning({ id: users.id });

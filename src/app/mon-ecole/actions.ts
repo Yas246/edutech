@@ -127,38 +127,3 @@ export async function affecterEnseignant(_prec: Retour, donnees: FormData): Prom
 }
 
 /** Inscrire un élève (par l'email de son compte) dans une classe. */
-export async function inscrireEleve(_prec: Retour, donnees: FormData): Promise<Retour> {
-  const { idEcole } = await contexte();
-  const classeId = Number(donnees.get("classeId"));
-  const email = String(donnees.get("email") ?? "").trim().toLowerCase();
-  if (!classeId) return { erreur: "Choisissez la classe." };
-  if (!email) return { erreur: "Indiquez l'email du compte de l'élève." };
-
-  const [classe] = await db
-    .select()
-    .from(classes)
-    .where(and(eq(classes.id, classeId), eq(classes.etablissementId, idEcole)))
-    .limit(1);
-  if (!classe) return { erreur: "Cette classe n'est pas la vôtre." };
-
-  const [eleve] = await db
-    .select()
-    .from(users)
-    .where(and(eq(users.email, email), eq(users.role, "eleve")))
-    .limit(1);
-  if (!eleve) return { erreur: `Aucun compte élève avec l'email ${email}.` };
-
-  const cree = await db
-    .insert(inscriptions)
-    .values({ classeId, eleveUserId: eleve.id })
-    .onConflictDoNothing()
-    .returning({ id: inscriptions.id });
-  if (cree.length === 0) {
-    return { erreur: `${eleve.prenom} ${eleve.nom} est déjà inscrit en ${classe.nom}.` };
-  }
-  revalidatePath("/mon-ecole");
-  return {
-    message: `${eleve.prenom} ${eleve.nom} inscrit en ${classe.nom}.`,
-  };
-}
-

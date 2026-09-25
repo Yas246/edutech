@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
   classes,
+  equipes,
   enseignements,
   inscriptions,
   matieres,
@@ -19,10 +20,10 @@ import { EnTetePage } from "@/components/ui/en-tete";
 import { champClasse } from "@/components/ui/formulaire";
 import {
   FormulaireClasse,
-  FormulaireEleve,
   FormulaireEnseignant,
   FormulaireMatiere,
 } from "./formulaires-classe";
+import CodeClasse from "./code-classe";
 
 export const metadata: Metadata = { title: "Mon école" };
 
@@ -59,10 +60,13 @@ export default async function MonEcole() {
     .innerJoin(classes, eq(classes.id, inscriptions.classeId))
     .where(eq(classes.etablissementId, ecole.id));
 
-  const enseignants = await db
+const enseignants = await db
     .select({ id: users.id, prenom: users.prenom, nom: users.nom })
-    .from(users)
-    .where(eq(users.role, "enseignant"))
+    .from(equipes)
+    .innerJoin(users, eq(users.id, equipes.userId))
+    .where(
+      and(eq(equipes.etablissementId, ecole.id), eq(equipes.statut, "confirme")),
+    )
     .orderBy(asc(users.nom));
 
   return (
@@ -178,7 +182,7 @@ export default async function MonEcole() {
                     matieres={matieresClasse.map((m) => ({ id: m.id, nom: m.nom }))}
                     enseignants={enseignants}
                   />
-                  <FormulaireEleve classeId={classe.id} />
+                  <CodeClasse classeId={classe.id} />
                 </div>
               </article>
             );

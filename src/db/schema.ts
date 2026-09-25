@@ -30,8 +30,97 @@ export const users = pgTable("users", {
   interets: text("interets").default("").notNull(),
   /** F ou M, renseigné quand la personne l'accepte (indicateurs de parité). */
   sexe: text("sexe").default("").notNull(),
+  /** L'identifiant public du compte, unique (prenom.nom, suffixé si besoin). */
+  pseudo: text("pseudo").default("").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+/* ------------------------------------------------------------------ */
+/* Équipe d'un établissement et codes de rattachement                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Le rattachement d'un compte à l'école : `declare` quand l'enseignant
+ * se déclare, `confirme` quand la direction l'accepte ou qu'il est
+ * entré par le code de l'école. Une affiliation confirmée n'est jamais
+ * rétrogradée.
+ */
+export const equipes = pgTable(
+  "equipes",
+  {
+    id: serial("id").primaryKey(),
+    etablissementId: integer("etablissement_id")
+      .notNull()
+      .references(() => etablissements.id, { onDelete: "cascade" }),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** declare | confirme */
+    statut: text("statut").default("declare").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [unique("equipes_uniques").on(t.etablissementId, t.userId)],
+);
+
+/** Le code d'invitation de l'école (un actif, régénération = l'ancien meurt). */
+export const codesEquipe = pgTable("codes_equipe", {
+  etablissementId: integer("etablissement_id")
+    .primaryKey()
+    .references(() => etablissements.id, { onDelete: "cascade" }),
+  code: text("code").notNull().unique(),
+});
+
+/** Le code d'entrée dans une classe (élèves). */
+export const codesClasse = pgTable("codes_classe", {
+  classeId: integer("classe_id")
+    .primaryKey()
+    .references(() => classes.id, { onDelete: "cascade" }),
+  code: text("code").notNull().unique(),
+});
+
+/** Le code personnel de l'élève, à donner à son parent. */
+export const codesEleve = pgTable("codes_eleve", {
+  eleveUserId: integer("eleve_user_id")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  code: text("code").notNull().unique(),
+});
+
+/**
+ * La déclaration d'un enfant par un parent. Le suivi ne s'ouvre que
+ * quand `eleveUserId` est posé — preuve par croisement du code famille
+ * de la déclaration (VMF) et du code personnel de l'élève (VMP).
+ */
+export const declarationsEnfant = pgTable("declarations_enfant", {
+  id: serial("id").primaryKey(),
+  parentUserId: integer("parent_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  prenom: text("prenom").notNull(),
+  nom: text("nom").notNull(),
+  /** pere | mere | tuteur */
+  relation: text("relation").notNull(),
+  classeId: integer("classe_id").references(() => classes.id, { onDelete: "set null" }),
+  /** Posé au croisement des codes : le suivi en découle. */
+  eleveUserId: integer("eleve_user_id").references(() => users.id),
+  codeFamille: text("code_famille").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+/** Les saisies erronées de codes : 10 par jour et par compte, pas plus. */
+export const tentativesCode = pgTable(
+  "tentatives_code",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    jour: date("jour").notNull(),
+    n: integer("n").default(0).notNull(),
+  },
+  (t) => [unique("tentatives_par_jour").on(t.userId, t.jour)],
+);
+
 
 export const sessions = pgTable("sessions", {
   token: text("token").primaryKey(),

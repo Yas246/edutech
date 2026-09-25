@@ -5,7 +5,6 @@ import {
   affecterEnseignant,
   ajouterMatiere,
   creerClasse,
-  inscrireEleve,
 } from "./actions";
 import { Alerte, type Retour } from "@/components/ui/alerte";
 import { Bouton, champClasse } from "@/components/ui/formulaire";
@@ -72,29 +71,6 @@ export function FormulaireEnseignant({
       </select>
       <Bouton type="submit" disabled={enCours} className="mt-2 w-full">
         {enCours ? "…" : "Confier"}
-      </Bouton>
-      <div className="mt-2">
-        <Alerte {...etat} />
-      </div>
-    </form>
-  );
-}
-
-export function FormulaireEleve({ classeId }: { classeId: number }) {
-  const [etat, action, enCours] = useActionState(inscrireEleve, etatInitial);
-  return (
-    <form action={action} className="rounded-xl border border-ligne p-3">
-      <p className="text-sm font-semibold">Inscrire un élève</p>
-      <input type="hidden" name="classeId" value={classeId} />
-      <input
-        name="email"
-        type="email"
-        placeholder="Email du compte de l'élève"
-        required
-        className={champClasse}
-      />
-      <Bouton type="submit" disabled={enCours} className="mt-2 w-full">
-        {enCours ? "…" : "Inscrire"}
       </Bouton>
       <div className="mt-2">
         <Alerte {...etat} />

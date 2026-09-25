@@ -5,7 +5,12 @@ import {
   abonnementsTransport,
   arrets,
   classes,
+  codesClasse,
+  codesEleve,
+  codesEquipe,
+  declarationsEnfant,
   enseignements,
+  equipes,
   etablissements,
   evaluations,
   frais,
@@ -81,6 +86,57 @@ async function fixerSexe(email: string, sexe: string) {
 /** Les intérêts déclarés aux premiers pas, rattrapés pour les comptes anciens. */
 async function fixerInterets(email: string, interets: string) {
   await db.update(users).set({ interets }).where(eq(users.email, email));
+}
+
+/** Le pseudo public d'un compte, rattrapé pour les comptes anciens. */
+async function fixerPseudo(email: string, pseudo: string) {
+  await db.update(users).set({ pseudo }).where(eq(users.email, email));
+}
+
+/** Les 4 caractères d'un code, sans ambiguïté (pas de 0/O, 1/I/L). */
+function codeCourt(): string {
+  const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 4; i++) {
+    code += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return code;
+}
+
+async function codeEquipe(etablissementId: number): Promise<string> {
+  const [existant] = await db
+    .select({ code: codesEquipe.code })
+    .from(codesEquipe)
+    .where(eq(codesEquipe.etablissementId, etablissementId))
+    .limit(1);
+  if (existant) return existant.code;
+  const code = `VME-${codeCourt()}`;
+  await db.insert(codesEquipe).values({ etablissementId, code }).onConflictDoNothing();
+  return code;
+}
+
+async function codeClasse(classeId: number): Promise<string> {
+  const [existant] = await db
+    .select({ code: codesClasse.code })
+    .from(codesClasse)
+    .where(eq(codesClasse.classeId, classeId))
+    .limit(1);
+  if (existant) return existant.code;
+  const code = `VMT-${codeCourt()}`;
+  await db.insert(codesClasse).values({ classeId, code }).onConflictDoNothing();
+  return code;
+}
+
+async function codeEleve(eleveUserId: number): Promise<string> {
+  const [existant] = await db
+    .select({ code: codesEleve.code })
+    .from(codesEleve)
+    .where(eq(codesEleve.eleveUserId, eleveUserId))
+    .limit(1);
+  if (existant) return existant.code;
+  const code = `VMP-${codeCourt()}`;
+  await db.insert(codesEleve).values({ eleveUserId, code }).onConflictDoNothing();
+  return code;
 }
 
 async function importerRecensement() {
@@ -829,6 +885,110 @@ async function importerTransfertDemo() {
   console.log("Transfert de démonstration : 1 demande ouverte par l'école d'accueil, en attente de l'école d'origine.");
 }
 
+/**
+ * Les identités et rattachements de la vie réelle : un pseudo par
+ * compte, l'équipe confirmée du lycée, les codes (école, classes,
+ * élèves) et les déclarations familiales croisées.
+ */
+async function importerIdentites() {
+  const pseudos: [string, string][] = [
+    ["parent.test@edutech.bj", "idriss.dossa"],
+    ["admin-etab.test@edutech.bj", "nadege.gbaguidi"],
+    ["ministere.test@edutech.bj", "ministere.education"],
+    ["prof.test@edutech.bj", "aime.zinsou"],
+    ["eleve.test@edutech.bj", "awa.dossa"],
+    ["collegien.test@edutech.bj", "marc.sagbo"],
+    ["eleve1.test@edutech.bj", "rachidatou.alassane"],
+    ["eleve2.test@edutech.bj", "kossi.amoussou"],
+    ["eleve3.test@edutech.bj", "bernadette.houngbo"],
+    ["eleve4.test@edutech.bj", "sylvain.tokponto"],
+    ["eleve5.test@edutech.bj", "fatou.bello"],
+    ["prof2.test@edutech.bj", "lea.adjovi"],
+    ["agent1.ministere@edutech.bj", "grace.hounkpatin"],
+    ["parent2.test@edutech.bj", "aristide.kpossou"],
+    ["direction-adjarra.test@edutech.bj", "theophile.koudjo"],
+    ["transfert.test@edutech.bj", "prisca.amoussou"],
+  ];
+  for (const [email, pseudo] of pseudos) {
+    await fixerPseudo(email, pseudo);
+  }
+
+  const idEcole = await idEcoleDemo();
+
+  // L'équipe confirmée du lycée.
+  for (const email of ["prof.test@edutech.bj", "prof2.test@edutech.bj", "prof3.test@edutech.bj"]) {
+    const [prof] = await db.select({ id: users.id }).from(users).where(eq(users.email, email)).limit(1);
+    if (!prof) continue;
+    await db
+      .insert(equipes)
+      .values({ etablissementId: idEcole, userId: prof.id, statut: "confirme" })
+      .onConflictDoNothing();
+  }
+
+  // Les codes d'école et de classe.
+  await codeEquipe(idEcole);
+  const listeClasses = await db.select().from(classes).where(eq(classes.etablissementId, idEcole));
+  for (const c of listeClasses) {
+    await codeClasse(c.id);
+  }
+
+  // Les codes personnels des élèves de l'école.
+  const elevesEcole = await db
+    .select({ id: users.id })
+    .from(inscriptions)
+    .innerJoin(classes, eq(classes.id, inscriptions.classeId))
+    .innerJoin(users, eq(users.id, inscriptions.eleveUserId))
+    .where(eq(classes.etablissementId, idEcole));
+  for (const e of elevesEcole) {
+    await codeEleve(e.id);
+  }
+
+  // Les déclarations familiales de Idriss, croisées avec les comptes.
+  const [idriss] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.email, "parent.test@edutech.bj"))
+    .limit(1);
+  const [awa] = await db
+    .select({ id: users.id, prenom: users.prenom, nom: users.nom })
+    .from(users)
+    .where(eq(users.email, "eleve.test@edutech.bj"))
+    .limit(1);
+  const [marc] = await db
+    .select({ id: users.id, prenom: users.prenom, nom: users.nom })
+    .from(users)
+    .where(eq(users.email, "collegien.test@edutech.bj"))
+    .limit(1);
+  if (!idriss || !awa || !marc) return;
+
+  const deja = await db
+    .select({ id: declarationsEnfant.id })
+    .from(declarationsEnfant)
+    .where(eq(declarationsEnfant.parentUserId, idriss.id))
+    .limit(1);
+  if (deja.length > 0) return;
+
+  await db.insert(declarationsEnfant).values([
+    {
+      parentUserId: idriss.id,
+      prenom: awa.prenom,
+      nom: awa.nom,
+      relation: "pere",
+      eleveUserId: awa.id,
+      codeFamille: `VMF-${codeCourt()}`,
+    },
+    {
+      parentUserId: idriss.id,
+      prenom: marc.prenom,
+      nom: marc.nom,
+      relation: "pere",
+      eleveUserId: marc.id,
+      codeFamille: `VMF-${codeCourt()}`,
+    },
+  ]);
+  console.log("Identités : pseudos, équipe confirmée, codes école/classes/élèves, famille croisée.");
+}
+
 async function principal() {
   await importerRecensement();
   const { idEleve } = await importerEcoleDemo();
@@ -836,6 +996,7 @@ async function principal() {
   await vivifierTerminaleD();
   await importerEquipePedagogique();
   await importerTransfertDemo();
+  await importerIdentites();
   console.log("Seed terminé. Comptes de démonstration, mot de passe unique : EduTest-2026");
   process.exit(0);
 }

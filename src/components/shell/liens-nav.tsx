@@ -14,6 +14,7 @@ import {
   IconCompass,
   IconDoor,
   IconBulb,
+  IconKey,
   IconLayoutDashboard,
   IconRss,
   IconSchool,
@@ -49,6 +50,7 @@ const ICONES: Record<IconeNav, Icon> = {
   orientation: IconCompass,
   transport: IconBus,
   enfants: IconUsers,
+  rejoindre: IconKey,
 };
 
 /**
