@@ -88,7 +88,7 @@ export default async function Apprenants({
           </thead>
           <tbody>
             {liste.map((a) => (
-              <tr key={a.eleveId} className="border-b border-ligne/60 last:border-0">
+              <tr key={`${a.eleveId}-${a.classeId}`} className="border-b border-ligne/60 last:border-0">
                 <td className="px-4 py-2 font-medium">
                   {a.prenom} {a.nom}
                 </td>

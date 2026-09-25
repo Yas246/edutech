@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { exiger } from "@/lib/auth";
 import { EnTetePage } from "@/components/ui/en-tete";
 import FormulaireEspace from "./formulaire";
@@ -25,8 +26,20 @@ export default async function MonEspace() {
           telephone={utilisateur.telephone}
           sexe={utilisateur.sexe}
           interets={utilisateur.interets}
+          dateNaissance={utilisateur.dateNaissance ?? ""}
+          lieuNaissance={utilisateur.lieuNaissance}
         />
       </div>
+      {utilisateur.role === "eleve" && (
+        <p className="mt-4 text-sm">
+          <Link
+            href={`/eleves/${utilisateur.id}/passeport`}
+            className="text-vert underline hover:text-vert-fonce"
+          >
+            Votre passeport scolaire
+          </Link>
+        </p>
+      )}
     </div>
   );
 }

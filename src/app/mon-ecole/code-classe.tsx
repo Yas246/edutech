@@ -74,7 +74,7 @@ export default async function CodeClasse({ classeId }: { classeId: number }) {
   return (
     <div className="rounded-xl border border-ligne p-3">
       <p className="text-sm font-semibold">Code de la classe</p>
-      <p className="mt-1 flex items-center gap-2">
+      <div className="mt-1 flex items-center gap-2">
         <span className="rounded-lg border border-vert/30 bg-vert-clair/60 px-3 py-1.5 font-mono text-base font-bold tracking-widest text-vert-fonce">
           {code}
         </span>
@@ -87,7 +87,7 @@ export default async function CodeClasse({ classeId }: { classeId: number }) {
             Régénérer
           </button>
         </form>
-      </p>
+      </div>
       <p className="mt-1 text-xs text-encre-doux">
         L&apos;élève le saisit dans « Rejoindre » : il est inscrit, sans
         email à collecter.

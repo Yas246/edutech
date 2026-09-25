@@ -32,6 +32,9 @@ export const users = pgTable("users", {
   sexe: text("sexe").default("").notNull(),
   /** L'identifiant public du compte, unique (prenom.nom, suffixé si besoin). */
   pseudo: text("pseudo").default("").notNull(),
+  /** L'état civil des élèves : les listes d'examen le reprennent tel quel. */
+  dateNaissance: date("date_naissance"),
+  lieuNaissance: text("lieu_naissance").default("").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -940,5 +943,21 @@ export const messagesTuteur = pgTable("messages_tuteur", {
   /** vrai quand le message vient du tuteur (moteur), faux pour l'élève */
   duTuteur: boolean("du_tuteur").default(false).notNull(),
   contenu: text("contenu").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+/* ------------------------------------------------------------------ */
+/* Accès ministère : des codes à usage unique, hors inscription        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Le passage ministériel n'est pas un choix dans la liste publique :
+ * un code d'accès à usage unique (VMN-…) ouvre la création du compte,
+ * avec l'organisation qui l'a utilisé.
+ */
+export const accesMinistere = pgTable("acces_ministere", {
+  code: text("code").primaryKey(),
+  organisation: text("organisation").notNull(),
+  utilisePar: integer("utilise_par").references(() => users.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

@@ -89,6 +89,43 @@ export default async function EspaceMinistere({
         </div>
       </dl>
 
+      {/* La tour de contrôle : les alertes qui sortent de la vie des classes. */}
+      <section className="mt-6 grid gap-3 sm:grid-cols-3">
+        <Link
+          href="/ministere/abandons"
+          className="rounded-2xl border border-ligne bg-white p-5 transition hover:border-rouge/40 hover:bg-rouge-clair/20"
+        >
+          <p className="text-sm font-semibold">L&apos;abandon scolaire</p>
+          <p className="mt-1 text-sm text-encre-doux">
+            Les élèves qui ne figurent plus à aucun appel depuis plus de
+            deux semaines, par département, par sexe, école par école.
+          </p>
+          <p className="mt-2 text-sm font-medium text-rouge">Voir les présomptions →</p>
+        </Link>
+        <Link
+          href="/ministere/besoins"
+          className="rounded-2xl border border-ligne bg-white p-5 transition hover:border-vert/40 hover:bg-vert-clair/30"
+        >
+          <p className="text-sm font-semibold">Les besoins d&apos;enseignement</p>
+          <p className="mt-1 text-sm text-encre-doux">
+            Les matières du programme sans professeur confié et sans cours
+            posé, commune par commune, département par département.
+          </p>
+          <p className="mt-2 text-sm font-medium text-vert-fonce">Voir les besoins →</p>
+        </Link>
+        <Link
+          href="/ministere/carte"
+          className="rounded-2xl border border-ligne bg-white p-5 transition hover:border-jaune/60 hover:bg-jaune-clair/30"
+        >
+          <p className="text-sm font-semibold">La carte nationale</p>
+          <p className="mt-1 text-sm text-encre-doux">
+            Douze départements, quatre indicateurs : parité, ratio élèves
+            par enseignant, abandon et besoins, d&apos;un coup d&apos;œil.
+          </p>
+          <p className="mt-2 text-sm font-medium text-encre">Ouvrir la carte →</p>
+        </Link>
+      </section>
+
       {/* Statistiques nationales */}
       <section className="mt-10">
         <h2 className="text-xl font-bold tracking-tight">La nation, département par département</h2>

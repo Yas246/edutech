@@ -1110,6 +1110,9 @@ async function principal() {
   await importerIdentites();
   await importerCommunautes();
   await importerCommunautesEtablissements();
+  await importerAccesMinistere();
+  await vivifierAbandons();
+  await fixerEtatCivil();
   console.log("Seed terminé. Comptes de démonstration, mot de passe unique : EduTest-2026");
   process.exit(0);
 }
@@ -1118,3 +1121,117 @@ principal().catch((e) => {
   console.error(e);
   process.exit(1);
 });
+
+/* Le code d'accès ministère de démonstration : à usage unique, il
+   ouvre un compte « ministère » depuis /acces-ministere. */
+async function importerAccesMinistere() {
+  const { accesMinistere } = await import("../src/db/schema");
+  const existant = await db.select({ code: accesMinistere.code }).from(accesMinistere).limit(1);
+  if (existant.length > 0) return;
+  const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  let code = "VMN-";
+  for (let i = 0; i < 4; i++) {
+    code += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  await db.insert(accesMinistere).values({ code, organisation: "" });
+  console.log(`Accès ministère : code de démonstration ${code} (à usage unique).`);
+}
+
+/* Le cas de démonstration de l'abandon scolaire : en Seconde A du
+   Lycée Béhanzin, un garçon et une fille ont cessé de venir il y a
+   plus de deux semaines, pendant que la classe continue d'être
+   pointée (Prisca Amoussou reste présente). Dates RELATIVES : le cas
+   reste vivant quel que soit le jour du seed. */
+async function vivifierAbandons() {
+  const [ecole] = await db
+    .select({ id: etablissements.id, directionUserId: etablissements.directionUserId })
+    .from(etablissements)
+    .where(and(eq(etablissements.nom, "Lycée Béhanzin"), eq(etablissements.commune, "Porto-Novo")))
+    .limit(1);
+  if (!ecole || !ecole.directionUserId) return;
+  const [secondeA] = await db
+    .select({ id: classes.id })
+    .from(classes)
+    .where(and(eq(classes.etablissementId, ecole.id), eq(classes.nom, "Seconde A")))
+    .limit(1);
+  if (!secondeA) return;
+
+  const ilYA = (jours: number) =>
+    new Date(Date.now() - jours * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  const ouvre = (iso: string) => new Date(`${iso}T12:00:00`).getDay() !== 0;
+
+  // Falilatou, la seconde abandonneuse du cas de démonstration : son
+  // compte est créé ici s'il n'existe pas encore.
+  const idFalilatou = await idUtilisateur("falilatou.test@edutech.bj", {
+    prenom: "Falilatou",
+    nom: "Issifou",
+    role: "eleve",
+    sexe: "F",
+  });
+  await db
+    .update(users)
+    .set({ pseudo: "falilatou.issifou" })
+    .where(eq(users.email, "falilatou.test@edutech.bj"));
+  await db
+    .insert(inscriptions)
+    .values({ classeId: secondeA.id, eleveUserId: idFalilatou })
+    .onConflictDoNothing({ target: [inscriptions.classeId, inscriptions.eleveUserId] });
+
+  async function poser(elevePseudo: string, depuisJours: number, jusquJours: number) {
+    const [eleve] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.pseudo, elevePseudo))
+      .limit(1);
+    if (!eleve) return;
+    for (let n = depuisJours; n <= jusquJours; n++) {
+      const date = ilYA(n);
+      if (!ouvre(date)) continue;
+      await db
+        .insert(presences)
+        .values({
+          classeId: secondeA.id,
+          eleveUserId: eleve.id,
+          date,
+          statut: "present",
+          saisiPar: ecole.directionUserId as number,
+        })
+        .onConflictDoNothing();
+    }
+  }
+
+  // Prisca reste présente : c'est elle qui prouve que la classe est
+  // encore pointée sur les quatorze derniers jours.
+  await poser("prisca.amoussou", 0, 20);
+  // Marc et Falilatou ont cessé de venir : plus rien depuis 25+ jours.
+  await poser("marc.sagbo", 25, 45);
+  await poser("falilatou.issifou", 27, 47);
+
+  console.log(
+    "Abandon scolaire : deux élèves de Seconde A présumés en abandon (marc.sagbo, falilatou.issifou).",
+  );
+}
+
+/* L'état civil des élèves de démonstration : dates et lieux de
+   naissance plausibles, repris tels quels par les listes de
+   candidature BEPC / BAC. */
+async function fixerEtatCivil() {
+  const etatCivil: [string, string, string][] = [
+    ["eleve.test@edutech.bj", "2008-04-12", "Porto-Novo"],
+    ["collegien.test@edutech.bj", "2010-09-03", "Porto-Novo"],
+    ["eleve1.test@edutech.bj", "2008-11-21", "Parakou"],
+    ["eleve2.test@edutech.bj", "2009-02-14", "Abomey"],
+    ["eleve3.test@edutech.bj", "2008-07-30", "Bohicon"],
+    ["eleve4.test@edutech.bj", "2009-06-08", "Djougou"],
+    ["eleve5.test@edutech.bj", "2008-12-17", "Natitingou"],
+    ["falilatou.test@edutech.bj", "2010-05-25", "Porto-Novo"],
+    ["transfert.test@edutech.bj", "2010-10-11", "Adjarra"],
+  ];
+  for (const [email, naissance, lieu] of etatCivil) {
+    await db
+      .update(users)
+      .set({ dateNaissance: naissance, lieuNaissance: lieu })
+      .where(eq(users.email, email));
+  }
+  console.log(`État civil : ${etatCivil.length} élèves de démonstration datés et localisés.`);
+}

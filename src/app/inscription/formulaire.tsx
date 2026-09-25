@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import Link from "next/link";
-import { roles } from "@/lib/roles";
+import { rolesPublics } from "@/lib/roles";
 import { inscrire, type EtatInscription } from "./actions";
 import { Alerte } from "@/components/ui/alerte";
 
@@ -34,7 +34,7 @@ export default function FormulaireInscription() {
       <fieldset>
         <legend className="text-sm font-semibold">Votre place</legend>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
-          {roles.map((r) => (
+          {rolesPublics.map((r) => (
             <label
               key={r.valeur}
               className={`cursor-pointer rounded-xl border p-3 text-sm transition ${
@@ -147,6 +147,42 @@ export default function FormulaireInscription() {
         />
         <p className="mt-1 text-xs text-encre-doux">8 caractères au minimum.</p>
       </div>
+
+      {role === "eleve" && (
+        <fieldset className="rounded-xl border border-ligne bg-vert-clair/50 p-4">
+          <legend className="px-1 text-sm font-semibold text-vert-fonce">
+            Votre état civil
+          </legend>
+          <p className="mb-3 text-xs text-encre-doux">
+            Il alimente vos listes d&apos;examen (BEPC, BAC) sans ressaisie.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div>
+              <label htmlFor="dateNaissance" className="block text-sm font-medium">
+                Date de naissance
+              </label>
+              <input
+                id="dateNaissance"
+                name="dateNaissance"
+                type="date"
+                className="mt-1 w-full rounded-xl border border-ligne bg-white px-3 py-2"
+              />
+            </div>
+            <div>
+              <label htmlFor="lieuNaissance" className="block text-sm font-medium">
+                Lieu de naissance
+              </label>
+              <input
+                id="lieuNaissance"
+                name="lieuNaissance"
+                maxLength={80}
+                placeholder="Ex. Porto-Novo"
+                className="mt-1 w-full rounded-xl border border-ligne bg-white px-3 py-2"
+              />
+            </div>
+          </div>
+        </fieldset>
+      )}
 
       {role === "direction" && (
         <fieldset className="rounded-xl border border-ligne bg-vert-clair/50 p-4">

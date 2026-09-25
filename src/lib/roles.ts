@@ -29,6 +29,13 @@ export const roles: { valeur: Role; titre: string; texte: string }[] = [
   },
 ];
 
+/**
+ * Les places ouvertes à l'inscription publique. Le ministère n'y
+ * figure pas : son arrivée passe par un code d'accès dédié, sur la
+ * page « Accès ministère » — pas par un choix dans une liste.
+ */
+export const rolesPublics = roles.filter((r) => r.valeur !== "ministere");
+
 export const libellesRole: Record<string, string> = Object.fromEntries(
   roles.map((r) => [r.valeur, r.titre]),
 );

@@ -84,12 +84,18 @@ export default async function MesEnfants() {
               <p className="text-sm text-encre-doux">{relations[d.relation] ?? d.relation}</p>
 
               {d.eleveUserId ? (
-                <p className="mt-3 text-sm">
+                <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                   <Link
                     href="/tableau-de-bord"
                     className="font-medium text-vert underline hover:text-vert-fonce"
                   >
                     Voir le suivi dans mon espace
+                  </Link>
+                  <Link
+                    href={`/eleves/${d.eleveUserId}/passeport`}
+                    className="font-medium text-vert underline hover:text-vert-fonce"
+                  >
+                    Passeport scolaire
                   </Link>
                 </p>
               ) : (

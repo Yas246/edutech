@@ -30,6 +30,8 @@ export async function modifierMonEspace(_prec: Retour, donnees: FormData): Promi
   const telephoneBrut = String(donnees.get("telephone") ?? "").trim();
   const sexeBrut = String(donnees.get("sexe") ?? "").trim().toUpperCase();
   const interets = String(donnees.get("interets") ?? "").trim().slice(0, 200);
+  const dateNaissanceBrut = String(donnees.get("dateNaissance") ?? "").trim();
+  const lieuNaissance = String(donnees.get("lieuNaissance") ?? "").trim().slice(0, 80);
 
   if (!prenom || !nom) return { erreur: "Le prénom et le nom sont nécessaires." };
 
@@ -57,7 +59,13 @@ export async function modifierMonEspace(_prec: Retour, donnees: FormData): Promi
       nom,
       telephone,
       sexe: sexeBrut === "F" || sexeBrut === "M" ? sexeBrut : "",
-      ...(utilisateur.role === "eleve" ? { interets } : {}),
+      ...(utilisateur.role === "eleve"
+        ? {
+            interets,
+            dateNaissance: /^\d{4}-\d{2}-\d{2}$/.test(dateNaissanceBrut) ? dateNaissanceBrut : null,
+            lieuNaissance,
+          }
+        : {}),
     })
     .where(eq(users.id, utilisateur.id));
 

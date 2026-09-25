@@ -7,6 +7,7 @@ import {
   adhesionsClasse,
   classes,
   codesClasse,
+  communautes,
   commentaires,
   delegues,
   enseignements,
@@ -142,6 +143,13 @@ export default async function PageClasse({
         .limit(1)
     : [];
 
+  /* La communauté principale de l'établissement, pour le fil d'ariane. */
+  const [communauteEcole] = await db
+    .select({ id: communautes.id })
+    .from(communautes)
+    .where(eq(communautes.etablissementId, classe.etabId))
+    .limit(1);
+
   /* Le mur de la classe. */
   const mur = await db
     .select({
@@ -189,7 +197,10 @@ export default async function PageClasse({
     <div className="mx-auto w-full max-w-4xl px-4 py-10">
       {/* La bannière de l'espace */}
       <p className="text-sm text-encre-doux">
-        <Link href={`/etablissements/${classe.etabId}`} className="underline hover:text-vert">
+        <Link
+          href={communauteEcole ? `/communautes/${communauteEcole.id}` : "/etablissements"}
+          className="underline hover:text-vert"
+        >
           {classe.etabNom}
         </Link>
         {classe.commune ? `, ${classe.commune}` : ""}
@@ -224,6 +235,10 @@ export default async function PageClasse({
               Faire l&apos;appel
             </Outil>
             <Outil href={`/classes/${classe.id}/evaluations`}>Évaluations et notes</Outil>
+            {(classe.niveau.toLowerCase().match(/terminale|tle|3e|3ème|3eme|troisieme|troisième/) ||
+              utilisateur.role === "direction") && (
+              <Outil href={`/classes/${classe.id}/candidatures`}>Candidatures</Outil>
+            )}
             {utilisateur.role === "direction" && (
               <Outil href={`/classes/${classe.id}/delegues`}>Délégués</Outil>
             )}
@@ -381,24 +396,31 @@ export default async function PageClasse({
       <section className="mt-10">
         <h2 className="text-xl font-bold tracking-tight">Membres par rôle</h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          <GroupeMembres titre={`Direction (${directionNoms.length})`} noms={directionNoms} />
+          <GroupeMembres
+            titre={`Direction (${directionNoms.length})`}
+            noms={directionNoms.map((n) => ({ label: n }))}
+          />
           <GroupeMembres
             titre={`Enseignants (${profs.length})`}
-            noms={profs.map((p) => `${p.prenom} ${p.nom}`)}
+            noms={profs.map((p) => ({ label: `${p.prenom} ${p.nom}` }))}
           />
           <GroupeMembres
             titre={`Élèves (${eleves.length})`}
-            noms={eleves.map((e) =>
-              idsDelegues.has(e.id)
+            noms={eleves.map((e) => ({
+              label: idsDelegues.has(e.id)
                 ? `${e.prenom} ${e.nom} · délégué`
                 : `${e.prenom} ${e.nom}`,
-            )}
+              href:
+                droits.publier && utilisateur.role !== "eleve"
+                  ? `/eleves/${e.id}/passeport`
+                  : undefined,
+            }))}
           />
           <GroupeMembres
             titre={`Parents (${parents.length})`}
             noms={
               droits.publier
-                ? parents.map((p) => `${p.prenom} ${p.nom}`)
+                ? parents.map((p) => ({ label: `${p.prenom} ${p.nom}` }))
                 : []
             }
             texte={
@@ -442,7 +464,7 @@ function GroupeMembres({
   texte,
 }: {
   titre: string;
-  noms: string[];
+  noms: { label: string; href?: string }[];
   texte?: string;
 }) {
   return (
@@ -451,7 +473,15 @@ function GroupeMembres({
       {noms.length > 0 ? (
         <ul className="mt-2 space-y-1 text-sm text-encre">
           {noms.map((n) => (
-            <li key={n}>{n}</li>
+            <li key={n.label}>
+              {n.href ? (
+                <Link href={n.href} className="underline decoration-ligne hover:text-vert">
+                  {n.label}
+                </Link>
+              ) : (
+                n.label
+              )}
+            </li>
           ))}
         </ul>
       ) : (

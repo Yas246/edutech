@@ -12,6 +12,8 @@ export default function FormulaireEspace({
   telephone,
   sexe,
   interets,
+  dateNaissance,
+  lieuNaissance,
 }: {
   role: string;
   pseudo: string;
@@ -20,6 +22,8 @@ export default function FormulaireEspace({
   telephone: string;
   sexe: string;
   interets: string;
+  dateNaissance: string;
+  lieuNaissance: string;
 }) {
   const [etat, action, enCours] = useActionState<Retour, FormData>(modifierMonEspace, {});
   const estEleve = role === "eleve";
@@ -104,6 +108,40 @@ export default function FormulaireEspace({
               Ils nourrissent la boussole d&apos;orientation et le coach.
             </p>
           </div>
+        )}
+        {estEleve && (
+          <>
+            <div>
+              <label htmlFor="espace-date-naissance" className="block text-sm font-medium">
+                Date de naissance{" "}
+                <span className="font-normal text-encre-doux">(facultatif)</span>
+              </label>
+              <input
+                id="espace-date-naissance"
+                name="dateNaissance"
+                type="date"
+                defaultValue={dateNaissance}
+                className="mt-1 w-full rounded-xl border border-ligne bg-white px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="espace-lieu-naissance" className="block text-sm font-medium">
+                Lieu de naissance{" "}
+                <span className="font-normal text-encre-doux">(facultatif)</span>
+              </label>
+              <input
+                id="espace-lieu-naissance"
+                name="lieuNaissance"
+                defaultValue={lieuNaissance}
+                maxLength={80}
+                placeholder="Ex. Porto-Novo"
+                className="mt-1 w-full rounded-xl border border-ligne bg-white px-3 py-2 text-sm"
+              />
+              <p className="mt-1 text-xs text-encre-doux">
+                Votre état civil alimente vos listes d&apos;examen.
+              </p>
+            </div>
+          </>
         )}
       </div>
 

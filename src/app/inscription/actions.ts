@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { etablissements, users } from "@/db/schema";
 import { creerSession, hasher, type Role } from "@/lib/auth";
-import { roles } from "@/lib/roles";
+import { rolesPublics } from "@/lib/roles";
 import { genererPseudo } from "@/lib/codes";
 
 export type EtatInscription = { erreur?: string };
@@ -25,7 +25,9 @@ export async function inscrire(
   const sexeBrut = String(donnees.get("sexe") ?? "").trim().toUpperCase();
   const sexe = sexeBrut === "F" || sexeBrut === "M" ? sexeBrut : "";
 
-  if (!roles.some((r) => r.valeur === role)) {
+  // L'inscription publique n'ouvre aucune place ministérielle : la
+  // garde porte sur la liste publique, pas sur la liste complète.
+  if (!rolesPublics.some((r) => r.valeur === role)) {
     return { erreur: "Choisissez votre place sur la plateforme." };
   }
   if (!prenom || !nom) return { erreur: "Indiquez votre prénom et votre nom." };
@@ -66,6 +68,15 @@ export async function inscrire(
     }
   }
 
+  // L'état civil de l'élève : il alimente les listes d'examen.
+  let dateNaissance: string | null = null;
+  let lieuNaissance = "";
+  if (role === "eleve") {
+    const brut = String(donnees.get("dateNaissance") ?? "").trim();
+    dateNaissance = /^\d{4}-\d{2}-\d{2}$/.test(brut) ? brut : null;
+    lieuNaissance = String(donnees.get("lieuNaissance") ?? "").trim().slice(0, 80);
+  }
+
   const [existant] = await db
     .select({ id: users.id })
     .from(users)
@@ -99,6 +110,7 @@ export async function inscrire(
         sexe,
         pseudo,
         role: role as Role,
+        ...(role === "eleve" ? { dateNaissance, lieuNaissance } : {}),
       })
       .returning({ id: users.id });
 

@@ -615,6 +615,88 @@ async function principal() {
   );
 
   // ------------------------------------------------------------------
+  // Abandon scolaire : les instruments du ministère contre une vérité
+  // recalculée en SQL brut.
+  // ------------------------------------------------------------------
+  const abandons = (await executerOutil("eleves_abandonnes", ministere, {})) as {
+    ok: boolean; donnees?: { eleveId: number; nom: string; sexe: string; joursAbsence: number }[];
+  };
+  const veriteAbandons = (await db.execute(sql`
+    WITH dernieres AS (
+      SELECT p.eleve_user_id, MAX(p.date) AS derniere
+      FROM presences p WHERE p.statut IN ('present', 'retard')
+      GROUP BY p.eleve_user_id
+    ),
+    appels AS (
+      SELECT p.classe_id, COUNT(DISTINCT p.date) AS jours
+      FROM presences p WHERE p.date > CURRENT_DATE - 14
+      GROUP BY p.classe_id
+    )
+    SELECT count(*)::int AS n,
+      count(*) FILTER (WHERE u.sexe = 'F')::int AS filles,
+      count(*) FILTER (WHERE u.sexe = 'M')::int AS garcons
+    FROM inscriptions i
+    JOIN classes c ON c.id = i.classe_id
+    JOIN etablissements e ON e.id = c.etablissement_id
+    JOIN users u ON u.id = i.eleve_user_id
+    JOIN dernieres dern ON dern.eleve_user_id = u.id
+    JOIN appels a ON a.classe_id = c.id AND a.jours >= 5
+    WHERE dern.derniere < CURRENT_DATE - 14
+  `)) as unknown as { n: number; filles: number; garcons: number }[];
+  verifier(
+    "abandon : le compteur de l'instrument égale la vérité SQL",
+    Array.isArray(abandons.donnees) && abandons.donnees?.length === veriteAbandons[0].n,
+    `instrument ${abandons.donnees?.length ?? "∅"} vs SQL ${veriteAbandons[0].n}`,
+  );
+  const fillesAbandons = abandons.donnees?.filter((a) => a.sexe === "F").length ?? -1;
+  const garconsAbandons = abandons.donnees?.filter((a) => a.sexe === "M").length ?? -1;
+  verifier(
+    "abandon : ventilation garçons/filles conforme",
+    fillesAbandons === veriteAbandons[0].filles && garconsAbandons === veriteAbandons[0].garcons,
+    `instrument ${garconsAbandons}M/${fillesAbandons}F vs SQL ${veriteAbandons[0].garcons}M/${veriteAbandons[0].filles}F`,
+  );
+  verifier(
+    "abandon : au moins une présomption vivante dans la démonstration",
+    (abandons.donnees?.length ?? 0) >= 1 &&
+      (abandons.donnees?.every((a) => a.joursAbsence > 14) ?? false),
+  );
+
+  // ------------------------------------------------------------------
+  // Besoins d'enseignement : l'instrument contre une vérité SQL sur la
+  // classe de démonstration (Terminale D du Béhanzin).
+  // ------------------------------------------------------------------
+  const besoins = (await executerOutil("besoins_enseignement", ministere, {})) as {
+    ok: boolean;
+    donnees?: {
+      etablissementId: number;
+      etablissement: string;
+      matieresNonConfiees: number;
+      nomsNonConfiees: string;
+    }[];
+  };
+  const veriteBesoins = (await db.execute(sql`
+    SELECT count(*)::int AS n FROM matieres m
+    JOIN classes c ON c.id = m.classe_id
+    JOIN etablissements e ON e.id = c.etablissement_id
+    WHERE e.nom = 'Lycée Béhanzin' AND c.nom = 'Terminale D'
+      AND NOT EXISTS (
+        SELECT 1 FROM enseignements en
+        WHERE en.matiere_id = m.id AND en.classe_id = m.classe_id
+      )
+  `)) as unknown as { n: number }[];
+  verifier(
+    "besoins : Terminale D du Béhanzin a 4 matières non confiées (vérité SQL)",
+    veriteBesoins[0].n === 4,
+    `SQL ${veriteBesoins[0].n}`,
+  );
+  const behanzinBesoins = besoins.donnees?.find((b) => b.etablissement === "Lycée Béhanzin");
+  verifier(
+    "besoins : l'établissement de démonstration figure dans l'instrument",
+    Boolean(behanzinBesoins) && behanzinBesoins!.matieresNonConfiees >= veriteBesoins[0].n,
+    `reçu ${JSON.stringify(behanzinBesoins?.nomsNonConfiees ?? "∅")}`,
+  );
+
+  // ------------------------------------------------------------------
   // Bilan.
   // ------------------------------------------------------------------
   console.log("");

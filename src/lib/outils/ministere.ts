@@ -65,15 +65,17 @@ export async function statistiquesDepartement(
       departement: string;
       etablissements: unknown;
       eleves: unknown;
-      tauxAbsenteisme: unknown;
-      tauxRecouvrement: unknown;
+      taux_absenteisme: unknown;
+      taux_recouvrement: unknown;
     }[]
   ).map((l) => ({
     departement: l.departement,
     etablissements: Number(l.etablissements),
     eleves: Number(l.eleves),
-    tauxAbsenteisme: l.tauxAbsenteisme === null ? null : Number(l.tauxAbsenteisme),
-    tauxRecouvrement: l.tauxRecouvrement === null ? null : Number(l.tauxRecouvrement),
+    // Postgres renvoie les alias non quotés en minuscules : lire les
+    // clés SQL telles quelles, sinon Number(undefined) fabrique un NaN.
+    tauxAbsenteisme: l.taux_absenteisme === null ? null : Number(l.taux_absenteisme),
+    tauxRecouvrement: l.taux_recouvrement === null ? null : Number(l.taux_recouvrement),
   }));
 }
 
@@ -459,7 +461,265 @@ export async function chercherEtablissement(terme: string): Promise<
   return resultat as unknown as { id: number; nom: string; commune: string; departement: string }[];
 }
 
+/* ------------------------------------------------------------------ */
+/* L'abandon scolaire                                                  */
+/*                                                                     */
+/* Un élève est « présumé en abandon » quand il venait, puis plus      */
+/* AUCUNE présence marquée présent ou retard depuis plus de 14 jours,  */
+/* pendant que sa classe continue d'être pointée (au moins 5 jours     */
+/* distincts sur les 14 derniers) : c'est l'élève qui a disparu, pas   */
+/* le professeur qui cesse de faire l'appel. Un élève jamais pointé    */
+/* n'est pas compté — c'est un silence, pas une disparition.           */
+/* ------------------------------------------------------------------ */
+
+/** Le cœur SQL partagé : les élèves présumés en abandon, avec leur
+ * dernière présence « vue » et le nombre de jours depuis. */
+const ABANDONS_SQL = sql`
+  WITH dernieres AS (
+    SELECT p.eleve_user_id, MAX(p.date) AS derniere
+    FROM presences p
+    WHERE p.statut IN ('present', 'retard')
+    GROUP BY p.eleve_user_id
+  ),
+  appels AS (
+    SELECT p.classe_id, COUNT(DISTINCT p.date) AS jours
+    FROM presences p
+    WHERE p.date > CURRENT_DATE - 14
+    GROUP BY p.classe_id
+  )
+  SELECT u.id AS eleve_id, u.prenom, u.nom, u.sexe,
+         c.id AS classe_id, c.nom AS classe,
+         e.id AS etablissement_id, e.nom AS etablissement,
+         e.commune, e.departement,
+         dern.derniere,
+         (CURRENT_DATE - dern.derniere) AS jours_absence
+  FROM inscriptions i
+  JOIN classes c ON c.id = i.classe_id
+  JOIN etablissements e ON e.id = c.etablissement_id
+  JOIN users u ON u.id = i.eleve_user_id
+  JOIN dernieres dern ON dern.eleve_user_id = u.id
+  JOIN appels a ON a.classe_id = c.id AND a.jours >= 5
+  WHERE dern.derniere < CURRENT_DATE - 14
+`;
+
+export type LigneAbandon = {
+  eleveId: number;
+  classeId: number;
+  etablissementId: number;
+  prenom: string;
+  nom: string;
+  sexe: string;
+  classe: string;
+  etablissement: string;
+  commune: string;
+  departement: string;
+  dernierePresence: string;
+  joursAbsence: number;
+};
+
+/** Les élèves présumés en abandon, nation ou département. */
+export async function elevesAbandonnes(
+  departement?: string,
+): Promise<LigneAbandon[]> {
+  const filtre = departement ? sql` AND e.departement = ${departement}` : sql``;
+  const resultat = await db.execute(sql`
+    SELECT * FROM (${ABANDONS_SQL} ${filtre}) abandons
+    ORDER BY departement, commune, etablissement, nom, prenom
+  `);
+  return (
+    resultat as unknown as {
+      eleve_id: number;
+      classe_id: number;
+      etablissement_id: number;
+      prenom: string;
+      nom: string;
+      sexe: string;
+      classe: string;
+      etablissement: string;
+      commune: string;
+      departement: string;
+      derniere: string;
+      jours_absence: number;
+    }[]
+  ).map((l) => ({
+    eleveId: Number(l.eleve_id),
+    classeId: Number(l.classe_id),
+    etablissementId: Number(l.etablissement_id),
+    prenom: l.prenom,
+    nom: l.nom,
+    sexe: l.sexe,
+    classe: l.classe,
+    etablissement: l.etablissement,
+    commune: l.commune,
+    departement: l.departement,
+    dernierePresence: String(l.derniere).slice(0, 10),
+    joursAbsence: Number(l.jours_absence),
+  }));
+}
+
+export type LigneAbandonDepartement = {
+  departement: string;
+  inscrits: number;
+  presumptions: number;
+  garcons: number;
+  filles: number;
+  taux: number | null;
+};
+
+/** Les présomptions d'abandon, agrégées par département. */
+export async function tauxAbandons(): Promise<LigneAbandonDepartement[]> {
+  const resultat = await db.execute(sql`
+    SELECT d.departement,
+      (SELECT count(DISTINCT i.eleve_user_id) FROM inscriptions i
+        JOIN classes c ON c.id = i.classe_id
+        JOIN etablissements e ON e.id = c.etablissement_id
+        WHERE e.departement = d.departement) AS inscrits,
+      (SELECT count(*) FROM (${ABANDONS_SQL} AND e.departement = d.departement) a) AS presumptions,
+      (SELECT count(*) FROM (${ABANDONS_SQL} AND e.departement = d.departement) a
+        WHERE a.sexe = 'M') AS garcons,
+      (SELECT count(*) FROM (${ABANDONS_SQL} AND e.departement = d.departement) a
+        WHERE a.sexe = 'F') AS filles,
+      (SELECT round(100.0 * count(*) / GREATEST((
+          SELECT count(DISTINCT i.eleve_user_id) FROM inscriptions i
+          JOIN classes c ON c.id = i.classe_id
+          JOIN etablissements e ON e.id = c.etablissement_id
+          WHERE e.departement = d.departement), 1), 1)
+        FROM (${ABANDONS_SQL} AND e.departement = d.departement) a
+      ) AS taux
+    FROM (SELECT DISTINCT departement FROM etablissements WHERE departement <> '') d
+    ORDER BY d.departement
+  `);
+  return (
+    resultat as unknown as {
+      departement: string;
+      inscrits: number;
+      presumptions: number;
+      garcons: number;
+      filles: number;
+      taux: number | null;
+    }[]
+  ).map((l) => ({
+    departement: l.departement,
+    inscrits: Number(l.inscrits),
+    presumptions: Number(l.presumptions),
+    garcons: Number(l.garcons),
+    filles: Number(l.filles),
+    taux: l.taux === null ? null : Number(l.taux),
+  }));
+}
+
+export type LigneBesoin = {
+  etablissementId: number;
+  etablissement: string;
+  commune: string;
+  departement: string;
+  classesConcernees: number;
+  matieresNonConfiees: number;
+  matieresSansCours: number;
+  nomsNonConfiees: string;
+  heuresPosees: number;
+};
+
+/**
+ * Les besoins d'enseignement, établissement par établissement. Une
+ * matière « non confiée » n'a aucun professeur dans le programme ; une
+ * matière « sans cours » ne porte aucun créneau de l'emploi du temps.
+ * Les heures posées additionnent la durée des créneaux de l'école.
+ */
+export async function besoinsEnseignement(
+  departement?: string,
+): Promise<LigneBesoin[]> {
+  const filtre = departement ? sql`WHERE e.departement = ${departement}` : sql``;
+  const resultat = await db.execute(sql`
+    SELECT e.id AS etablissement_id, e.nom AS etablissement, e.commune, e.departement,
+      COUNT(m.id) FILTER (
+        WHERE NOT EXISTS (SELECT 1 FROM enseignements en
+          WHERE en.matiere_id = m.id AND en.classe_id = m.classe_id)
+      ) AS matieres_non_confiees,
+      COUNT(DISTINCT m.classe_id) FILTER (
+        WHERE NOT EXISTS (SELECT 1 FROM enseignements en
+          WHERE en.matiere_id = m.id AND en.classe_id = m.classe_id)
+      ) AS classes_concernees,
+      COUNT(m.id) FILTER (
+        WHERE NOT EXISTS (SELECT 1 FROM creneaux cr WHERE cr.matiere_id = m.id)
+      ) AS matieres_sans_cours,
+      COALESCE(string_agg(DISTINCT m.nom, ', ') FILTER (
+        WHERE NOT EXISTS (SELECT 1 FROM enseignements en
+          WHERE en.matiere_id = m.id AND en.classe_id = m.classe_id)
+      ), '') AS noms_non_confiees,
+      COALESCE((
+        SELECT round(SUM(
+          EXTRACT(EPOCH FROM (cr.heure_fin::time - cr.heure_debut::time)) / 3600.0
+        )::numeric, 1)
+        FROM creneaux cr
+        JOIN classes c2 ON c2.id = cr.classe_id
+        WHERE c2.etablissement_id = e.id
+      ), 0) AS heures_posees
+    FROM etablissements e
+    JOIN classes c ON c.etablissement_id = e.id
+    JOIN matieres m ON m.classe_id = c.id
+    ${filtre}
+    GROUP BY e.id, e.nom, e.commune, e.departement
+    HAVING COUNT(m.id) FILTER (
+      WHERE NOT EXISTS (SELECT 1 FROM enseignements en
+        WHERE en.matiere_id = m.id AND en.classe_id = m.classe_id)
+    ) > 0
+    ORDER BY e.departement, e.commune, e.nom
+  `);
+  return (
+    resultat as unknown as {
+      etablissement_id: number;
+      etablissement: string;
+      commune: string;
+      departement: string;
+      classes_concernees: number;
+      matieres_non_confiees: number;
+      matieres_sans_cours: number;
+      noms_non_confiees: string;
+      heures_posees: number;
+    }[]
+  ).map((l) => ({
+    etablissementId: Number(l.etablissement_id),
+    etablissement: l.etablissement,
+    commune: l.commune,
+    departement: l.departement,
+    classesConcernees: Number(l.classes_concernees),
+    matieresNonConfiees: Number(l.matieres_non_confiees),
+    matieresSansCours: Number(l.matieres_sans_cours),
+    nomsNonConfiees: l.noms_non_confiees,
+    heuresPosees: Number(l.heures_posees),
+  }));
+}
+
 export const outilsMinistere: Outil[] = [
+  {
+    nom: "besoins_enseignement",
+    description:
+      "Les besoins d'enseignement, établissement par établissement : matières du programme sans professeur confié (avec leurs noms), classes concernées, matières sans aucun cours posé, et volume horaire hebdomadaire posé. Filtrable par département.",
+    roles: ["ministere"],
+    parametres: [
+      { nom: "departement", description: "Nom du département. Absent = toute la nation.", type: "texte", obligatoire: false },
+    ],
+    executer: async (_c, args) => besoinsEnseignement(args.departement as string | undefined),
+  },
+  {
+    nom: "eleves_abandonnes",
+    description:
+      "Les élèves présumés en abandon : ils venaient en classe, puis plus aucune présence marquée depuis plus de 14 jours alors que leur classe continue d'être pointée. Renvoie l'élève, sa classe, son établissement, sa commune, son département et la date de sa dernière présence.",
+    roles: ["ministere"],
+    parametres: [
+      { nom: "departement", description: "Nom du département. Absent = toute la nation.", type: "texte", obligatoire: false },
+    ],
+    executer: async (_c, args) => elevesAbandonnes(args.departement as string | undefined),
+  },
+  {
+    nom: "taux_abandons",
+    description:
+      "Les présomptions d'abandon par département : inscrits, présumés en abandon, garçons, filles et taux pour mille de l'effectif. Répond aux questions « où l'abandon progresse-t-il ? », « garçons ou filles ? ».",
+    roles: ["ministere"],
+    parametres: [],
+    executer: async () => tauxAbandons(),
+  },
   {
     nom: "stats_departement",
     description:
