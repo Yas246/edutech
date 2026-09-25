@@ -441,6 +441,9 @@ async function TableauEnseignant(utilisateur: Utilisateur) {
                 <Link href={`/classes/${c.id}/appel`} className="rounded-lg bg-vert px-3 py-1.5 font-medium text-white hover:bg-vert-fonce">
                   Faire l&apos;appel
                 </Link>
+                <Link href={`/classes/${c.id}/devoirs`} className="rounded-lg border border-ligne px-3 py-1.5 font-medium hover:bg-papier">
+                  Devoirs
+                </Link>
                 <Link href={`/classes/${c.id}/evaluations`} className="rounded-lg border border-ligne px-3 py-1.5 font-medium hover:bg-papier">
                   Évaluations
                 </Link>
@@ -542,7 +545,7 @@ async function TableauEleve(utilisateur: Utilisateur) {
       </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
-        <Widget titre="Mes devoirs à venir" lien="/fil" libelleLien="Dans le fil">
+        <Widget titre="Mes devoirs à venir" lien="/ma-classe" libelleLien="Le cahier de textes">
           {(devoirsAVenir ?? []).length === 0 ? (
             <Vide texte="Aucun devoir à venir." />
           ) : (

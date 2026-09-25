@@ -6,6 +6,7 @@ import {
   classes,
   communautes,
   commentaires,
+  etablissements,
   devoirs,
   evenements,
   matieres,
@@ -45,7 +46,7 @@ function jour(iso: string) {
 export default async function Fil() {
   const utilisateur = await exiger();
   const cercles = await cerclesDePublication();
-  const { cercles: cerclesLecture, classesIds } = await cerclesDeLecture(
+  const { cercles: cerclesLecture, classesIds, ecolesIds: mesEcolesIds } = await cerclesDeLecture(
     utilisateur.id,
     utilisateur.role,
   );
@@ -60,10 +61,16 @@ export default async function Fil() {
         WHERE m.communaute_id = communautes.id AND m.user_id = ${utilisateur.id})`,
     );
   for (const c of mesCommunautes) nomsCercles.set(`communaute:${c.id}`, c.nom);
+  for (const idEcole of mesEcolesIds) {
+    const [nomEcole] = await db
+      .select({ nom: etablissements.nom })
+      .from(etablissements)
+      .where(eq(etablissements.id, idEcole))
+      .limit(1);
+    if (nomEcole) nomsCercles.set(`etablissement:${idEcole}`, nomEcole.nom);
+  }
 
-  const ecolesIds = cerclesLecture
-    .filter((c) => c.type === "etablissement")
-    .map((c) => c.id);
+  const ecolesIds = mesEcolesIds;
   const conditions: (SQL | undefined)[] = [];
   if (ecolesIds.length) {
     conditions.push(and(eq(publications.porteeType, "etablissement"), inArray(publications.porteeId, ecolesIds)));

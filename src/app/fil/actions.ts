@@ -148,23 +148,50 @@ export async function cerclesDePublication() {
   return mesCercles(utilisateur.id, utilisateur.role);
 }
 
-/** Les cercles de LECTURE : publication + devoirs des classes suivies. */
+/** Les cercles de LECTURE : publication, devoirs des classes suivies
+ * ET annonces des écoles fréquentées. */
 export async function cerclesDeLecture(idUtilisateur: number, role: string) {
   const cercles = await mesCercles(idUtilisateur, role);
   const classesIds: number[] = [];
+  const ecolesIds: number[] = [];
+
   if (role === "parent") {
     const { liensFamille } = await import("@/db/schema");
     const classesEnfants = await db
-      .select({ id: classes.id })
+      .select({
+        id: classes.id,
+        etablissementId: classes.etablissementId,
+      })
       .from(liensFamille)
       .innerJoin(inscriptions, eq(inscriptions.eleveUserId, liensFamille.eleveUserId))
       .innerJoin(classes, eq(classes.id, inscriptions.classeId))
       .where(eq(liensFamille.parentUserId, idUtilisateur));
     classesIds.push(...classesEnfants.map((c) => c.id));
+    ecolesIds.push(...classesEnfants.map((c) => c.etablissementId));
   } else {
-    classesIds.push(
-      ...cercles.filter((c) => c.type === "classe").map((c) => c.id),
-    );
+    classesIds.push(...cercles.filter((c) => c.type === "classe").map((c) => c.id));
+    ecolesIds.push(...cercles.filter((c) => c.type === "etablissement").map((c) => c.id));
+    if (role === "eleve") {
+      const ecolesEleve = await db
+        .selectDistinct({ etablissementId: classes.etablissementId })
+        .from(inscriptions)
+        .innerJoin(classes, eq(classes.id, inscriptions.classeId))
+        .where(eq(inscriptions.eleveUserId, idUtilisateur));
+      ecolesIds.push(...ecolesEleve.map((c) => c.etablissementId));
+    }
+    if (role === "enseignant") {
+      const ecolesProf = await db
+        .selectDistinct({ etablissementId: classes.etablissementId })
+        .from(enseignements)
+        .innerJoin(classes, eq(classes.id, enseignements.classeId))
+        .where(eq(enseignements.enseignantUserId, idUtilisateur));
+      ecolesIds.push(...ecolesProf.map((c) => c.etablissementId));
+    }
   }
-  return { cercles, classesIds: [...new Set(classesIds)] };
+
+  return {
+    cercles,
+    classesIds: [...new Set(classesIds)],
+    ecolesIds: [...new Set(ecolesIds)],
+  };
 }
