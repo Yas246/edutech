@@ -858,3 +858,87 @@ export const messagesCoach = pgTable("messages_coach", {
   contenu: text("contenu").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+/* ------------------------------------------------------------------ */
+/* Espaces de classe : adhésions des parents, délégués, bilans, tuteur */
+/* ------------------------------------------------------------------ */
+
+/**
+ * L'adhésion d'un parent à une classe, par son code VMT. Une classe
+ * fermée ne parle pas à des étrangers : notifications de devoirs et
+ * mur de la classe supposent cette adhésion.
+ */
+export const adhesionsClasse = pgTable(
+  "adhesions_classe",
+  {
+    id: serial("id").primaryKey(),
+    classeId: integer("classe_id")
+      .notNull()
+      .references(() => classes.id, { onDelete: "cascade" }),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [unique("adhesions_classe_uniques").on(t.classeId, t.userId)],
+);
+
+/**
+ * Un délégué de classe : un élève que le responsable désigne et qui
+ * peut, en plus des professeurs, publier dans la classe et poser des
+ * devoirs.
+ */
+export const delegues = pgTable(
+  "delegues",
+  {
+    id: serial("id").primaryKey(),
+    classeId: integer("classe_id")
+      .notNull()
+      .references(() => classes.id, { onDelete: "cascade" }),
+    eleveUserId: integer("eleve_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    designePar: integer("designe_par")
+      .notNull()
+      .references(() => users.id),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [unique("delegues_uniques").on(t.classeId, t.eleveUserId)],
+);
+
+/**
+ * Le bilan : une entrée du fil de suivi entre le professeur et le
+ * parent, par enfant. Indépendant de l'adhésion aux classes.
+ */
+export const bilans = pgTable("bilans", {
+  id: serial("id").primaryKey(),
+  eleveUserId: integer("eleve_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  auteurUserId: integer("auteur_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  contenu: text("contenu").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+/**
+ * Le fil d'aide d'un devoir : les questions de l'élève et les réponses
+ * du tuteur, qui guide sans jamais donner la solution.
+ */
+export const messagesTuteur = pgTable("messages_tuteur", {
+  id: serial("id").primaryKey(),
+  devoirId: integer("devoir_id")
+    .notNull()
+    .references(() => devoirs.id, { onDelete: "cascade" }),
+  eleveUserId: integer("eleve_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  auteurUserId: integer("auteur_user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  /** vrai quand le message vient du tuteur (moteur), faux pour l'élève */
+  duTuteur: boolean("du_tuteur").default(false).notNull(),
+  contenu: text("contenu").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});

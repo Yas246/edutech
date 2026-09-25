@@ -3,7 +3,9 @@ import type { ReactNode } from "react";
 import { IconLogout } from "@tabler/icons-react";
 import { libellesRole, type Role } from "@/lib/roles";
 import { seDeconnecter } from "@/app/deconnexion";
+import type { Utilisateur } from "@/lib/auth";
 import LiensNav from "./liens-nav";
+import MesEspaces from "./mes-espaces";
 import { navigationPour } from "./navigation";
 
 /** Les initiales de la personne, pour l'avatar sans photo. */
@@ -16,16 +18,15 @@ function initiales(prenom: string, nom: string) {
  * la place de la personne en bas, avec sa sortie de session.
  */
 export default function BarreLaterale({
-  role,
-  prenom,
-  nom,
+  utilisateur,
   cloche,
 }: {
-  role: Role;
-  prenom: string;
-  nom: string;
+  utilisateur: Utilisateur;
   cloche: ReactNode;
 }) {
+  const role = utilisateur.role as Role;
+  const prenom = utilisateur.prenom;
+  const nom = utilisateur.nom;
   return (
     <div className="flex h-dvh flex-col">
       <Link
@@ -49,6 +50,7 @@ export default function BarreLaterale({
 
       <div className="flex-1 overflow-y-auto px-3 py-4">
         <LiensNav groupes={navigationPour(role)} />
+        <MesEspaces utilisateur={utilisateur} />
       </div>
 
       <div className="border-t border-ligne px-3 py-3">

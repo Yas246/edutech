@@ -4,7 +4,13 @@ import { useActionState } from "react";
 import { rejoindreEcole, rejoindreClasse } from "./actions";
 import { Alerte, type Retour } from "@/components/ui/alerte";
 
-export default function FormulaireRejoindre({ role }: { role: string }) {
+export default function FormulaireRejoindre({
+  role,
+  codeInitial,
+}: {
+  role: string;
+  codeInitial?: string;
+}) {
   const [etatEcole, actionEcole, enCoursEcole] = useActionState<Retour, FormData>(
     rejoindreEcole,
     {},
@@ -13,6 +19,9 @@ export default function FormulaireRejoindre({ role }: { role: string }) {
     rejoindreClasse,
     {},
   );
+
+  const codeEcole = codeInitial?.toUpperCase().startsWith("VME-") ? codeInitial : "";
+  const codeClasse = codeInitial?.toUpperCase().startsWith("VMT-") ? codeInitial : "";
 
   return (
     <div className="space-y-4">
@@ -29,6 +38,7 @@ export default function FormulaireRejoindre({ role }: { role: string }) {
               name="code"
               required
               maxLength={12}
+              defaultValue={codeEcole}
               placeholder="VME-XXXX"
               className="w-44 rounded-xl border border-ligne bg-white px-3 py-2 text-sm uppercase tracking-wider"
             />
@@ -43,19 +53,21 @@ export default function FormulaireRejoindre({ role }: { role: string }) {
         </form>
       )}
 
-      {role === "eleve" && (
+      {(role === "eleve" || role === "parent") && (
         <form action={actionClasse} className="rounded-2xl border border-ligne bg-white p-5">
           <Alerte {...etatClasse} />
           <h2 className="font-semibold">Rejoindre une classe</h2>
           <p className="mt-1 text-sm text-encre-doux">
-            Le code de la classe vous est donné par le professeur : il vous
-            inscrit réellement, au même titre que l&apos;appel de la direction.
+            {role === "eleve"
+              ? "Le code de la classe vous est donné par le professeur : il vous inscrit réellement, au même titre que l'appel de la direction."
+              : "Le code de la classe de votre enfant vous est donné par le professeur : vous recevez les annonces de la classe et vous figurez parmi ses parents."}
           </p>
           <div className="mt-3 flex gap-2">
             <input
               name="code"
               required
               maxLength={12}
+              defaultValue={codeClasse}
               placeholder="VMT-XXXX"
               className="w-44 rounded-xl border border-ligne bg-white px-3 py-2 text-sm uppercase tracking-wider"
             />

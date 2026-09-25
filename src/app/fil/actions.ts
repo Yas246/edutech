@@ -4,57 +4,65 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import {
-  classes,
   communautes,
   communautesMembres,
   commentaires,
-  enseignements,
-  inscriptions,
+  etablissements,
   notifications,
   publications,
   reactions,
-  users,
 } from "@/db/schema";
 import { exiger } from "@/lib/auth";
+import {
+  droitsPortee,
+  mesClassesMembre,
+  mesEtablissementsMembre,
+} from "@/lib/espace";
 
 export type Cercle = { type: "etablissement" | "classe" | "communaute"; id: number; nom: string };
 
 /**
- * Les cercles où l'utilisateur peut publier : ses classes (comme élève
- * ou enseignant), son école (comme direction ou enseignant de l'école)
- * et les communautés dont il est membre.
+ * Les cercles où la personne peut PUBLIER : la direction publie dans
+ * son école et les espaces de ses classes, l'enseignant dans ses
+ * classes (et dans l'école de son équipe confirmée), l'élève délégué
+ * dans sa classe ; chacun dans les communautés ouvertes qu'il a
+ * rejointes. Élèves simples et parents commentent ou lisent : ils
+ * n'ouvrent pas le composer pour les cercles scolaires.
  */
-async function mesCercles(idUtilisateur: number, role: string): Promise<Cercle[]> {
+export async function cerclesDePublication(): Promise<Cercle[]> {
+  const utilisateur = await exiger();
   const resultats: Cercle[] = [];
 
-  if (role === "eleve") {
-    const lignes = await db
-      .select({ id: classes.id, nom: classes.nom, etablissementId: classes.etablissementId })
-      .from(inscriptions)
-      .innerJoin(classes, eq(classes.id, inscriptions.classeId))
-      .where(eq(inscriptions.eleveUserId, idUtilisateur));
-    for (const l of lignes) {
-      resultats.push({ type: "classe", id: l.id, nom: `Classe ${l.nom}` });
+  if (utilisateur.role === "direction") {
+    const ecoles = await db
+      .select({ id: etablissements.id, nom: etablissements.nom })
+      .from(etablissements)
+      .where(eq(etablissements.directionUserId, utilisateur.id));
+    for (const e of ecoles) {
+      resultats.push({ type: "etablissement", id: e.id, nom: e.nom });
     }
-  } else {
-    // Enseignant et direction : via les enseignements / la direction.
-    const enseignementsLignes = await db
-      .select({ id: classes.id, nom: classes.nom, etablissementId: classes.etablissementId })
-      .from(enseignements)
-      .innerJoin(classes, eq(classes.id, enseignements.classeId))
-      .where(eq(enseignements.enseignantUserId, idUtilisateur));
-    for (const l of enseignementsLignes) {
-      resultats.push({ type: "classe", id: l.id, nom: `Classe ${l.nom}` });
+  }
+  if (utilisateur.role === "enseignant") {
+    const { equipes, etablissements } = await import("@/db/schema");
+    const ecoles = await db
+      .select({ id: etablissements.id, nom: etablissements.nom })
+      .from(equipes)
+      .innerJoin(etablissements, eq(etablissements.id, equipes.etablissementId))
+      .where(and(eq(equipes.userId, utilisateur.id), eq(equipes.statut, "confirme")));
+    for (const e of ecoles) {
+      resultats.push({ type: "etablissement", id: e.id, nom: e.nom });
     }
+  }
 
-    if (role === "direction") {
-      const { etablissements } = await import("@/db/schema");
-      const [ecole] = await db
-        .select({ id: etablissements.id, nom: etablissements.nom })
-        .from(etablissements)
-        .where(eq(etablissements.directionUserId, idUtilisateur))
-        .limit(1);
-      if (ecole) resultats.unshift({ type: "etablissement", id: ecole.id, nom: ecole.nom });
+  if (utilisateur.role !== "parent") {
+    for (const c of await mesClassesMembre(utilisateur)) {
+      // L'élève simple lit et commente : seul le délégué publie,
+      // place calculée plus bas.
+      if (utilisateur.role === "eleve") {
+        const { placeDansClasse } = await import("@/lib/espace");
+        if (await placeDansClasse(c.id, utilisateur) !== "moderateur") continue;
+      }
+      resultats.push({ type: "classe", id: c.id, nom: `Classe ${c.nom}` });
     }
   }
 
@@ -62,7 +70,7 @@ async function mesCercles(idUtilisateur: number, role: string): Promise<Cercle[]
     .select({ id: communautes.id, nom: communautes.nom })
     .from(communautesMembres)
     .innerJoin(communautes, eq(communautes.id, communautesMembres.communauteId))
-    .where(eq(communautesMembres.userId, idUtilisateur));
+    .where(eq(communautesMembres.userId, utilisateur.id));
   for (const c of mesCommunautes) {
     resultats.push({ type: "communaute", id: c.id, nom: c.nom });
   }
@@ -82,9 +90,9 @@ export async function publier(donnees: FormData) {
   const porteeId = Number(idTexte);
   if (!Number.isInteger(porteeId)) return;
 
-  // Vérification : le cercle appartient vraiment à l'utilisateur.
-  const cercles = await mesCercles(utilisateur.id, utilisateur.role);
-  if (!cercles.some((c) => c.type === porteeType && c.id === porteeId)) return;
+  // Le droit de publier dans ce cercle, recalculé côté serveur.
+  const droits = await droitsPortee(porteeType, porteeId, utilisateur);
+  if (!droits.publier) return;
 
   await db.insert(publications).values({
     auteurUserId: utilisateur.id,
@@ -108,6 +116,9 @@ export async function commenter(donnees: FormData) {
     .limit(1);
   if (!publication) return;
 
+  const droits = await droitsPortee(publication.porteeType, publication.porteeId, utilisateur);
+  if (!droits.commenter) return;
+
   await db.insert(commentaires).values({
     publicationId,
     auteurUserId: utilisateur.id,
@@ -130,6 +141,16 @@ export async function reagir(donnees: FormData) {
   const publicationId = Number(donnees.get("publicationId"));
   if (!publicationId) return;
 
+  const [publication] = await db
+    .select()
+    .from(publications)
+    .where(eq(publications.id, publicationId))
+    .limit(1);
+  if (!publication) return;
+
+  const droits = await droitsPortee(publication.porteeType, publication.porteeId, utilisateur);
+  if (!droits.reagir) return;
+
   const [deja] = await db
     .select({ id: reactions.id })
     .from(reactions)
@@ -143,55 +164,25 @@ export async function reagir(donnees: FormData) {
   revalidatePath("/fil");
 }
 
-export async function cerclesDePublication() {
-  const utilisateur = await exiger();
-  return mesCercles(utilisateur.id, utilisateur.role);
-}
-
-/** Les cercles de LECTURE : publication, devoirs des classes suivies
- * ET annonces des écoles fréquentées. */
-export async function cerclesDeLecture(idUtilisateur: number, role: string) {
-  const cercles = await mesCercles(idUtilisateur, role);
-  const classesIds: number[] = [];
-  const ecolesIds: number[] = [];
-
-  if (role === "parent") {
-    const { liensFamille } = await import("@/db/schema");
-    const classesEnfants = await db
-      .select({
-        id: classes.id,
-        etablissementId: classes.etablissementId,
-      })
-      .from(liensFamille)
-      .innerJoin(inscriptions, eq(inscriptions.eleveUserId, liensFamille.eleveUserId))
-      .innerJoin(classes, eq(classes.id, inscriptions.classeId))
-      .where(eq(liensFamille.parentUserId, idUtilisateur));
-    classesIds.push(...classesEnfants.map((c) => c.id));
-    ecolesIds.push(...classesEnfants.map((c) => c.etablissementId));
-  } else {
-    classesIds.push(...cercles.filter((c) => c.type === "classe").map((c) => c.id));
-    ecolesIds.push(...cercles.filter((c) => c.type === "etablissement").map((c) => c.id));
-    if (role === "eleve") {
-      const ecolesEleve = await db
-        .selectDistinct({ etablissementId: classes.etablissementId })
-        .from(inscriptions)
-        .innerJoin(classes, eq(classes.id, inscriptions.classeId))
-        .where(eq(inscriptions.eleveUserId, idUtilisateur));
-      ecolesIds.push(...ecolesEleve.map((c) => c.etablissementId));
-    }
-    if (role === "enseignant") {
-      const ecolesProf = await db
-        .selectDistinct({ etablissementId: classes.etablissementId })
-        .from(enseignements)
-        .innerJoin(classes, eq(classes.id, enseignements.classeId))
-        .where(eq(enseignements.enseignantUserId, idUtilisateur));
-      ecolesIds.push(...ecolesProf.map((c) => c.etablissementId));
-    }
-  }
+/**
+ * Les cercles de LECTURE : les murs des espaces dont je suis membre.
+ * Pour un parent, une classe ne parle que s'il l'a rejointe par son
+ * code ; les annonces de l'école suivent les enfants.
+ */
+export async function cerclesDeLecture(utilisateur: Awaited<ReturnType<typeof exiger>>) {
+  const classesMembre = await mesClassesMembre(utilisateur);
+  const ecolesIds = await mesEtablissementsMembre(utilisateur);
+  const communautesIds = (
+    await db
+      .select({ id: communautes.id })
+      .from(communautesMembres)
+      .innerJoin(communautes, eq(communautes.id, communautesMembres.communauteId))
+      .where(eq(communautesMembres.userId, utilisateur.id))
+  ).map((c) => c.id);
 
   return {
-    cercles,
-    classesIds: [...new Set(classesIds)],
+    classesIds: classesMembre.map((c) => c.id),
     ecolesIds: [...new Set(ecolesIds)],
+    communautesIds: [...new Set(communautesIds)],
   };
 }

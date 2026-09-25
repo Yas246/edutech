@@ -26,7 +26,9 @@ export type IconeNav =
   | "orientation"
   | "transport"
   | "enfants"
-  | "rejoindre";
+  | "rejoindre"
+  | "bilans"
+  | "aide";
 
 export type LienNav = { href: string; titre: string; icone: IconeNav };
 export type GroupeNav = { titre: string | null; liens: LienNav[] };
@@ -90,10 +92,17 @@ export function navigationPour(role: Role): GroupeNav[] {
       ],
     });
   }
+  if (role === "enseignant") {
+    groupes.push({
+      titre: "Mon enseignement",
+      liens: [{ href: "/bilans", titre: "Bilans", icone: "bilans" }],
+    });
+  }
   if (role === "eleve") {
     groupes.push({
       titre: "Mes études",
       liens: [
+        { href: "/aide-devoirs", titre: "Aide devoirs", icone: "aide" },
         { href: "/orientation", titre: "Mon orientation", icone: "orientation" },
         { href: "/calendrier", titre: "Calendrier", icone: "calendrier" },
         { href: "/transport", titre: "Transport", icone: "transport" },
@@ -106,6 +115,7 @@ export function navigationPour(role: Role): GroupeNav[] {
       titre: "Ma famille",
       liens: [
         { href: "/mes-enfants", titre: "Mes enfants", icone: "enfants" },
+        { href: "/bilans", titre: "Bilans", icone: "bilans" },
         { href: "/mes-finances", titre: "Mes finances", icone: "finances" },
         { href: "/calendrier", titre: "Calendrier", icone: "calendrier" },
         { href: "/transport", titre: "Transport", icone: "transport" },

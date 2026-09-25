@@ -3,7 +3,7 @@
 import { and, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { annulationsCreneaux, classes, creneaux, devoirs, enseignements, etablissements, inscriptions, liensFamille, matieres, notifications, salles, users } from "@/db/schema";
+import { adhesionsClasse, annulationsCreneaux, classes, creneaux, devoirs, enseignements, etablissements, inscriptions, liensFamille, matieres, notifications, publications, salles, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 import { gardeEdtEtablissement } from "@/lib/garde-classe";
 import { estHeureValide, seChevauchent } from "@/lib/vie-scolaire";
@@ -286,27 +286,15 @@ export async function retirerCreneau(_prec: Retour, donnees: FormData): Promise<
 
 export async function creerDevoir(_prec: Retour, donnees: FormData): Promise<Retour> {
   const idClasse = Number(donnees.get("classeId"));
-  let contexte = await gardeEdt(idClasse);
-  if (!contexte) {
-    // L'ENSEIGNANT de la matière dans cette classe donne aussi les
-    // devoirs : c'est même sa voie normale.
-    const utilisateur = await exiger("direction", "enseignant");
-    const [attr] = await db
-      .select({ id: enseignements.id })
-      .from(enseignements)
-      .where(
-        and(
-          eq(enseignements.classeId, idClasse),
-          eq(enseignements.enseignantUserId, utilisateur.id),
-        ),
-      )
-      .limit(1);
-    if (!attr) {
-      return { erreur: "Seul l'enseignant d'une matière de la classe (ou la direction) donne un devoir." };
-    }
-    contexte = {
-      utilisateur,
-      classe: { id: idClasse, nom: "", etablissementId: 0 },
+  // La direction, l'enseignant d'une matière de la classe ou l'élève
+  // délégué posent les devoirs ; la place est recalculée côté serveur.
+  const utilisateur = await exiger("direction", "enseignant", "eleve");
+  const { droitsClasse } = await import("@/lib/espace");
+  const droits = await droitsClasse(idClasse, utilisateur);
+  if (!droits.publier) {
+    return {
+      erreur:
+        "Seuls la direction, les professeurs et les délégués de la classe donnent un devoir.",
     };
   }
 
@@ -316,7 +304,7 @@ export async function creerDevoir(_prec: Retour, donnees: FormData): Promise<Ret
   const aRendreLe = String(donnees.get("aRendreLe") ?? "").trim();
   const donneLe = String(donnees.get("donneLe") ?? "").trim();
 
-  if (contexte.utilisateur.role === "enseignant") {
+  if (utilisateur.role === "enseignant") {
     // L'enseignant ne pose des devoirs que sur SES matières de la classe.
     const [attribution] = await db
       .select({ id: enseignements.id })
@@ -325,7 +313,7 @@ export async function creerDevoir(_prec: Retour, donnees: FormData): Promise<Ret
         and(
           eq(enseignements.classeId, idClasse),
           eq(enseignements.matiereId, matiereId),
-          eq(enseignements.enseignantUserId, contexte.utilisateur.id),
+          eq(enseignements.enseignantUserId, utilisateur.id),
         ),
       )
       .limit(1);
@@ -339,28 +327,44 @@ export async function creerDevoir(_prec: Retour, donnees: FormData): Promise<Ret
   if (!/^\d{4}-\d{2}-\d{2}$/.test(aRendreLe)) return { erreur: "Choisissez la date de remise." };
   if (aRendreLe < donneLe) return { erreur: "La remise ne peut pas précéder le jour du don." };
 
+  const [matiere] = await db
+    .select({ nom: matieres.nom })
+    .from(matieres)
+    .where(and(eq(matieres.id, matiereId), eq(matieres.classeId, idClasse)))
+    .limit(1);
+  if (!matiere) return { erreur: "Cette matière n'existe pas dans la classe." };
+
   await db.insert(devoirs).values({
     classeId: idClasse,
     matiereId,
-    enseignantUserId: contexte.utilisateur.id,
+    enseignantUserId: utilisateur.id,
     titre,
     consigne,
     donneLe,
     aRendreLe,
   });
 
-  // Les parents des élèves de la classe sont prévenus une fois.
-  const [matiere] = await db
-    .select({ nom: matieres.nom })
-    .from(matieres)
-    .where(eq(matieres.id, matiereId))
-    .limit(1);
+  // Le devoir se publie sur le mur de la classe : c'est là que la
+  // classe le lit, avec les annonces.
+  const [aa, mm, jj] = aRendreLe.split("-");
+  await db.insert(publications).values({
+    auteurUserId: utilisateur.id,
+    porteeType: "classe",
+    porteeId: idClasse,
+    contenu: `Devoir de ${matiere.nom} : ${titre}, à rendre le ${jj}/${mm}/${aa}.`,
+  });
+
+  // Les parents qui ont rejoint la classe sont prévenus une fois :
+  // une classe fermée ne parle pas à des étrangers.
   const familles = await db
-    .select({ parentUserId: liensFamille.parentUserId })
+    .selectDistinct({ parentUserId: liensFamille.parentUserId })
     .from(inscriptions)
     .innerJoin(liensFamille, eq(liensFamille.eleveUserId, inscriptions.eleveUserId))
-    .where(eq(inscriptions.classeId, idClasse));
-  const texte = `Nouveau devoir en ${matiere?.nom ?? "classe"} : « ${titre} », à rendre le ${aRendreLe}`;
+    .innerJoin(adhesionsClasse, eq(adhesionsClasse.userId, liensFamille.parentUserId))
+    .where(
+      and(eq(inscriptions.classeId, idClasse), eq(adhesionsClasse.classeId, idClasse)),
+    );
+  const texte = `Nouveau devoir en ${matiere.nom} : « ${titre} », à rendre le ${aRendreLe}`;
   const dejaLa =
     familles.length > 0
       ? await db
@@ -378,12 +382,13 @@ export async function creerDevoir(_prec: Retour, donnees: FormData): Promise<Ret
       : [];
   const alertes = familles
     .filter((f) => !dejaLa.some((d) => d.userId === f.parentUserId))
-    .map((f) => ({ userId: f.parentUserId, texte, lien: "/tableau-de-bord" }));
+    .map((f) => ({ userId: f.parentUserId, texte, lien: `/classes/${idClasse}/devoirs` }));
   if (alertes.length > 0) {
     await db.insert(notifications).values(alertes);
   }
 
   revalidatePath(`/classes/${idClasse}/devoirs`);
-  return { message: `Devoir « ${titre} » posé : les familles le voient.` };
+  revalidatePath(`/classes/${idClasse}`);
+  return { message: `Devoir « ${titre} » posé : il est au cahier de textes et au mur de la classe.` };
 }
 

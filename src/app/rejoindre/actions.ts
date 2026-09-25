@@ -1,9 +1,11 @@
 "use server";
 
 import { and, eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import {
+  adhesionsClasse,
   codesClasse,
   codesEquipe,
   equipes,
@@ -72,10 +74,13 @@ export async function rejoindreEcole(_prec: Retour, donnees: FormData): Promise<
 
 /**
  * L'élève rejoint sa classe par son code : c'est l'inscription réelle,
- * la même que pose la direction — jamais un doublon.
+ * la même que pose la direction — jamais un doublon. Le parent utilise
+ * le même code : il rejoint l'espace de la classe et y suit ce qui y
+ * est publié, en lecture. Dans les deux cas, on atterrit dans la
+ * classe.
  */
 export async function rejoindreClasse(_prec: Retour, donnees: FormData): Promise<Retour> {
-  const utilisateur = await exiger("eleve");
+  const utilisateur = await exiger("eleve", "parent");
   const brut = String(donnees.get("code") ?? "").trim().toUpperCase();
   if (!brut) return { erreur: "Saisissez le code de la classe." };
   if (!(await saisieAutorisee(utilisateur.id))) {
@@ -92,26 +97,47 @@ export async function rejoindreClasse(_prec: Retour, donnees: FormData): Promise
     return { erreur: "Code inconnu. Vérifiez auprès du professeur de la classe." };
   }
 
-  const [deja] = await db
-    .select({ id: inscriptions.id })
-    .from(inscriptions)
-    .where(
-      and(
-        eq(inscriptions.classeId, entree.classeId),
-        eq(inscriptions.eleveUserId, utilisateur.id),
-      ),
-    )
-    .limit(1);
-  if (deja) {
-    await remettreCompteur(utilisateur.id);
-    return { message: "Vous êtes déjà inscrit dans cette classe." };
+  if (utilisateur.role === "eleve") {
+    const [deja] = await db
+      .select({ id: inscriptions.id })
+      .from(inscriptions)
+      .where(
+        and(
+          eq(inscriptions.classeId, entree.classeId),
+          eq(inscriptions.eleveUserId, utilisateur.id),
+        ),
+      )
+      .limit(1);
+    if (deja) {
+      await remettreCompteur(utilisateur.id);
+      redirect(`/classes/${entree.classeId}`);
+    }
+    await db
+      .insert(inscriptions)
+      .values({ classeId: entree.classeId, eleveUserId: utilisateur.id })
+      .onConflictDoNothing();
+  } else {
+    const [deja] = await db
+      .select({ id: adhesionsClasse.id })
+      .from(adhesionsClasse)
+      .where(
+        and(
+          eq(adhesionsClasse.classeId, entree.classeId),
+          eq(adhesionsClasse.userId, utilisateur.id),
+        ),
+      )
+      .limit(1);
+    if (!deja) {
+      await db
+        .insert(adhesionsClasse)
+        .values({ classeId: entree.classeId, userId: utilisateur.id })
+        .onConflictDoNothing();
+    }
   }
 
-  await db
-    .insert(inscriptions)
-    .values({ classeId: entree.classeId, eleveUserId: utilisateur.id })
-    .onConflictDoNothing();
   await remettreCompteur(utilisateur.id);
   revalidatePath("/tableau-de-bord");
-  return { message: "Inscription enregistrée : bienvenue dans la classe." };
+  revalidatePath(`/classes/${entree.classeId}`);
+  // L'atterrissage : directement dans l'espace de la classe.
+  redirect(`/classes/${entree.classeId}`);
 }

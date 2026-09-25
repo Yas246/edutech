@@ -15,6 +15,12 @@ import {
   users,
 } from "@/db/schema";
 import { exiger, nomComplet } from "@/lib/auth";
+import {
+  droitsClasse,
+  droitsCommunaute,
+  droitsEtablissement,
+  mesClassesMembre,
+} from "@/lib/espace";
 import { EtatVide } from "@/components/ui/etat-vide";
 import { Bouton, champClasse } from "@/components/ui/formulaire";
 import {
@@ -46,31 +52,42 @@ function jour(iso: string) {
 export default async function Fil() {
   const utilisateur = await exiger();
   const cercles = await cerclesDePublication();
-  const { cercles: cerclesLecture, classesIds, ecolesIds: mesEcolesIds } = await cerclesDeLecture(
-    utilisateur.id,
-    utilisateur.role,
-  );
+  const { classesIds, ecolesIds, communautesIds } = await cerclesDeLecture(utilisateur);
 
-  // Les communautés suivies complètent la lecture.
-  const nomsCercles = new Map(cerclesLecture.map((c) => [`${c.type}:${c.id}`, c.nom]));
-  const mesCommunautes = await db
-    .select({ id: communautes.id, nom: communautes.nom })
-    .from(communautes)
-    .where(
-      sql`EXISTS (SELECT 1 FROM communautes_membres m
-        WHERE m.communaute_id = communautes.id AND m.user_id = ${utilisateur.id})`,
-    );
-  for (const c of mesCommunautes) nomsCercles.set(`communaute:${c.id}`, c.nom);
-  for (const idEcole of mesEcolesIds) {
-    const [nomEcole] = await db
-      .select({ nom: etablissements.nom })
-      .from(etablissements)
-      .where(eq(etablissements.id, idEcole))
-      .limit(1);
-    if (nomEcole) nomsCercles.set(`etablissement:${idEcole}`, nomEcole.nom);
+  /* Mes droits dans chacun de mes cercles : les boutons du fil en
+     découlent (un parent lecteur lit sans bouton d'action). */
+  const droitsParCercle = new Map<string, { lire: boolean; commenter: boolean; reagir: boolean; publier: boolean }>();
+  for (const id of classesIds) {
+    droitsParCercle.set(`classe:${id}`, await droitsClasse(id, utilisateur));
+  }
+  for (const id of ecolesIds) {
+    droitsParCercle.set(`etablissement:${id}`, await droitsEtablissement(id, utilisateur));
+  }
+  for (const id of communautesIds) {
+    droitsParCercle.set(`communaute:${id}`, await droitsCommunaute(id, utilisateur.id));
   }
 
-  const ecolesIds = mesEcolesIds;
+  /* Les noms des cercles lus : mes espaces, mes écoles, mes communautés. */
+  const nomsCercles = new Map<string, string>();
+  const classesMembre = await mesClassesMembre(utilisateur);
+  for (const c of classesMembre) nomsCercles.set(`classe:${c.id}`, `Classe ${c.nom}`);
+  const ecolesMembre =
+    ecolesIds.length > 0
+      ? await db
+          .select({ id: etablissements.id, nom: etablissements.nom })
+          .from(etablissements)
+          .where(inArray(etablissements.id, ecolesIds))
+      : [];
+  for (const e of ecolesMembre) nomsCercles.set(`etablissement:${e.id}`, e.nom);
+  const mesCommunautes =
+    communautesIds.length > 0
+      ? await db
+          .select({ id: communautes.id, nom: communautes.nom })
+          .from(communautes)
+          .where(inArray(communautes.id, communautesIds))
+      : [];
+  for (const c of mesCommunautes) nomsCercles.set(`communaute:${c.id}`, c.nom);
+
   const conditions: (SQL | undefined)[] = [];
   if (ecolesIds.length) {
     conditions.push(and(eq(publications.porteeType, "etablissement"), inArray(publications.porteeId, ecolesIds)));
@@ -78,7 +95,6 @@ export default async function Fil() {
   if (classesIds.length) {
     conditions.push(and(eq(publications.porteeType, "classe"), inArray(publications.porteeId, classesIds)));
   }
-  const communautesIds = mesCommunautes.map((c) => c.id);
   if (communautesIds.length) {
     conditions.push(and(eq(publications.porteeType, "communaute"), inArray(publications.porteeId, communautesIds)));
   }
@@ -244,8 +260,10 @@ export default async function Fil() {
         ) : (
           <div className="mt-6">
             <EtatVide>
-              Vous n'avez pas encore de classe, d'école ni de communauté : le
-              fil s'ouvrira avec votre premier rattachement.
+              Vous suivez vos classes et vos communautés ici. Pour
+              publier, rejoignez une communauté ouverte — dans l'espace
+              d'une classe, la parole est à la direction, aux professeurs
+              et aux délégués.
             </EtatVide>
           </div>
         )}
@@ -284,6 +302,15 @@ export default async function Fil() {
             const sesCommentaires = tousCommentaires.filter((c) => c.publicationId === p.id);
             const sesReactions = toutesReactions.filter((r) => r.publicationId === p.id);
             const dejaReagi = sesReactions.some((r) => r.userId === utilisateur.id);
+            // Mes droits dans le cercle de cette publication : un
+            // parent lecteur lit sans bouton d'action.
+            const droitsIci =
+              droitsParCercle.get(`${p.porteeType}:${p.porteeId}`) ?? {
+                lire: true,
+                commenter: false,
+                reagir: false,
+                publier: false,
+              };
             return (
               <article key={p.id} className="rounded-2xl border border-ligne bg-white p-5">
                 <div className="flex items-center gap-3">
@@ -303,19 +330,21 @@ export default async function Fil() {
                 <p className="mt-3 whitespace-pre-line text-sm">{p.contenu}</p>
 
                 <div className="mt-3 flex items-center gap-4 text-sm">
-                  <form action={reagir}>
-                    <input type="hidden" name="publicationId" value={p.id} />
-                    <button
-                      type="submit"
-                      className={`rounded-full px-3 py-1 font-medium ${
-                        dejaReagi
-                          ? "bg-jaune-clair text-encre"
-                          : "border border-ligne text-encre-doux hover:bg-papier"
-                      }`}
-                    >
-                      Utile · {sesReactions.length}
-                    </button>
-                  </form>
+                  {droitsIci.reagir && (
+                    <form action={reagir}>
+                      <input type="hidden" name="publicationId" value={p.id} />
+                      <button
+                        type="submit"
+                        className={`rounded-full px-3 py-1 font-medium ${
+                          dejaReagi
+                            ? "bg-jaune-clair text-encre"
+                            : "border border-ligne text-encre-doux hover:bg-papier"
+                        }`}
+                      >
+                        Utile · {sesReactions.length}
+                      </button>
+                    </form>
+                  )}
                   <span className="text-encre-doux">
                     {sesCommentaires.length} commentaire{sesCommentaires.length > 1 ? "s" : ""}
                   </span>
@@ -334,19 +363,21 @@ export default async function Fil() {
                   </ul>
                 )}
 
-                <form action={commenter} className="mt-3 flex items-center gap-2">
-                  <input type="hidden" name="publicationId" value={p.id} />
-                  <input
-                    name="contenu"
-                    required
-                    maxLength={500}
-                    placeholder="Écrire un commentaire…"
-                    className="flex-1 rounded-xl border border-ligne bg-white px-3 py-2 text-sm"
-                  />
-                  <Bouton taille="petit" type="submit">
-                    Envoyer
-                  </Bouton>
-                </form>
+                {droitsIci.commenter && (
+                  <form action={commenter} className="mt-3 flex items-center gap-2">
+                    <input type="hidden" name="publicationId" value={p.id} />
+                    <input
+                      name="contenu"
+                      required
+                      maxLength={500}
+                      placeholder="Écrire un commentaire…"
+                      className="flex-1 rounded-xl border border-ligne bg-white px-3 py-2 text-sm"
+                    />
+                    <Bouton taille="petit" type="submit">
+                      Envoyer
+                    </Bouton>
+                  </form>
+                )}
               </article>
             );
           })}

@@ -3,8 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, asc, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { classes, devoirs, enseignements, inscriptions, liensFamille, matieres, users } from "@/db/schema";
+import { classes, devoirs, enseignements, inscriptions, matieres, users, adhesionsClasse } from "@/db/schema";
 import { exiger } from "@/lib/auth";
+import { droitsClasse } from "@/lib/espace";
 import { EnTetePage } from "@/components/ui/en-tete";
 import { EtatVide } from "@/components/ui/etat-vide";
 import { FormulaireDevoir } from "../emploi-du-temps/formulaire-creneau";
@@ -23,7 +24,7 @@ export default async function CahierDeTextes({
 }) {
   const { id } = await params;
   const idClasse = Number(id);
-  const utilisateur = await exiger("direction", "enseignant", "parent", "eleve", "ministere");
+  const utilisateur = await exiger("direction", "enseignant", "parent", "eleve");
   if (!Number.isInteger(idClasse)) notFound();
 
   const [classe] = await db
@@ -33,44 +34,22 @@ export default async function CahierDeTextes({
     .limit(1);
   if (!classe) notFound();
 
-  // Les élèves et les parents n'ont accès qu'au cahier de LEUR classe.
-  if (utilisateur.role === "eleve") {
-    const [inscription] = await db
-      .select({ id: inscriptions.id })
-      .from(inscriptions)
-      .where(
-        and(eq(inscriptions.classeId, idClasse), eq(inscriptions.eleveUserId, utilisateur.id)),
-      )
-      .limit(1);
-    if (!inscription) notFound();
-  }
-  if (utilisateur.role === "parent") {
-    const [lien] = await db
-      .select({ id: liensFamille.id })
-      .from(liensFamille)
-      .innerJoin(inscriptions, eq(inscriptions.eleveUserId, liensFamille.eleveUserId))
-      .where(
-        and(
-          eq(liensFamille.parentUserId, utilisateur.id),
-          eq(inscriptions.classeId, idClasse),
-        ),
-      )
-      .limit(1);
-    if (!lien) notFound();
-  }
+  // L'espace est fermé : la place dans la classe décide de l'accès.
+  const droits = await droitsClasse(idClasse, utilisateur);
+  if (!droits.lire) notFound();
 
-  // Qui peut donner un devoir ici : la direction, ou l'enseignant
-  // d'une matière de la classe (avec SES matières seulement).
-  let peutCreer = false;
+  // Qui peut donner un devoir ici : la direction, l'enseignant
+  // (avec SES matières seulement) ou l'élève délégué.
+  let peutCreer = droits.publier;
   let matieresCreer: { id: number; nom: string }[] = [];
-  if (utilisateur.role === "direction") {
-    peutCreer = true;
+  if (peutCreer) {
     matieresCreer = await db
       .select({ id: matieres.id, nom: matieres.nom })
       .from(matieres)
       .where(eq(matieres.classeId, idClasse))
       .orderBy(asc(matieres.nom));
-  } else if (utilisateur.role === "enseignant") {
+  }
+  if (utilisateur.role === "enseignant" && peutCreer) {
     const sesAttributions = await db
       .select({ id: matieres.id, nom: matieres.nom })
       .from(enseignements)
@@ -82,11 +61,9 @@ export default async function CahierDeTextes({
         ),
       )
       .orderBy(asc(matieres.nom));
-    if (sesAttributions.length > 0) {
-      peutCreer = true;
-      matieresCreer = sesAttributions;
-    }
+    if (sesAttributions.length > 0) matieresCreer = sesAttributions;
   }
+
 
     const liste = await db
     .select({

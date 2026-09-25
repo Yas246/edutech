@@ -16,6 +16,8 @@ import {
   IconBulb,
   IconKey,
   IconLayoutDashboard,
+  IconLifebuoy,
+  IconNotes,
   IconRss,
   IconSchool,
   IconUserCheck,
@@ -51,6 +53,8 @@ const ICONES: Record<IconeNav, Icon> = {
   transport: IconBus,
   enfants: IconUsers,
   rejoindre: IconKey,
+  bilans: IconNotes,
+  aide: IconLifebuoy,
 };
 
 /**

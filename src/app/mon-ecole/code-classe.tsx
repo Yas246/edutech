@@ -34,8 +34,18 @@ async function codeDeClasse(classeId: number): Promise<string> {
 /** Un nouveau code pour la classe : l'ancien ne marche plus. */
 async function regenerer(donnees: FormData) {
   "use server";
-  await exiger("direction");
+  const utilisateur = await exiger("direction");
   const classeId = Number(donnees.get("classeId"));
+  // Seule la direction de l'établissement de la classe renouvelle.
+  const { classes, etablissements } = await import("@/db/schema");
+  const [classe] = await db
+    .select({ directionUserId: etablissements.directionUserId })
+    .from(classes)
+    .innerJoin(etablissements, eq(etablissements.id, classes.etablissementId))
+    .where(eq(classes.id, classeId))
+    .limit(1);
+  if (!classe || classe.directionUserId !== utilisateur.id) return;
+
   const code = await genererCode("VMT-", async (c) =>
     Boolean(
       await db
@@ -51,6 +61,7 @@ async function regenerer(donnees: FormData) {
     .values({ classeId, code })
     .onConflictDoUpdate({ target: codesClasse.classeId, set: { code } });
   revalidatePath("/mon-ecole");
+  revalidatePath(`/classes/${classeId}`);
 }
 
 /**

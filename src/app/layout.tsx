@@ -9,6 +9,7 @@ import { seDeconnecter } from "@/app/deconnexion";
 import BarreLaterale from "@/components/shell/barre-laterale";
 import TiroirMobile from "@/components/shell/tiroir-mobile";
 import LiensNav from "@/components/shell/liens-nav";
+import MesEspaces from "@/components/shell/mes-espaces";
 import { navigationPour } from "@/components/shell/navigation";
 import "./globals.css";
 
@@ -52,17 +53,17 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </a>
           <div className="lg:grid lg:grid-cols-[264px_1fr]">
             <aside className="hidden w-[264px] shrink-0 border-r border-ligne bg-white lg:sticky lg:top-0 lg:block lg:h-dvh">
-              <BarreLaterale
-                role={utilisateur.role as Role}
-                prenom={utilisateur.prenom}
-                nom={utilisateur.nom}
-                cloche={cloche}
-              />
+              <BarreLaterale utilisateur={utilisateur} cloche={cloche} />
             </aside>
             <div className="flex min-h-dvh flex-col">
               <TiroirMobile
                 cloche={cloche}
-                contenu={<LiensNav groupes={navigationPour(utilisateur.role as Role)} />}
+                contenu={
+                  <>
+                    <LiensNav groupes={navigationPour(utilisateur.role as Role)} />
+                    <MesEspaces utilisateur={utilisateur} />
+                  </>
+                }
               />
               <main id="contenu" className="flex-1">
                 {children}
