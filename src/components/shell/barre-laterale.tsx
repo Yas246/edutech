@@ -53,8 +53,9 @@ export default function BarreLaterale({
 
       <div className="border-t border-ligne px-3 py-3">
         <Link
-          href="/tableau-de-bord"
+          href="/mon-espace"
           className="flex items-center gap-3 rounded-xl px-2 py-2 transition hover:bg-vert-clair"
+          title="Mon espace : mes informations"
         >
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-vert text-sm font-bold text-white">
             {initiales(prenom, nom)}
@@ -64,7 +65,7 @@ export default function BarreLaterale({
               {prenom} {nom}
             </span>
             <span className="block truncate text-xs text-encre-doux">
-              {libellesRole[role] ?? role}
+              {libellesRole[role] ?? role} · mon espace
             </span>
           </span>
         </Link>
