@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import {
   classes,
+  communautes,
+  communautesMembres,
   commentaires,
   enseignements,
   inscriptions,
@@ -15,12 +17,15 @@ import {
 } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 
+export type Cercle = { type: "etablissement" | "classe" | "communaute"; id: number; nom: string };
+
 /**
  * Les cercles où l'utilisateur peut publier : ses classes (comme élève
- * ou enseignant) et son école (comme direction ou enseignant de l'école).
+ * ou enseignant), son école (comme direction ou enseignant de l'école)
+ * et les communautés dont il est membre.
  */
-async function mesCercles(idUtilisateur: number, role: string) {
-  const resultats: { type: "etablissement" | "classe"; id: number; nom: string }[] = [];
+async function mesCercles(idUtilisateur: number, role: string): Promise<Cercle[]> {
+  const resultats: Cercle[] = [];
 
   if (role === "eleve") {
     const lignes = await db
@@ -31,27 +36,35 @@ async function mesCercles(idUtilisateur: number, role: string) {
     for (const l of lignes) {
       resultats.push({ type: "classe", id: l.id, nom: `Classe ${l.nom}` });
     }
-    return resultats;
+  } else {
+    // Enseignant et direction : via les enseignements / la direction.
+    const enseignementsLignes = await db
+      .select({ id: classes.id, nom: classes.nom, etablissementId: classes.etablissementId })
+      .from(enseignements)
+      .innerJoin(classes, eq(classes.id, enseignements.classeId))
+      .where(eq(enseignements.enseignantUserId, idUtilisateur));
+    for (const l of enseignementsLignes) {
+      resultats.push({ type: "classe", id: l.id, nom: `Classe ${l.nom}` });
+    }
+
+    if (role === "direction") {
+      const { etablissements } = await import("@/db/schema");
+      const [ecole] = await db
+        .select({ id: etablissements.id, nom: etablissements.nom })
+        .from(etablissements)
+        .where(eq(etablissements.directionUserId, idUtilisateur))
+        .limit(1);
+      if (ecole) resultats.unshift({ type: "etablissement", id: ecole.id, nom: ecole.nom });
+    }
   }
 
-  // Enseignant et direction : via les enseignements / la direction.
-  const enseignementsLignes = await db
-    .select({ id: classes.id, nom: classes.nom, etablissementId: classes.etablissementId })
-    .from(enseignements)
-    .innerJoin(classes, eq(classes.id, enseignements.classeId))
-    .where(eq(enseignements.enseignantUserId, idUtilisateur));
-  for (const l of enseignementsLignes) {
-    resultats.push({ type: "classe", id: l.id, nom: `Classe ${l.nom}` });
-  }
-
-  if (role === "direction") {
-    const { etablissements } = await import("@/db/schema");
-    const [ecole] = await db
-      .select({ id: etablissements.id, nom: etablissements.nom })
-      .from(etablissements)
-      .where(eq(etablissements.directionUserId, idUtilisateur))
-      .limit(1);
-    if (ecole) resultats.unshift({ type: "etablissement", id: ecole.id, nom: ecole.nom });
+  const mesCommunautes = await db
+    .select({ id: communautes.id, nom: communautes.nom })
+    .from(communautesMembres)
+    .innerJoin(communautes, eq(communautes.id, communautesMembres.communauteId))
+    .where(eq(communautesMembres.userId, idUtilisateur));
+  for (const c of mesCommunautes) {
+    resultats.push({ type: "communaute", id: c.id, nom: c.nom });
   }
 
   return resultats;
@@ -64,7 +77,8 @@ export async function publier(donnees: FormData) {
   if (!contenu) return;
   if (cercle.length !== 2) return;
   const [type, idTexte] = cercle as [string, string];
-  const porteeType = type === "etablissement" ? "etablissement" : "classe";
+  const porteeType =
+    type === "etablissement" ? "etablissement" : type === "communaute" ? "communaute" : "classe";
   const porteeId = Number(idTexte);
   if (!Number.isInteger(porteeId)) return;
 
@@ -132,4 +146,25 @@ export async function reagir(donnees: FormData) {
 export async function cerclesDePublication() {
   const utilisateur = await exiger();
   return mesCercles(utilisateur.id, utilisateur.role);
+}
+
+/** Les cercles de LECTURE : publication + devoirs des classes suivies. */
+export async function cerclesDeLecture(idUtilisateur: number, role: string) {
+  const cercles = await mesCercles(idUtilisateur, role);
+  const classesIds: number[] = [];
+  if (role === "parent") {
+    const { liensFamille } = await import("@/db/schema");
+    const classesEnfants = await db
+      .select({ id: classes.id })
+      .from(liensFamille)
+      .innerJoin(inscriptions, eq(inscriptions.eleveUserId, liensFamille.eleveUserId))
+      .innerJoin(classes, eq(classes.id, inscriptions.classeId))
+      .where(eq(liensFamille.parentUserId, idUtilisateur));
+    classesIds.push(...classesEnfants.map((c) => c.id));
+  } else {
+    classesIds.push(
+      ...cercles.filter((c) => c.type === "classe").map((c) => c.id),
+    );
+  }
+  return { cercles, classesIds: [...new Set(classesIds)] };
 }

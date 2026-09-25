@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { utilisateurCourant } from "@/lib/auth";
 import { nombreCommunes, nombreDepartements, nombreEtablissements } from "@/lib/recensement";
 
 const roles = [
@@ -52,7 +54,12 @@ const modules = [
   },
 ];
 
-export default function Accueil() {
+export default async function Accueil() {
+  // Le compte connecté a son fil pour accueil ; la vitrine est pour
+  // ceux qui découvrent.
+  const utilisateur = await utilisateurCourant();
+  if (utilisateur) redirect("/fil");
+
   return (
     <>
       {/* Héros */}

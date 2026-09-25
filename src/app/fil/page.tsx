@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { and, desc, eq, inArray, or } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import {
   classes,
+  communautes,
   commentaires,
-  etablissements,
-  liensFamille,
-  enseignements,
-  inscriptions,
+  devoirs,
+  matieres,
   publications,
   reactions,
   users,
@@ -15,7 +14,7 @@ import {
 import { exiger } from "@/lib/auth";
 import { EtatVide } from "@/components/ui/etat-vide";
 import { Bouton, champClasse } from "@/components/ui/formulaire";
-import { cerclesDePublication, commenter, publier, reagir } from "./actions";
+import { cerclesDeLecture, cerclesDePublication, commenter, publier, reagir } from "./actions";
 
 export const metadata: Metadata = { title: "Fil" };
 
@@ -25,42 +24,64 @@ function depuis(date: Date) {
   if (minutes < 60) return `il y a ${minutes} min`;
   const heures = Math.round(minutes / 60);
   if (heures < 24) return `il y a ${heures} h`;
+  const jours = Math.round(heures / 24);
+  if (jours < 7) return `il y a ${jours} j`;
   return `le ${date.toISOString().slice(0, 10)}`;
 }
 
 export default async function Fil() {
   const utilisateur = await exiger();
   const cercles = await cerclesDePublication();
+  const { cercles: cerclesLecture, classesIds } = await cerclesDeLecture(
+    utilisateur.id,
+    utilisateur.role,
+  );
 
-  // Les cercles de LECTURE : pour le parent, l'école et les classes de
-  // ses enfants (il lit et commente, il ne publie pas).
-  let cerclesLecture = cercles;
-  if (utilisateur.role === "parent") {
-    const classesEnfants = await db
-      .select({ id: classes.id, nom: classes.nom, etablissementId: classes.etablissementId })
-      .from(liensFamille)
-      .innerJoin(inscriptions, eq(inscriptions.eleveUserId, liensFamille.eleveUserId))
-      .innerJoin(classes, eq(classes.id, inscriptions.classeId))
-      .where(eq(liensFamille.parentUserId, utilisateur.id));
-    cerclesLecture = classesEnfants.map((c) => ({ type: "classe" as const, id: c.id, nom: "Classe " + c.nom }));
-    const ecolesVues = [...new Set(classesEnfants.map((c) => c.etablissementId))];
-    if (ecolesVues.length) {
-      const ecoles = await db
-        .select({ id: etablissements.id, nom: etablissements.nom })
-        .from(etablissements)
-        .where(inArray(etablissements.id, ecolesVues));
-      for (const e of ecoles) {
-        cerclesLecture.unshift({ type: "etablissement" as const, id: e.id, nom: e.nom });
-      }
-    }
+  // Les communautés suivies complètent la lecture.
+  const nomsCercles = new Map(cerclesLecture.map((c) => [`${c.type}:${c.id}`, c.nom]));
+  const mesCommunautes = await db
+    .select({ id: communautes.id, nom: communautes.nom })
+    .from(communautes)
+    .where(
+      sql`EXISTS (SELECT 1 FROM communautes_membres m
+        WHERE m.communaute_id = communautes.id AND m.user_id = ${utilisateur.id})`,
+    );
+  for (const c of mesCommunautes) nomsCercles.set(`communaute:${c.id}`, c.nom);
+
+  // Les conditions de lecture : écoles, classes et communautés de l'utilisateur.
+  const ecolesIds = cerclesLecture
+    .filter((c) => c.type === "etablissement")
+    .map((c) => c.id);
+  const conditions: (SQL | undefined)[] = [];
+  if (ecolesIds.length) {
+    conditions.push(and(eq(publications.porteeType, "etablissement"), inArray(publications.porteeId, ecolesIds)));
+  }
+  if (classesIds.length) {
+    conditions.push(and(eq(publications.porteeType, "classe"), inArray(publications.porteeId, classesIds)));
+  }
+  const communautesIds = mesCommunautes.map((c) => c.id);
+  if (communautesIds.length) {
+    conditions.push(and(eq(publications.porteeType, "communaute"), inArray(publications.porteeId, communautesIds)));
   }
 
-  // Les publications visibles : celles des cercles de l'utilisateur.
-  const conditions = cerclesLecture.map((c) =>
-    c.type === "etablissement"
-      ? publicationDuCercle("etablissement", c.id)
-      : publicationDuCercle("classe", c.id),
-  );
+  // Les devoirs à venir des classes suivies : ils s'intercalent dans le fil.
+  const devoirsAVenir = classesIds.length
+    ? await db
+        .select({
+          id: devoirs.id,
+          titre: devoirs.titre,
+          aRendreLe: devoirs.aRendreLe,
+          classeNom: classes.nom,
+          matiere: matieres.nom,
+        })
+        .from(devoirs)
+        .innerJoin(classes, eq(classes.id, devoirs.classeId))
+        .innerJoin(matieres, eq(matieres.id, devoirs.matiereId))
+        .where(and(inArray(devoirs.classeId, classesIds), gte(devoirs.aRendreLe, sql`CURRENT_DATE`)))
+        .orderBy(asc(devoirs.aRendreLe))
+        .limit(10)
+    : [];
+
   const liste =
     conditions.length > 0
       ? await db
@@ -76,10 +97,23 @@ export default async function Fil() {
           })
           .from(publications)
           .innerJoin(users, eq(users.id, publications.auteurUserId))
-          .where(or(...conditions))
+          .where(or(...conditions.filter((c): c is SQL => Boolean(c))))
           .orderBy(desc(publications.id))
           .limit(30)
       : [];
+
+  // La chronologie mêle publications et devoirs, du plus récent au plus ancien.
+  type Entree =
+    | { genre: "publication"; date: Date; publication: (typeof liste)[number] }
+    | { genre: "devoir"; date: Date; devoir: (typeof devoirsAVenir)[number] };
+  const entrees: Entree[] = [
+    ...liste.map((p) => ({ genre: "publication" as const, date: p.date, publication: p })),
+    ...devoirsAVenir.map((d) => ({
+      genre: "devoir" as const,
+      date: new Date(`${d.aRendreLe}T08:00:00`),
+      devoir: d,
+    })),
+  ].sort((a, b) => b.date.getTime() - a.date.getTime());
 
   const ids = liste.map((p) => p.id);
   const tousCommentaires = ids.length
@@ -102,22 +136,16 @@ export default async function Fil() {
         .where(inArray(reactions.publicationId, ids))
     : [];
 
-  // Libellés de portée pour l'affichage.
-  const classesVisibles = cerclesLecture.filter((c) => c.type === "classe");
-  const ecoles = cerclesLecture.filter((c) => c.type === "etablissement");
-
   function porteeAffichee(type: string, id: number) {
-    if (type === "etablissement") {
-      return ecoles.find((e) => e.id === id)?.nom ?? "L'établissement";
-    }
-    return classesVisibles.find((c) => c.id === id)?.nom ?? "La classe";
+    return nomsCercles.get(`${type}:${id}`) ?? (type === "etablissement" ? "L'établissement" : type === "classe" ? "La classe" : "La communauté");
   }
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-10">
       <h1 className="text-3xl font-bold tracking-tight">Le fil</h1>
       <p className="mt-2 text-encre-doux">
-        Les annonces de votre école et la vie de vos classes.
+        Votre école, vos classes, vos communautés — et les devoirs à venir,
+        dans une seule chronologie.
       </p>
 
       {cercles.length > 0 ? (
@@ -130,7 +158,7 @@ export default async function Fil() {
             required
             rows={2}
             maxLength={2000}
-            placeholder="Partagez une annonce avec votre classe ou votre école…"
+            placeholder="Partagez une annonce avec votre classe, votre école ou une communauté…"
             className={champClasse}
           />
           <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
@@ -150,35 +178,63 @@ export default async function Fil() {
       ) : (
         <div className="mt-6">
           <EtatVide>
-            Vous n'avez pas encore de classe ni d'école : le fil s'ouvrira
-            après votre inscription dans un établissement.
+            Vous n'avez pas encore de classe, d'école ni de communauté : le
+            fil s'ouvrira avec votre premier rattachement.
           </EtatVide>
         </div>
       )}
 
       <section className="mt-8 space-y-4">
-        {liste.length === 0 && cercles.length > 0 && (
+        {entrees.length === 0 && (
           <EtatVide>
-            Aucune publication pour l'instant. Lancez la vie de votre classe !
+            Rien pour l'instant. Rejoignez une communauté ou lancez la vie de
+            votre classe !
           </EtatVide>
         )}
-        {liste.map((p) => {
+        {entrees.map((entree, index) => {
+          if (entree.genre === "devoir") {
+            const d = entree.devoir;
+            return (
+              <article
+                key={`devoir-${d.id}`}
+                className="rounded-2xl border border-vert/30 bg-vert-clair/40 p-5"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-vert-fonce">
+                    Devoir à rendre · {d.classeNom}
+                  </p>
+                  <span className="rounded-full bg-jaune px-2.5 py-0.5 text-xs font-bold text-encre">
+                    pour le {d.aRendreLe}
+                  </span>
+                </div>
+                <p className="mt-2 font-semibold">
+                  {d.matiere} — {d.titre}
+                </p>
+              </article>
+            );
+          }
+
+          const p = entree.publication;
           const sesCommentaires = tousCommentaires.filter((c) => c.publicationId === p.id);
           const sesReactions = toutesReactions.filter((r) => r.publicationId === p.id);
           const dejaReagi = sesReactions.some((r) => r.userId === utilisateur.id);
           return (
             <article key={p.id} className="rounded-2xl border border-ligne bg-white p-5">
-              <div className="flex items-baseline justify-between gap-2">
-                <p className="text-sm">
-                  <span className="font-semibold">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-vert text-sm font-bold text-white">
+                  {p.auteurPrenom.charAt(0)}
+                  {p.auteurNom.charAt(0)}
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold">
                     {p.auteurPrenom} {p.auteurNom}
-                  </span>{" "}
-                  <span className="text-encre-doux">
-                    · {porteeAffichee(p.porteeType, p.porteeId)} · {depuis(p.date)}
-                  </span>
-                </p>
+                  </p>
+                  <p className="truncate text-xs text-encre-doux">
+                    {porteeAffichee(p.porteeType, p.porteeId)} · {depuis(p.date)}
+                  </p>
+                </div>
               </div>
-              <p className="mt-2 whitespace-pre-line">{p.contenu}</p>
+              <p className="mt-3 whitespace-pre-line text-sm">{p.contenu}</p>
 
               <div className="mt-3 flex items-center gap-4 text-sm">
                 <form action={reagir}>
@@ -197,6 +253,7 @@ export default async function Fil() {
                 <span className="text-encre-doux">
                   {sesCommentaires.length} commentaire{sesCommentaires.length > 1 ? "s" : ""}
                 </span>
+                {index !== undefined && <span />}
               </div>
 
               {sesCommentaires.length > 0 && (
@@ -231,8 +288,4 @@ export default async function Fil() {
       </section>
     </div>
   );
-}
-
-function publicationDuCercle(type: "etablissement" | "classe", id: number) {
-  return and(eq(publications.porteeType, type), eq(publications.porteeId, id));
 }
