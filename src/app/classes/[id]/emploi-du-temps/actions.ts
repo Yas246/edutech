@@ -3,7 +3,7 @@
 import { and, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { classes, creneaux, devoirs, enseignements, etablissements, inscriptions, liensFamille, matieres, notifications, salles, users } from "@/db/schema";
+import { annulationsCreneaux, classes, creneaux, devoirs, enseignements, etablissements, inscriptions, liensFamille, matieres, notifications, salles, users } from "@/db/schema";
 import { exiger } from "@/lib/auth";
 import { gardeEdtEtablissement } from "@/lib/garde-classe";
 import { estHeureValide, seChevauchent } from "@/lib/vie-scolaire";
@@ -38,9 +38,19 @@ export async function poserCreneau(_prec: Retour, donnees: FormData): Promise<Re
   const jour = Number(donnees.get("jour"));
   const heureDebut = String(donnees.get("heureDebut") ?? "").trim();
   const heureFin = String(donnees.get("heureFin") ?? "").trim();
+  const dateSeance = String(donnees.get("dateSeance") ?? "").trim();
 
   if (!matiereId || !enseignantUserId || !salleId) {
     return { erreur: "Choisissez la matière, l'enseignant et la salle." };
+  }
+  if (dateSeance) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateSeance)) {
+      return { erreur: "La date de la séance unique n'est pas valide." };
+    }
+    const jourDeLaDate = new Date(`${dateSeance}T12:00:00`).getDay();
+    if (jourDeLaDate === 0 || jourDeLaDate > 6) {
+      return { erreur: "La séance unique doit tomber un jour de classe (lundi au samedi)." };
+    }
   }
   if (!joursValides.has(jour)) return { erreur: "Choisissez le jour." };
   if (!estHeureValide(heureDebut) || !estHeureValide(heureFin)) {
@@ -85,6 +95,7 @@ export async function poserCreneau(_prec: Retour, donnees: FormData): Promise<Re
       jour: creneaux.jour,
       heureDebut: creneaux.heureDebut,
       heureFin: creneaux.heureFin,
+      dateSeance: creneaux.dateSeance,
       classeNom: classes.nom,
       salleNom: salles.nom,
       enseignantPrenom: users.prenom,
@@ -96,8 +107,28 @@ export async function poserCreneau(_prec: Retour, donnees: FormData): Promise<Re
     .innerJoin(users, eq(users.id, creneaux.enseignantUserId))
     .where(and(eq(classes.etablissementId, contexte.classe.etablissementId), eq(creneaux.jour, jour)));
 
+  // Les annulations du jour visé : un hebdomadaire annulé ce jour-là
+  // libère la salle et l'enseignant.
+  const annuleesCeJour = dateSeance
+    ? new Set(
+        (
+          await db
+            .select({ creneauId: annulationsCreneaux.creneauId })
+            .from(annulationsCreneaux)
+            .where(eq(annulationsCreneaux.date, dateSeance))
+        ).map((a) => a.creneauId),
+      )
+    : new Set<number>();
+
   for (const c of existants) {
     if (!seChevauchent(nouveau, c)) continue;
+    if (annuleesCeJour.has(c.id)) continue; // cette séance-là n'existe pas ce jour
+    if (dateSeance && c.dateSeance && c.dateSeance !== dateSeance) continue;
+    if (!dateSeance && c.dateSeance) {
+      // Un hebdomadaire s'oppose à une séance unique si les dates correspondent.
+      const js = new Date(`${c.dateSeance}T12:00:00`).getDay();
+      if (js !== jour) continue;
+    }
     const horaire = `${c.heureDebut} à ${c.heureFin}`;
     if (c.salleId === salleId) {
       return {
@@ -122,9 +153,120 @@ export async function poserCreneau(_prec: Retour, donnees: FormData): Promise<Re
     jour,
     heureDebut,
     heureFin,
+    ...(dateSeance ? { dateSeance } : {}),
   });
   revalidatePath(`/classes/${idClasse}/emploi-du-temps`);
-  return { message: `Créneau posé : ${matiere.nom}.` };
+  return {
+    message: dateSeance
+      ? `Séance unique posée : ${matiere.nom} le ${dateSeance}.`
+      : `Créneau posé : ${matiere.nom}.`,
+  };
+}
+
+/**
+ * L'annulation d'une séance d'un créneau hebdomadaire : élèves et
+ * parents de la classe sont prévenus une fois, avec le motif.
+ */
+export async function annulerSeance(_prec: Retour, donnees: FormData): Promise<Retour> {
+  const idCreneau = Number(donnees.get("creneauId"));
+  const [ligne] = await db
+    .select({ classeId: creneaux.classeId, matiereId: creneaux.matiereId, jour: creneaux.jour })
+    .from(creneaux)
+    .where(eq(creneaux.id, idCreneau))
+    .limit(1);
+  if (!ligne) return { erreur: "Créneau introuvable." };
+  const contexte = await gardeEdt(ligne.classeId);
+  if (!contexte) return { erreur: "Vous n'avez pas la main sur cet emploi du temps." };
+
+  const date = String(donnees.get("date") ?? "").trim();
+  const motif = String(donnees.get("motif") ?? "").trim().slice(0, 140);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return { erreur: "Choisissez la date de la séance à annuler." };
+  }
+  const jourDeLaDate = new Date(`${date}T12:00:00`).getDay();
+  if (jourDeLaDate !== ligne.jour) {
+    return { erreur: "Cette date ne correspond pas au jour du créneau." };
+  }
+  if (date <= new Date().toISOString().slice(0, 10)) {
+    return { erreur: "Seule une séance à venir peut être annulée." };
+  }
+  const [deja] = await db
+    .select({ id: annulationsCreneaux.id })
+    .from(annulationsCreneaux)
+    .where(
+      and(eq(annulationsCreneaux.creneauId, idCreneau), eq(annulationsCreneaux.date, date)),
+    )
+    .limit(1);
+  if (deja) return { erreur: "Cette séance est déjà annulée." };
+
+  const utilisateur = await exiger("direction", "enseignant");
+  await db.insert(annulationsCreneaux).values({
+    creneauId: idCreneau,
+    date,
+    motif,
+    creePar: utilisateur.id,
+  });
+
+  // Prévenir élèves et parents de la classe, une seule fois chacun.
+  const [matiere] = await db
+    .select({ nom: matieres.nom })
+    .from(matieres)
+    .where(eq(matieres.id, ligne.matiereId))
+    .limit(1);
+  const texte = `Cours de ${matiere?.nom ?? "classe"} annulé le ${date}${motif ? ` (${motif})` : ""}`;
+  const destinataires = await db
+    .select({ parentUserId: liensFamille.parentUserId })
+    .from(inscriptions)
+    .leftJoin(liensFamille, eq(liensFamille.eleveUserId, inscriptions.eleveUserId))
+    .where(eq(inscriptions.classeId, ligne.classeId));
+  const elevesClasse = await db
+    .select({ eleveUserId: inscriptions.eleveUserId })
+    .from(inscriptions)
+    .where(eq(inscriptions.classeId, ligne.classeId));
+
+  const alertes: { userId: number; texte: string; lien: string }[] = [];
+  const vus = new Set<number>();
+  for (const d of destinataires) {
+    if (d.parentUserId && !vus.has(d.parentUserId)) {
+      vus.add(d.parentUserId);
+      alertes.push({ userId: d.parentUserId, texte, lien: "/calendrier" });
+    }
+  }
+  for (const e of elevesClasse) {
+    if (!vus.has(e.eleveUserId)) {
+      vus.add(e.eleveUserId);
+      alertes.push({ userId: e.eleveUserId, texte, lien: "/calendrier" });
+    }
+  }
+  if (alertes.length > 0) {
+    await db.insert(notifications).values(alertes);
+  }
+
+  revalidatePath(`/classes/${ligne.classeId}/emploi-du-temps`);
+  return { message: `Séance du ${date} annulée : les familles sont prévenues.` };
+}
+
+/** Le rétablissement : la séance redevient normale, sans re-notifier. */
+export async function retablirSeance(donnees: FormData): Promise<void> {
+  const idCreneau = Number(donnees.get("creneauId"));
+  const date = String(donnees.get("date") ?? "").trim();
+  const [ligne] = await db
+    .select({ classeId: creneaux.classeId })
+    .from(creneaux)
+    .where(eq(creneaux.id, idCreneau))
+    .limit(1);
+  if (!ligne) return;
+  const contexte = await gardeEdt(ligne.classeId);
+  if (!contexte) return;
+  await db
+    .delete(annulationsCreneaux)
+    .where(and(eq(annulationsCreneaux.creneauId, idCreneau), eq(annulationsCreneaux.date, date)));
+  revalidatePath(`/classes/${ligne.classeId}/emploi-du-temps`);
+}
+
+/** Adaptation au formulaire HTML natif. */
+export async function annulerSeanceFormulaire(donnees: FormData): Promise<void> {
+  await annulerSeance({}, donnees);
 }
 
 export async function retirerCreneau(_prec: Retour, donnees: FormData): Promise<Retour> {

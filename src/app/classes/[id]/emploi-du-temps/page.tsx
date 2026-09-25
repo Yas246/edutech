@@ -9,6 +9,7 @@ import { jours, libelleJour } from "@/lib/vie-scolaire";
 import { EnTetePage } from "@/components/ui/en-tete";
 import { EtatVide } from "@/components/ui/etat-vide";
 import FormulaireCreneau, { FormulaireDevoir } from "./formulaire-creneau";
+import BlocAnnulation from "./actions-annulation";
 
 export const metadata: Metadata = { title: "Emploi du temps" };
 
@@ -68,6 +69,7 @@ export default async function PageEmploiDuTemps({
       jour: creneaux.jour,
       heureDebut: creneaux.heureDebut,
       heureFin: creneaux.heureFin,
+      dateSeance: creneaux.dateSeance,
       matiere: matieres.nom,
       enseignant: users.prenom,
       enseignantNom: users.nom,
@@ -178,24 +180,40 @@ export default async function PageEmploiDuTemps({
               .map((c) => (
                 <li
                   key={c.id}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-ligne bg-white px-3 py-2"
+                  className="rounded-xl border border-ligne bg-white px-3 py-2"
                 >
-                  <span>
-                    <span className="font-medium">{libelleJour(c.jour)} {c.heureDebut}–{c.heureFin}</span>{" "}
-                    {c.matiere} · {c.salle} · {c.enseignant} {c.enseignantNom}
-                  </span>
-                  <form
-                    action={async (donnees: FormData) => {
-                      "use server";
-                      const { retirerCreneau } = await import("./actions");
-                      await retirerCreneau({}, donnees);
-                    }}
-                  >
-                    <input type="hidden" name="creneauId" value={c.id} />
-                    <button type="submit" className="text-xs text-rouge underline hover:brightness-90">
-                      Retirer
-                    </button>
-                  </form>
+                  <div className="flex items-center justify-between gap-3">
+                    <span>
+                      <span className="font-medium">{libelleJour(c.jour)} {c.heureDebut}–{c.heureFin}</span>
+                      {c.dateSeance ? (
+                        <span className="ml-2 rounded bg-jaune-clair px-1.5 py-0.5 text-xs font-semibold">
+                          séance unique du {c.dateSeance}
+                        </span>
+                      ) : undefined}
+                      {" "}
+                      {c.matiere} · {c.salle} · {c.enseignant} {c.enseignantNom}
+                    </span>
+                    <form
+                      action={async (donnees: FormData) => {
+                        "use server";
+                        const { retirerCreneau } = await import("./actions");
+                        await retirerCreneau({}, donnees);
+                      }}
+                    >
+                      <input type="hidden" name="creneauId" value={c.id} />
+                      <button type="submit" className="text-xs text-rouge underline hover:brightness-90">
+                        Retirer
+                      </button>
+                    </form>
+                  </div>
+                  {!c.dateSeance && (
+                    <BlocAnnulation
+                      creneauId={c.id}
+                      jour={libelleJour(c.jour)}
+                      matiere={c.matiere}
+                      peutGerer
+                    />
+                  )}
                 </li>
               ))}
           </ul>

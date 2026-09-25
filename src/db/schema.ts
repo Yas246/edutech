@@ -228,7 +228,30 @@ export const creneaux = pgTable("creneaux", {
   /** Heure de début, format 24 h : « 08:00 » */
   heureDebut: text("heure_debut").notNull(),
   heureFin: text("heure_fin").notNull(),
+  /** Une date porte une séance unique ; vide, le créneau est hebdomadaire. */
+  dateSeance: date("date_seance"),
 });
+
+/**
+ * L'annulation d'une séance d'un créneau hebdomadaire, avec motif :
+ * les élèves et les parents sont prévenus, les autres semaines ne
+ * bougent pas. Le rétablissement supprime la ligne, sans re-notifier.
+ */
+export const annulationsCreneaux = pgTable(
+  "annulations_creneaux",
+  {
+    id: serial("id").primaryKey(),
+    creneauId: integer("creneau_id")
+      .notNull()
+      .references(() => creneaux.id, { onDelete: "cascade" }),
+    date: date("date").notNull(),
+    motif: text("motif").default("").notNull(),
+    creePar: integer("cree_par")
+      .notNull()
+      .references(() => users.id),
+  },
+  (t) => [unique("annulations_uniques").on(t.creneauId, t.date)],
+);
 
 /** Un événement posé par la direction : conseil de classe, réunion… */
 export const evenements = pgTable("evenements", {
