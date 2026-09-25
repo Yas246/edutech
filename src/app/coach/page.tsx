@@ -3,7 +3,6 @@ import { asc, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { conversationsCoach, messagesCoach } from "@/db/schema";
 import { exiger } from "@/lib/auth";
-import { EnTetePage } from "@/components/ui/en-tete";
 import CoachEspace from "./coach-espace";
 
 export const dynamic = "force-dynamic";
@@ -43,14 +42,14 @@ export default async function Coach() {
   }));
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-10">
-      <EnTetePage
-        titre="Mon coach"
-        sousTitre="Vos discussions, chacune sur son fil : orientation, méthodes, vie scolaire, registres de votre établissement."
-      />
-      <div className="mt-8">
-        <CoachEspace fils={fils} />
+    <div className="flex h-[calc(100dvh-61px)] flex-col">
+      <div className="flex items-center justify-between gap-3 border-b border-ligne bg-white px-5 py-3">
+        <h1 className="text-lg font-bold tracking-tight">Mon coach</h1>
+        <p className="text-xs text-discret">
+          Orientation · méthodes · registres de votre place
+        </p>
       </div>
+      <CoachEspace fils={fils} />
     </div>
   );
 }

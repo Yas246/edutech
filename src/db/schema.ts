@@ -32,6 +32,12 @@ export const users = pgTable("users", {
   sexe: text("sexe").default("").notNull(),
   /** L'identifiant public du compte, unique (prenom.nom, suffixé si besoin). */
   pseudo: text("pseudo").default("").notNull(),
+  /**
+   * Le niveau de droits des comptes du ministère : admin (tout, y
+   * compris les agents), validation (valide les établissements),
+   * lecture (consulte). Sans effet pour les autres rôles.
+   */
+  permissions: text("permissions").default("admin").notNull(),
   /** L'état civil des élèves : les listes d'examen le reprennent tel quel. */
   dateNaissance: date("date_naissance"),
   lieuNaissance: text("lieu_naissance").default("").notNull(),

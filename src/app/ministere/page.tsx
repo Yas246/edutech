@@ -3,7 +3,7 @@ import Link from "next/link";
 import { and, asc, count, eq, ilike } from "drizzle-orm";
 import { db } from "@/db";
 import { etablissements, users } from "@/db/schema";
-import { exiger } from "@/lib/auth";
+import { exiger, utilisateurCourant } from "@/lib/auth";
 import { BoutonsValidation } from "./formulaire-validation";
 import { statistiquesDepartement } from "@/lib/outils/ministere";
 import { FormulaireEmploye } from "./employes";
@@ -22,6 +22,12 @@ export default async function EspaceMinistere({
   const { q = "", page = "1" } = await searchParams;
   const terme = q.trim();
   const numeroPage = Math.max(1, Number(page) || 1);
+
+  // Les niveaux de droits : lecture consulte, validation tranche,
+  // admin gère en plus les agents.
+  const utilisateur = await utilisateurCourant();
+  const estAdmin = utilisateur?.permissions === "admin";
+  const peutValider = utilisateur?.permissions === "admin" || utilisateur?.permissions === "validation";
 
   const [totalValidé] = await db
     .select({ n: count() })
@@ -167,14 +173,18 @@ export default async function EspaceMinistere({
         </p>
       </section>
 
-      <section className="mt-10">
-        <h2 className="text-xl font-bold tracking-tight">Agents du ministère</h2>
-        <p className="mt-1 text-sm text-encre-doux">
-          Vos collègues ont les mêmes pouvoirs : valider les écoles et lire la nation.
-        </p>
-        <FormulaireEmploye />
-        <AgentsListe />
-      </section>
+      {estAdmin && (
+        <section className="mt-10">
+          <h2 className="text-xl font-bold tracking-tight">Agents du ministère</h2>
+          <p className="mt-1 text-sm text-encre-doux">
+            Trois niveaux : administrateur (gère les agents et valide),
+            validation (valide les écoles et consulte), lecture (consulte
+            seulement).
+          </p>
+          <FormulaireEmploye />
+          <AgentsListe />
+        </section>
+      )}
 
       <section className="mt-10">
         <h2 className="text-xl font-bold tracking-tight">
@@ -217,7 +227,11 @@ export default async function EspaceMinistere({
                     {e.statutAdmin === "prive" ? "privé" : "public"} · preuve {e.dernierePreuve || "ancienne"}
                   </p>
                 </div>
-                <BoutonsValidation id={e.id} />
+                {peutValider ? (
+                  <BoutonsValidation id={e.id} />
+                ) : (
+                  <span className="text-xs text-discret">consultation</span>
+                )}
               </li>
             ))}
           </ul>

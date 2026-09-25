@@ -10,7 +10,11 @@ export type Retour = { erreur?: string; message?: string };
 
 /** Le ministère valide un établissement de la file. */
 export async function validerEcole(_prec: Retour, donnees: FormData): Promise<Retour> {
-  await exiger("ministere");
+  const utilisateur = await exiger("ministere");
+  // L'agent « lecture » consulte : il ne tranche pas.
+  if (utilisateur.permissions === "lecture") {
+    return { erreur: "Votre niveau de droits ne permet pas de valider un établissement." };
+  }
   const id = Number(donnees.get("etablissementId"));
   if (!id) return { erreur: "Établissement inconnu." };
   const [ecole] = await db
@@ -25,7 +29,10 @@ export async function validerEcole(_prec: Retour, donnees: FormData): Promise<Re
 
 /** Le ministère refuse un établissement. */
 export async function invaliderEcole(_prec: Retour, donnees: FormData): Promise<Retour> {
-  await exiger("ministere");
+  const utilisateur = await exiger("ministere");
+  if (utilisateur.permissions === "lecture") {
+    return { erreur: "Votre niveau de droits ne permet pas de refuser un établissement." };
+  }
   const id = Number(donnees.get("etablissementId"));
   if (!id) return { erreur: "Établissement inconnu." };
   const [ecole] = await db

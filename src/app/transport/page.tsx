@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { asc, desc, eq } from "drizzle-orm";
+import { IconChevronDown } from "@tabler/icons-react";
 import { db } from "@/db";
 import {
   abonnementsTransport,
   arrets,
-  inscriptions,
   lignesTransport,
   liensFamille,
   tickets,
@@ -14,15 +14,24 @@ import {
 import { utilisateurCourant, exiger } from "@/lib/auth";
 import { EnTetePage } from "@/components/ui/en-tete";
 import { EtatVide } from "@/components/ui/etat-vide";
-import { Bouton, champClasse } from "@/components/ui/formulaire";
+import { Bouton } from "@/components/ui/formulaire";
 import { acheterTicket, abonner } from "./actions";
 import FormulaireTransport from "./formulaire-transport";
 
 export const metadata: Metadata = {
   title: "Transport scolaire",
   description:
-    "Les lignes de bus du dispositif national : arrêts, horaires et ticket à 200 F, achetable en ligne ou par code USSD.",
+    "Les lignes de bus du dispositif national : arrêts, horaires et ticket à 200 F, achetable en ligne ou par code USSD *611#.",
 };
+
+/** L'horaire indicatif d'un arrêt : départ + cinq minutes par arrêt. */
+function heureArret(depart: string, ordre: number) {
+  const [h, m] = depart.split(":").map(Number);
+  const total = h * 60 + m + (ordre - 1) * 5;
+  const hh = String(Math.floor(total / 60) % 24).padStart(2, "0");
+  const mm = String(total % 60).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
 
 export default async function Transport() {
   const utilisateur = await utilisateurCourant();
@@ -60,7 +69,12 @@ export default async function Transport() {
   }
 
   // Espace parent : la ligne et les derniers tickets de chaque enfant.
-  let enfantsTransport: { enfant: string; ligne: string | null; arret: string | null; dernierTicket: string | null }[] = [];
+  let enfantsTransport: {
+    enfant: string;
+    ligne: string | null;
+    arret: string | null;
+    dernierTicket: string | null;
+  }[] = [];
   if (utilisateur?.role === "parent") {
     const enfants = await db
       .select({ id: users.id, prenom: users.prenom, nom: users.nom })
@@ -94,17 +108,17 @@ export default async function Transport() {
     <div className="mx-auto w-full max-w-5xl px-4 py-10">
       <EnTetePage
         titre="Transport scolaire"
-        sousTitre="Le dispositif national de bus : ticket à 200 F, achetable en ligne ou par code USSD *611# pour ceux qui n'ont pas de smartphone."
+        sousTitre="Le dispositif national de bus : ticket à 200 F, achetable en ligne ou par code USSD *611#, depuis n'importe quel téléphone."
       />
 
       {/* Espace élève */}
       {utilisateur?.role === "eleve" && (
-        <section className="mt-8 rounded-2xl border border-ligne bg-white p-5">
+        <section className="mt-8 rounded-2xl border border-ligne bg-white p-5 shadow-xs">
           <h2 className="text-xl font-bold tracking-tight">Mon transport</h2>
           {monAbonnement ? (
             <p className="mt-2 text-sm">
               Abonné à la ligne <span className="font-semibold">{monAbonnement.ligneNom}</span>,
-              arrêt {monAbonnement.arretNom}.
+              arrêt <span className="font-semibold">{monAbonnement.arretNom}</span>.
             </p>
           ) : (
             <div className="mt-3">
@@ -137,7 +151,7 @@ export default async function Transport() {
 
       {/* Espace parent */}
       {utilisateur?.role === "parent" && enfantsTransport.length > 0 && (
-        <section className="mt-8 rounded-2xl border border-ligne bg-white p-5">
+        <section className="mt-8 rounded-2xl border border-ligne bg-white p-5 shadow-xs">
           <h2 className="text-xl font-bold tracking-tight">Le transport de mes enfants</h2>
           <ul className="mt-3 space-y-2 text-sm">
             {enfantsTransport.map((e) => (
@@ -153,37 +167,72 @@ export default async function Transport() {
         </section>
       )}
 
-      {/* Lignes publiques */}
+      {/* Les lignes : dépliables, avec le parcours en frise et les
+          horaires indicatifs. */}
       <section className="mt-10">
         <h2 className="text-xl font-bold tracking-tight">
           Les lignes ({lignes.length})
         </h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          {lignes.map((l) => (
-            <article key={l.id} className="rounded-2xl border border-ligne bg-white p-5">
-              <h3 className="font-semibold text-vert-fonce">{l.nom}</h3>
-              <p className="mt-1 text-sm text-encre-doux">
-                {l.ville} → {l.destination} · {l.horaireDebut} à {l.horaireFin}
-              </p>
-              <p className="mt-3 text-xs uppercase tracking-wide text-encre-doux">Arrêts</p>
-              <ol className="mt-1 flex flex-wrap gap-1.5 text-xs">
-                {tousArrets
-                  .filter((a) => a.ligneId === l.id)
-                  .map((a) => (
-                    <li key={a.id} className="rounded-full bg-papier px-2.5 py-1">
-                      {a.ordre}. {a.nom}
-                    </li>
-                  ))}
-              </ol>
-            </article>
-          ))}
+        <p className="mt-1 text-sm text-encre-doux">
+          Cliquez une ligne pour dérouler son parcours et les horaires
+          indicatifs à chaque arrêt.
+        </p>
+        <div className="mt-4 space-y-3">
+          {lignes.map((l) => {
+            const arretsLigne = tousArrets.filter((a) => a.ligneId === l.id);
+            return (
+              <details
+                key={l.id}
+                className="group rounded-2xl border border-ligne bg-white shadow-xs open:shadow-md"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
+                  <div>
+                    <h3 className="font-semibold text-vert-fonce">{l.nom}</h3>
+                    <p className="mt-0.5 text-sm text-encre-doux">
+                      {l.ville} → {l.destination} · départ {l.horaireDebut}, retour à{" "}
+                      {l.horaireFin} · {arretsLigne.length} arrêts
+                    </p>
+                  </div>
+                  <IconChevronDown
+                    className="h-5 w-5 shrink-0 text-discret transition-transform group-open:rotate-180"
+                    stroke={1.7}
+                  />
+                </summary>
+
+                <div className="border-t border-ligne px-5 pb-5 pt-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-discret">
+                    Parcours · horaires indicatifs
+                  </p>
+                  <ol className="relative mt-3 space-y-0 border-l-2 border-ligne pl-6">
+                    {arretsLigne.map((a) => (
+                      <li key={a.id} className="relative pb-4 last:pb-0">
+                        <span
+                          aria-hidden="true"
+                          className="absolute -left-[31px] top-0.5 flex h-4 w-4 items-center justify-center rounded-full border-2 border-vert bg-white"
+                        />
+                        <p className="text-sm font-medium">
+                          {a.ordre}. {a.nom}
+                        </p>
+                        <p className="text-xs tabular-nums text-discret">
+                          ≈ {heureArret(l.horaireDebut, a.ordre)}
+                        </p>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="mt-2 rounded-lg bg-papier px-3 py-2 text-xs text-encre-doux">
+                    Horaires indicatifs : cinq minutes séparant chaque arrêt.
+                  </p>
+                </div>
+              </details>
+            );
+          })}
         </div>
       </section>
 
       <p className="mt-10 text-sm text-encre-doux">
-        Pas de smartphone ? Le ticket s'achète aussi avec le code USSD{" "}
-        <span className="font-mono font-semibold text-encre">*611#</span> sur
-        n'importe quel téléphone.{" "}
+        Le ticket s&apos;achète aussi par code USSD{" "}
+        <span className="font-mono font-semibold text-encre">*611#</span>, depuis
+        n&apos;importe quel téléphone.{" "}
         {!utilisateur && (
           <Link href="/inscription" className="text-vert underline hover:text-vert-fonce">
             Créez un compte élève pour vous abonner

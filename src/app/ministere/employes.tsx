@@ -32,6 +32,14 @@ export function FormulaireEmploye() {
           <label className="block text-sm font-medium">Mot de passe initial</label>
           <input name="motDePasse" type="password" required minLength={8} className={champ} />
         </div>
+        <div className="sm:col-span-2">
+          <label className="block text-sm font-medium">Niveau de droits</label>
+          <select name="niveau" defaultValue="lecture" className={champ}>
+            <option value="validation">Validation — valide les écoles et consulte</option>
+            <option value="lecture">Lecture — consulte les indicateurs, sans validation</option>
+            <option value="admin">Administrateur — gère aussi les agents</option>
+          </select>
+        </div>
       </div>
       <button
         type="submit"

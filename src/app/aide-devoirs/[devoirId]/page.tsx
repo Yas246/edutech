@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { and, asc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { classes, devoirs, inscriptions, matieres, messagesTuteur } from "@/db/schema";
+import { IconBulb } from "@tabler/icons-react";
 import { exiger } from "@/lib/auth";
 import { EnTetePage } from "@/components/ui/en-tete";
 import { EtatVide } from "@/components/ui/etat-vide";
@@ -93,26 +94,30 @@ export default async function FilAideDevoir({
             ci-dessous.
           </EtatVide>
         ) : (
-          fil.map((m) =>
-            m.duTuteur ? (
+          fil.map((m) => {
+            const mien = !m.duTuteur;
+            return (
               <div
                 key={m.id}
-                className="rounded-2xl border border-vert/30 bg-vert-clair/40 p-4"
+                className={`flex items-end gap-2 ${mien ? "justify-end" : "justify-start"}`}
               >
-                <p className="text-xs font-semibold uppercase tracking-wide text-vert-fonce">
-                  Le tuteur
-                </p>
-                <p className="mt-1.5 whitespace-pre-line text-sm">{m.contenu}</p>
+                {!mien && (
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-vert-clair text-vert-fonce">
+                    <IconBulb className="h-4 w-4" stroke={1.7} />
+                  </span>
+                )}
+                <div
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 shadow-xs ${
+                    mien
+                      ? "rounded-br-md bg-vert text-sm text-white"
+                      : "rounded-bl-md border border-ligne bg-white text-sm"
+                  }`}
+                >
+                  <p className="whitespace-pre-line">{m.contenu}</p>
+                </div>
               </div>
-            ) : (
-              <div key={m.id} className="rounded-2xl border border-ligne bg-white p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-encre-doux">
-                  Vous
-                </p>
-                <p className="mt-1.5 whitespace-pre-line text-sm">{m.contenu}</p>
-              </div>
-            ),
-          )
+            );
+          })
         )}
       </section>
 

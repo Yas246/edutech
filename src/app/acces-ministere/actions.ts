@@ -76,6 +76,9 @@ export async function creerCompteMinistere(
       sexe: "",
       pseudo,
       role: "ministere",
+      // Un compte né d'un code d'accès démarre en lecture seule :
+      // c'est l'administrateur qui élèvera son niveau si besoin.
+      permissions: "lecture",
     })
     .returning({ id: users.id });
 

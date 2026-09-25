@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { IconBulb, IconSend } from "@tabler/icons-react";
 import { Markdown } from "@/components/markdown";
 
 type Message = { role: "user" | "assistant"; contenu: string };
@@ -134,34 +135,42 @@ export default function CoachEspace({ fils }: { fils: Fil[] }) {
   }
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[260px_1fr]">
+    <div className="grid min-h-0 flex-1 lg:grid-cols-[280px_minmax(0,1fr)]">
       {/* Les discussions */}
-      <aside>
+      <aside className="scroll-doux min-h-0 overflow-y-auto border-b border-ligne bg-white lg:border-b-0 lg:border-r">
+        <p className="px-4 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-discret">
+          Discussions
+        </p>
         <button
           type="button"
           onClick={() => setActif(null)}
-          className={`w-full rounded-xl px-4 py-2.5 text-left text-sm font-medium transition ${
+          className={`mx-1.5 mb-1.5 flex w-[calc(100%-12px)] items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
             actif === null
-              ? "bg-vert text-white"
-              : "border border-ligne bg-white hover:border-vert/40"
+              ? "bg-vert-clair text-vert-fonce"
+              : "text-encre-doux hover:bg-papier"
           }`}
         >
-          + Nouvelle discussion
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-dashed border-vert/50 text-vert">
+            +
+          </span>
+          Nouvelle discussion
         </button>
-        <ul className="mt-2 space-y-1">
+        <ul className="pb-2">
           {filsLocaux.map((f) => (
             <li key={f.id}>
               <button
                 type="button"
                 onClick={() => setActif(f.id)}
-                className={`w-full rounded-xl px-3 py-2 text-left text-sm transition ${
+                className={`mx-1.5 w-[calc(100%-12px)] rounded-xl px-3 py-2.5 text-left text-sm transition ${
                   f.id === actif
-                    ? "bg-vert-clair font-medium text-vert-fonce"
+                    ? "bg-vert-clair font-semibold text-vert-fonce"
                     : "text-encre-doux hover:bg-papier"
                 }`}
               >
-                <span className="block truncate">{f.titre || "Discussion"}</span>
-                <span className="block text-xs text-encre-doux">
+                <span className="block truncate font-medium text-encre">
+                  {f.titre || "Discussion"}
+                </span>
+                <span className="block text-xs text-discret">
                   {f.messages.length} message{f.messages.length > 1 ? "s" : ""}
                 </span>
               </button>
@@ -170,29 +179,61 @@ export default function CoachEspace({ fils }: { fils: Fil[] }) {
         </ul>
       </aside>
 
-      {/* Le fil ouvert */}
-      <section className="flex min-h-[420px] flex-col rounded-2xl border border-ligne bg-papier/60">
-        <div className="scroll-doux max-h-[60vh] flex-1 space-y-3 overflow-y-auto p-4">
-          {messages.length === 0 ? (
-            <p className="rounded-2xl border border-dashed border-ligne bg-white p-6 text-center text-sm text-encre-doux">
-              Posez votre première question : le coach consulte les registres
-              de votre place avant de répondre.
+      {/* La conversation */}
+      <section className="flex min-h-[50vh] flex-col lg:min-h-0">
+        {/* L'en-tête du coach */}
+        <div className="flex items-center gap-3 border-b border-ligne bg-white px-5 py-3.5">
+          <span className="relative">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-vert to-vert-fonce text-white">
+              <IconBulb className="h-5 w-5" stroke={1.7} />
+            </span>
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-vert"
+            />
+          </span>
+          <div>
+            <p className="text-sm font-semibold text-encre">Coach EduTech</p>
+            <p className="flex items-center gap-1.5 text-xs text-discret">
+              <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-vert" />
+              orientation · devoirs · registres de votre place
             </p>
+          </div>
+        </div>
+
+        {/* Les messages */}
+        <div className="scroll-doux min-h-0 flex-1 space-y-3 overflow-y-auto p-5">
+          {messages.length === 0 ? (
+            <div className="flex h-full items-center justify-center">
+              <p className="max-w-sm text-center text-sm text-discret">
+                Posez votre première question : le coach consulte les
+                registres de votre place avant de répondre.
+              </p>
+            </div>
           ) : (
             messages.map((m, i) => (
               <div
                 key={i}
-                className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-                  m.role === "user"
-                    ? "ml-auto bg-vert text-sm text-white"
-                    : "border border-ligne bg-white"
-                }`}
+                className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                {m.role === "user" ? (
-                  <span className="whitespace-pre-line">{m.contenu || "…"}</span>
-                ) : (
-                  <Markdown texte={m.contenu || "…"} />
+                {m.role === "assistant" && (
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-vert-clair text-vert-fonce">
+                    <IconBulb className="h-4 w-4" stroke={1.7} />
+                  </span>
                 )}
+                <div
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 shadow-xs ${
+                    m.role === "user"
+                      ? "rounded-br-md bg-vert text-sm text-white"
+                      : "rounded-bl-md border border-ligne bg-white"
+                  }`}
+                >
+                  {m.role === "user" ? (
+                    <span className="whitespace-pre-line">{m.contenu || "…"}</span>
+                  ) : (
+                    <Markdown texte={m.contenu || "…"} />
+                  )}
+                </div>
               </div>
             ))
           )}
@@ -200,14 +241,18 @@ export default function CoachEspace({ fils }: { fils: Fil[] }) {
         </div>
 
         {erreur && (
-          <p role="alert" className="mx-4 mb-2 rounded-xl border border-rouge/30 bg-rouge-clair px-3 py-2 text-sm text-rouge">
+          <p
+            role="alert"
+            className="mx-5 mb-2 rounded-xl border border-rouge/30 bg-rouge-clair px-3 py-2 text-sm text-rouge"
+          >
             {erreur}
           </p>
         )}
 
+        {/* La barre d'envoi */}
         <form
           onSubmit={envoyer}
-          className="flex items-end gap-2 rounded-b-2xl border-t border-ligne bg-white p-3"
+          className="flex items-center gap-2 border-t border-ligne bg-white px-4 py-3"
         >
           <textarea
             value={brouillon}
@@ -217,14 +262,15 @@ export default function CoachEspace({ fils }: { fils: Fil[] }) {
             maxLength={1000}
             disabled={enCours}
             placeholder="Écrivez au coach… (Entrée pour envoyer)"
-            className="max-h-40 flex-1 resize-none rounded-xl border border-ligne bg-white px-3 py-2 text-sm"
+            className="max-h-40 flex-1 resize-none rounded-full border border-ligne bg-papier px-4 py-2.5 text-sm focus:border-vert/40 focus:bg-white focus:outline-none"
           />
           <button
             type="submit"
             disabled={enCours || !brouillon.trim()}
-            className="rounded-xl bg-vert px-4 py-2.5 text-sm font-medium text-white hover:bg-vert-fonce disabled:opacity-60"
+            aria-label="Envoyer au coach"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-vert text-white transition hover:bg-vert-fonce disabled:opacity-60"
           >
-            {enCours ? "Le coach écrit…" : "Envoyer"}
+            <IconSend className="h-[18px] w-[18px]" stroke={1.8} />
           </button>
         </form>
       </section>
