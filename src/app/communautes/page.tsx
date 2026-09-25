@@ -49,7 +49,7 @@ export default async function Communautes({
     .from(communautes)
     .where(terme ? ilike(communautes.nom, `%${terme}%`) : undefined)
     .orderBy(asc(communautes.nom))
-    .limit(100);
+    .limit(400);
 
   const monId = utilisateur.id;
   const parType = new Map<string, typeof lignes>();
@@ -64,7 +64,7 @@ export default async function Communautes({
     <div className="mx-auto w-full max-w-4xl px-4 py-10">
       <EnTetePage
         titre="Communautés"
-        sousTitre="Les canaux ouverts de la plateforme : autour d'une matière, d'un club, d'un groupe de travail ou d'un sujet partagé. La classe, elle, se rejoint par son code."
+        sousTitre={`Le réseau entier : les ${lignes.length} canaux du recensement national, plus les clubs et groupes qui se créent. Rejoignez votre école, votre quartier d'intérêt — et faites vivre le fil.`}
       />
 
       <div className="mt-6 flex flex-wrap items-end gap-3">

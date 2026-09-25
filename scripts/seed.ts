@@ -1048,6 +1048,58 @@ async function importerCommunautes() {
   console.log("Communautés : 3 canaux ouverts de démonstration.");
 }
 
+/**
+ * Le réseau entier : une communauté ouverte par établissement validé
+ * du recensement, animée par sa direction quand elle existe. C'est
+ * elle qui alimente le fil de la plateforme.
+ */
+async function importerCommunautesEtablissements() {
+  const [cabinet] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.email, "ministere.test@edutech.bj"))
+    .limit(1);
+  if (!cabinet) return;
+
+  // Tout le recensement entre dans le réseau, pas seulement les écoles
+  // déjà validées : la communauté existe, la gestion attend la validation.
+  const validees = await db.select().from(etablissements);
+
+  let creees = 0;
+  for (const ecole of validees) {
+    const dejaLa = await db
+      .select({ id: communautes.id })
+      .from(communautes)
+      .where(eq(communautes.etablissementId, ecole.id))
+      .limit(1);
+    if (dejaLa.length > 0) continue;
+
+    const [creee] = await db
+      .insert(communautes)
+      .values({
+        nom: ecole.nom,
+        description: "La communauté de l'établissement : familles, équipe, anciens.",
+        type: "communaute",
+        etablissementId: ecole.id,
+        creePar: cabinet.id,
+      })
+      .returning({ id: communautes.id });
+    creees += 1;
+
+    if (ecole.directionUserId) {
+      await db
+        .insert(communautesMembres)
+        .values({
+          communauteId: creee.id,
+          userId: ecole.directionUserId,
+          role: "admin",
+        })
+        .onConflictDoNothing();
+    }
+  }
+  console.log("Communautés du recensement : " + creees + " établissements rejoignent le réseau.");
+}
+
 async function principal() {
   await importerRecensement();
   const { idEleve } = await importerEcoleDemo();
@@ -1057,6 +1109,7 @@ async function principal() {
   await importerTransfertDemo();
   await importerIdentites();
   await importerCommunautes();
+  await importerCommunautesEtablissements();
   console.log("Seed terminé. Comptes de démonstration, mot de passe unique : EduTest-2026");
   process.exit(0);
 }
