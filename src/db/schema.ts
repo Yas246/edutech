@@ -605,12 +605,49 @@ export const delegations = pgTable(
 /* Fil social                                                          */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Une communauté : le canal social ouvert (matière, groupe de travail,
+ * club, communauté thématique). La classe, elle, reste fermée sur code
+ * et vit dans les publications à portée classe.
+ */
+export const communautes = pgTable("communautes", {
+  id: serial("id").primaryKey(),
+  nom: text("nom").notNull(),
+  description: text("description").default("").notNull(),
+  /** matiere | groupe_travail | club | communaute */
+  type: text("type").notNull(),
+  etablissementId: integer("etablissement_id").references(() => etablissements.id, {
+    onDelete: "cascade",
+  }),
+  creePar: integer("cree_par")
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const communautesMembres = pgTable(
+  "communautes_membres",
+  {
+    id: serial("id").primaryKey(),
+    communauteId: integer("communaute_id")
+      .notNull()
+      .references(() => communautes.id, { onDelete: "cascade" }),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** membre | admin */
+    role: text("role").default("membre").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [unique("communautes_membres_uniques").on(t.communauteId, t.userId)],
+);
+
 export const publications = pgTable("publications", {
   id: serial("id").primaryKey(),
   auteurUserId: integer("auteur_user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  /** etablissement | classe */
+  /** etablissement | classe | communaute */
   porteeType: text("portee_type").notNull(),
   porteeId: integer("portee_id").notNull(),
   contenu: text("contenu").notNull(),

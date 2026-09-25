@@ -8,6 +8,8 @@ import {
   codesClasse,
   codesEleve,
   codesEquipe,
+  communautes,
+  communautesMembres,
   declarationsEnfant,
   enseignements,
   equipes,
@@ -989,6 +991,63 @@ async function importerIdentites() {
   console.log("Identités : pseudos, équipe confirmée, codes école/classes/élèves, famille croisée.");
 }
 
+/**
+ * Les communautés ouvertes de la démonstration : trois canaux thématiques
+ * avec leurs premiers membres.
+ */
+async function importerCommunautes() {
+  const deja = await db.select({ id: communautes.id }).from(communautes).limit(1);
+  if (deja.length > 0) return;
+
+  async function pseudoId(pseudo: string): Promise<number | null> {
+    const [u] = await db.select({ id: users.id }).from(users).where(eq(users.pseudo, pseudo)).limit(1);
+    return u?.id ?? null;
+  }
+
+  const canaux = [
+    {
+      nom: "Parents d'élèves du Bénin",
+      description: "L'entraide des familles : scolarité, santé, vie quotidienne.",
+      type: "communaute",
+      membres: ["idriss.dossa", "nadege.gbaguidi", "aristide.kpossou"],
+    },
+    {
+      nom: "Club maths",
+      description: "Enigmes, olympiades et remise à niveau, du collège au lycée.",
+      type: "club",
+      membres: ["awa.dossa", "bernadette.houngbo", "aime.zinsou"],
+    },
+    {
+      nom: "Orientation après le bac",
+      description: "Séries, filières, universités : les questions de tous ceux qui choisissent.",
+      type: "communaute",
+      membres: ["awa.dossa", "rachidatou.alassane", "fatou.bello", "lea.adjovi"],
+    },
+  ];
+
+  for (const canal of canaux) {
+    const auteur = await pseudoId(canal.membres[0]);
+    if (!auteur) continue;
+    const [creee] = await db
+      .insert(communautes)
+      .values({ nom: canal.nom, description: canal.description, type: canal.type, creePar: auteur })
+      .returning({ id: communautes.id });
+    for (const pseudo of canal.membres) {
+      const id = await pseudoId(pseudo);
+      if (!id) continue;
+      await db
+        .insert(communautesMembres)
+        .values({
+          communauteId: creee.id,
+          userId: id,
+          role: pseudo === canal.membres[0] ? "admin" : "membre",
+        })
+        .onConflictDoNothing();
+    }
+  }
+  console.log("Communautés : 3 canaux ouverts de démonstration.");
+}
+
 async function principal() {
   await importerRecensement();
   const { idEleve } = await importerEcoleDemo();
@@ -997,6 +1056,7 @@ async function principal() {
   await importerEquipePedagogique();
   await importerTransfertDemo();
   await importerIdentites();
+  await importerCommunautes();
   console.log("Seed terminé. Comptes de démonstration, mot de passe unique : EduTest-2026");
   process.exit(0);
 }

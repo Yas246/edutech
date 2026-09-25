@@ -114,6 +114,7 @@ export function navigationPour(role: Role): GroupeNav[] {
 
   const communaute: LienNav[] = [
     { href: "/fil", titre: "Fil", icone: "fil" },
+    { href: "/communautes", titre: "Communautés", icone: "apprenants" },
   ];
   if (role !== "ministere") {
     communaute.push({ href: "/messagerie", titre: "Messagerie", icone: "messagerie" });
