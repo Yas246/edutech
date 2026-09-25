@@ -83,16 +83,16 @@ export default async function Messagerie({
   const autre = filOuvert ? contacts.find((c) => c.id === filOuvert) : undefined;
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold tracking-tight">Messagerie</h1>
+    <div className="flex h-[calc(100dvh-61px)] flex-col">
+      <div className="flex items-center justify-between gap-3 border-b border-ligne bg-white px-5 py-3">
+        <h1 className="text-lg font-bold tracking-tight">Messagerie</h1>
         <Rafraichissement />
       </div>
 
-      {/* La table de conversation : liste à gauche, échange à droite. */}
-      <div className="mt-5 grid overflow-hidden rounded-2xl border border-ligne bg-white shadow-xs md:grid-cols-[280px_minmax(0,1fr)]">
+      {/* La table de conversation occupe tout l'espace restant. */}
+      <div className="grid min-h-0 flex-1 md:grid-cols-[300px_minmax(0,1fr)]">
         {/* La liste des interlocuteurs */}
-        <aside className="border-b border-ligne md:border-b-0 md:border-r">
+        <aside className="scroll-doux min-h-0 overflow-y-auto border-b border-ligne bg-white md:border-b-0 md:border-r">
           <p className="px-4 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-discret">
             Contacts
           </p>
@@ -141,7 +141,7 @@ export default async function Messagerie({
         </aside>
 
         {/* La conversation ouverte */}
-        <section className="flex min-h-[60vh] flex-col">
+        <section className="flex min-h-0 flex-col">
           {filOuvert && autre ? (
             <>
               {/* L'en-tête de l'échange */}
@@ -172,7 +172,7 @@ export default async function Messagerie({
               </div>
 
               {/* Les messages */}
-              <ul className="flex-1 space-y-2.5 overflow-y-auto p-5">
+              <ul className="scroll-doux flex-1 space-y-2.5 overflow-y-auto p-5">
                 {fils.length === 0 && (
                   <li className="flex h-full items-center justify-center text-sm text-discret">
                     Aucun message : écrivez le premier.

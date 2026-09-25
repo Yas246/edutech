@@ -172,7 +172,7 @@ export default function CoachEspace({ fils }: { fils: Fil[] }) {
 
       {/* Le fil ouvert */}
       <section className="flex min-h-[420px] flex-col rounded-2xl border border-ligne bg-papier/60">
-        <div className="max-h-[60vh] flex-1 space-y-3 overflow-y-auto p-4">
+        <div className="scroll-doux max-h-[60vh] flex-1 space-y-3 overflow-y-auto p-4">
           {messages.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-ligne bg-white p-6 text-center text-sm text-encre-doux">
               Posez votre première question : le coach consulte les registres

@@ -83,10 +83,35 @@ input[type="checkbox"] {
   border-radius: 0.375rem;
 }
 
-/* La barre de défilement, discrète, aux teintes du canevas. */
-* {
+/* Les barres de défilement n'existent pas au repos : elles se
+   révèlent fines, arrondies, quand la zone est survolée. La règle
+   passe par les deux familles de navigateurs (Firefox : scrollbar-
+   color ; Chromium/Edge : ::-webkit-scrollbar). */
+html,
+.scroll-doux {
   scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+html:hover,
+.scroll-doux:hover,
+.scroll-doux:focus-within {
   scrollbar-color: #cbd5e1 transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 9999px;
+}
+html:hover::-webkit-scrollbar-thumb,
+.scroll-doux:hover::-webkit-scrollbar-thumb,
+.scroll-doux:focus-within::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
 }
 
 /* Impression : seuls les documents (bulletins, reçus, listes)

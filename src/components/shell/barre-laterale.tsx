@@ -37,17 +37,12 @@ export default function BarreLaterale({ utilisateur }: { utilisateur: Utilisateu
             <span className="h-1/2 w-full bg-rouge" />
           </span>
         </span>
-        <span>
-          <span className="block text-lg leading-tight font-bold tracking-tight">
-            Edu<span className="text-vert">Tech</span>
-          </span>
-          <span className="block text-[10px] font-medium tracking-wide text-discret">
-            République du Bénin · Portail éducatif
-          </span>
+        <span className="text-lg leading-tight font-bold tracking-tight">
+          Edu<span className="text-vert">Tech</span>
         </span>
       </Link>
 
-      <div className="flex-1 overflow-y-auto px-3 py-4">
+      <div className="scroll-doux flex-1 overflow-y-auto px-3 py-4">
         <LiensNav groupes={navigationPour(role)} />
         <MesEspaces utilisateur={utilisateur} />
       </div>

@@ -68,10 +68,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               {/* La barre du haut, ordinateur : le sceau national et la
                   cloche, flottant au-dessus du canevas. */}
               <header className="sticky top-0 z-30 hidden items-center justify-between gap-3 border-b border-ligne bg-white/80 px-6 py-2.5 backdrop-blur-md lg:flex">
-                <p className="flex items-center gap-2 text-xs font-medium text-encre-doux">
-                  <Drapeau />
-                  République du Bénin
-                  <span aria-hidden="true" className="text-ligne">·</span>
+                <p className="text-xs font-medium text-encre-doux">
                   Portail éducatif national
                 </p>
                 <div className="flex items-center gap-2">{cloche}</div>

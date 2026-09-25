@@ -89,7 +89,7 @@ export default function TiroirMobile({
               </button>
             </div>
             <div
-              className="flex-1 overflow-y-auto px-3 py-4"
+              className="scroll-doux flex-1 overflow-y-auto px-3 py-4"
               onClick={(e) => {
                 if ((e.target as HTMLElement).closest("a")) setOuvert(false);
               }}
