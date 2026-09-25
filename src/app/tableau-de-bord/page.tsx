@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
   classes,
@@ -8,6 +8,7 @@ import {
   journal,
   publications,
   transferts,
+  users,
 } from "@/db/schema";
 import { exiger, nomComplet, type Utilisateur } from "@/lib/auth";
 import { libellesRole } from "@/lib/roles";
@@ -603,33 +604,177 @@ async function TableauParent(utilisateur: Utilisateur) {
   const situations = await situationEnfant(compteOutil(utilisateur));
   const echeances = await prochainesEcheances(compteOutil(utilisateur));
 
+  // Le lien parent → enfant, pour retrouver les ids des comptes.
+  const liens = await db.execute(sql`
+    SELECT eleve_user_id AS id FROM liens_famille WHERE parent_user_id = ${utilisateur.id}
+  `);
+  const idsEnfants = (liens as unknown as { id: number }[]).map((l) => Number(l.id));
+
+  const inscriptionsEnfants = idsEnfants.length
+    ? await db
+        .select({
+          eleveUserId: inscriptions.eleveUserId,
+          classeId: classes.id,
+          classeNom: classes.nom,
+        })
+        .from(inscriptions)
+        .innerJoin(classes, eq(classes.id, inscriptions.classeId))
+        .where(inArray(inscriptions.eleveUserId, idsEnfants))
+    : [];
+
+  const enfants = await db
+    .select({ id: users.id, prenom: users.prenom, nom: users.nom })
+    .from(users)
+    .where(inArray(users.id, idsEnfants.length ? idsEnfants : [0]));
+
+  // Par enfant : devoirs (à venir + en retard), dernières notes, dernières
+  // absences, bulletin publié.
+  const fiches = [];
+  for (const enfant of enfants) {
+    const inscription = inscriptionsEnfants.find((i) => i.eleveUserId === enfant.id);
+    const classeId = inscription?.classeId ?? 0;
+
+    const [dernieresNotes, dernieresAbsences, devoirsEnCours, devoirsEnRetard, publication, absencesN, retardsN] =
+      await Promise.all([
+        db
+          .select({
+            matiere: sql<string>`m.nom`,
+            titre: sql<string>`e.titre`,
+            valeur: sql<string>`n.valeur`,
+            bareme: sql<number>`e.bareme`,
+            date: sql<string>`e.date`,
+          })
+          .from(sql`notes n JOIN evaluations e ON e.id = n.evaluation_id JOIN matieres m ON m.id = e.matiere_id`)
+          .where(sql`n.eleve_user_id = ${enfant.id}`)
+          .orderBy(sql`e.date DESC`)
+          .limit(3),
+        db
+          .select({
+            statut: sql<string>`p.statut`,
+            date: sql<string>`p.date`,
+          })
+          .from(sql`presences p`)
+          .where(
+            sql`p.eleve_user_id = ${enfant.id} AND p.statut IN ('absent','absent_justifie','retard')`,
+          )
+          .orderBy(sql`p.date DESC`)
+          .limit(3),
+        db
+          .select({
+            titre: sql<string>`d.titre`,
+            matiere: sql<string>`m.nom`,
+            aRendreLe: sql<string>`d.a_rendre_le`,
+          })
+          .from(sql`devoirs d JOIN matieres m ON m.id = d.matiere_id`)
+          .where(sql`d.classe_id = ${classeId} AND d.a_rendre_le >= CURRENT_DATE`)
+          .orderBy(sql`d.a_rendre_le`)
+          .limit(3),
+        db
+          .select({
+            titre: sql<string>`d.titre`,
+            matiere: sql<string>`m.nom`,
+            aRendreLe: sql<string>`d.a_rendre_le`,
+          })
+          .from(sql`devoirs d JOIN matieres m ON m.id = d.matiere_id`)
+          .where(
+            sql`d.classe_id = ${classeId} AND d.a_rendre_le >= CURRENT_DATE - 14 AND d.a_rendre_le < CURRENT_DATE`,
+          )
+          .orderBy(sql`d.a_rendre_le DESC`)
+          .limit(3),
+        db
+          .select({ n: sql<number>`count(*)` })
+          .from(sql`publications_bulletins pb`)
+          .where(sql`pb.classe_id = ${classeId}`),
+        db
+          .select({ n: sql<number>`count(*)` })
+          .from(sql`presences`)
+          .where(sql`eleve_user_id = ${enfant.id} AND statut = 'absent'`),
+        db
+          .select({ n: sql<number>`count(*)` })
+          .from(sql`presences`)
+          .where(sql`eleve_user_id = ${enfant.id} AND statut = 'retard'`),
+      ]);
+
+    const moyenne = (await moyenneIndividuelleEleve(enfant.id)) ?? null;
+
+    fiches.push({
+      enfant,
+      classeId,
+      classeNom: inscription?.classeNom ?? "",
+      moyenne,
+      derniereNotes: dernieresNotes,
+      dernieresAbsences,
+      devoirsEnCours,
+      devoirsEnRetard,
+      bulletinPublie: Number(publication[0]?.n ?? 0) > 0,
+      absences: Number(absencesN[0]?.n ?? 0),
+      retards: Number(retardsN[0]?.n ?? 0),
+    });
+  }
+
   return (
     <>
       <div className="space-y-4">
-        {situations.map((s) => (
-          <article key={s.enfant} className="rounded-2xl border border-ligne bg-white p-5">
+        {fiches.map((f) => (
+          <article key={f.enfant.id} className="rounded-2xl border border-ligne bg-white p-5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="text-lg font-semibold">{s.enfant}</h2>
-              <p className="text-sm text-encre-doux">{s.classe}</p>
+              <h2 className="text-lg font-semibold">
+                {f.enfant.prenom} {f.enfant.nom}
+              </h2>
+              <div className="flex items-center gap-2">
+                {f.classeNom && <p className="text-sm text-encre-doux">{f.classeNom}</p>}
+                {f.classeId && (
+                  <Link
+                    href={
+                      f.bulletinPublie
+                        ? `/classes/${f.classeId}/bulletins/${f.enfant.id}`
+                        : `/classes/${f.classeId}/emploi-du-temps`
+                    }
+                    className="text-sm font-medium text-vert underline hover:text-vert-fonce"
+                  >
+                    {f.bulletinPublie ? "Son bulletin" : "Son emploi du temps"}
+                  </Link>
+                )}
+              </div>
             </div>
+
             <div className="mt-3 grid grid-cols-3 gap-3">
               <div>
                 <p className="text-xs text-encre-doux">Moyenne</p>
-                <p className="text-xl font-bold">{s.moyenne === null ? "—" : `${String(s.moyenne).replace(".", ",")}/20`}</p>
+                <p className="text-xl font-bold">
+                  {f.moyenne === null ? "—" : `${String(f.moyenne).replace(".", ",")}/20`}
+                </p>
               </div>
               <div>
                 <p className="text-xs text-encre-doux">Absences</p>
-                <p className={`text-xl font-bold ${s.absences > 0 ? "text-rouge" : ""}`}>{s.absences}</p>
+                <p className={`text-xl font-bold ${f.absences > 0 ? "text-rouge" : ""}`}>{f.absences}</p>
               </div>
               <div>
                 <p className="text-xs text-encre-doux">Retards</p>
-                <p className="text-xl font-bold">{s.retards}</p>
+                <p className="text-xl font-bold">{f.retards}</p>
               </div>
             </div>
-            {s.devoirsSemaine.length > 0 && (
-              <ul className="mt-3 space-y-1 border-t border-ligne/60 pt-2 text-sm">
-                {s.devoirsSemaine.map((d) => (
-                  <li key={d.titre} className="flex justify-between gap-2">
+
+            {f.devoirsEnRetard.length > 0 && (
+              <div className="mt-3 rounded-xl bg-rouge-clair p-3">
+                <p className="text-xs font-semibold uppercase text-rouge">Devoirs en retard</p>
+                <ul className="mt-1 space-y-1 text-sm">
+                  {f.devoirsEnRetard.map((d, i) => (
+                    <li key={i} className="flex justify-between gap-2">
+                      <span className="min-w-0 truncate">
+                        {d.matiere} · {d.titre}
+                      </span>
+                      <span className="shrink-0 text-rouge">non rendu le {jour(d.aRendreLe)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {f.devoirsEnCours.length > 0 && (
+              <ul className="mt-3 space-y-1 text-sm">
+                {f.devoirsEnCours.map((d, i) => (
+                  <li key={i} className="flex justify-between gap-2">
                     <span className="min-w-0 truncate">
                       <span className="font-medium">{d.matiere}</span> · {d.titre}
                     </span>
@@ -638,9 +783,47 @@ async function TableauParent(utilisateur: Utilisateur) {
                 ))}
               </ul>
             )}
+
+            <div className="mt-3 grid gap-4 border-t border-ligne/60 pt-3 sm:grid-cols-2">
+              <div>
+                <p className="text-xs font-semibold text-encre-doux">Dernières notes</p>
+                {f.derniereNotes.length === 0 ? (
+                  <p className="mt-1 text-sm text-encre-doux">Pas encore de note.</p>
+                ) : (
+                  <ul className="mt-1 space-y-1 text-sm">
+                    {f.derniereNotes.map((n, i) => (
+                      <li key={i} className="flex justify-between gap-2">
+                        <span className="min-w-0 truncate">
+                          {n.matiere} <span className="text-encre-doux">· {jour(String(n.date))}</span>
+                        </span>
+                        <span className="shrink-0 font-semibold text-vert-fonce">
+                          {String(Number((Number(n.valeur) / Number(n.bareme)) * 20).toFixed(2)).replace(".", ",")}
+                          /20
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-encre-doux">Dernières absences</p>
+                {f.dernieresAbsences.length === 0 ? (
+                  <p className="mt-1 text-sm text-encre-doux">Aucun signalement.</p>
+                ) : (
+                  <ul className="mt-1 space-y-1 text-sm">
+                    {f.dernieresAbsences.map((a, i) => (
+                      <li key={i} className="flex justify-between gap-2">
+                        <span className={a.statut === "absent" ? "text-rouge" : ""}>{a.statut}</span>
+                        <span className="text-encre-doux">{jour(String(a.date))}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </article>
         ))}
-        {situations.length === 0 && (
+        {situations.length === 0 && fiches.length === 0 && (
           <Widget titre="Aucun enfant relié" lien="/mes-enfants" libelleLien="Déclarer">
             <Vide texte="Déclarez votre enfant, puis croisez vos codes pour ouvrir le suivi." />
           </Widget>
@@ -670,6 +853,18 @@ async function TableauParent(utilisateur: Utilisateur) {
       </div>
     </>
   );
+}
+
+/** La moyenne d'un enfant, règle des bulletins (absent justifié exclu). */
+async function moyenneIndividuelleEleve(idEleve: number): Promise<number | null> {
+  const [ligne] = await db
+    .select({
+      moyenne: sql<string | null>`round(AVG(CASE WHEN n.absent AND n.justifie THEN NULL
+        WHEN n.absent THEN 0 ELSE n.valeur / e.bareme * 20 END)::numeric, 2)`,
+    })
+    .from(sql`notes n JOIN evaluations e ON e.id = n.evaluation_id`)
+    .where(sql`n.eleve_user_id = ${idEleve}`);
+  return ligne?.moyenne ? Number(ligne.moyenne) : null;
 }
 
 /* ------------------------------ la page ------------------------------ */
