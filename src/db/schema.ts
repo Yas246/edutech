@@ -175,6 +175,10 @@ export const etablissements = pgTable("etablissements", {
   directionUserId: integer("direction_user_id").references(() => users.id, {
     onDelete: "set null",
   }),
+  /** Le découpage de l'année : 1 annuel, 2 semestres, 3 trimestres… 6. */
+  periodicite: integer('periodicite').default(3).notNull(),
+  /** L'échelle des moyennes choisie par l'établissement (20 par défaut). */
+  echelle: numeric('echelle', { precision: 5, scale: 1 }).default('20.0').notNull(),
   /** Compteurs des pièces numérotées par établissement. */
   factureSeq: integer("facture_seq").default(0).notNull(),
   recuSeq: integer("recu_seq").default(0).notNull(),

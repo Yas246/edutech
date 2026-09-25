@@ -87,7 +87,7 @@ export default async function PageBulletins({
         {donnees.periode
           ? `${donnees.periode.nom} (du ${donnees.periode.debut} au ${donnees.periode.fin})`
           : "Année entière (aucune période active)"}
-        {" · "}moyennes pondérées par coefficient, notes ramenées sur 20.
+        {" · "}moyennes pondérées par coefficient, notes ramenées à l échelle de l établissement.
       </p>
 
       {utilisateur.role === "direction" && (

@@ -45,6 +45,8 @@ export type BulletinsClasse = {
   periode: { id: number; nom: string; debut: string; fin: string } | null;
   eleves: BulletinEleve[];
   publie: boolean;
+  /** L'échelle des moyennes choisie par l'établissement. */
+  echelle: number;
 };
 
 /** La période active de l'établissement de la classe, sinon aucune. */
@@ -84,18 +86,20 @@ export function periodePubliee(classeId: number, periodeId: number | null) {
  * rang par moyenne décroissante, absences de la période.
  */
 export async function chargerBulletins(classeId: number): Promise<BulletinsClasse> {
-  const [classe] = await db
+  let [classe] = await db
     .select({
       id: classes.id,
       nom: classes.nom,
       etablissementNom: etablissements.nom,
       commune: etablissements.commune,
       departement: etablissements.departement,
+      echelle: etablissements.echelle,
     })
     .from(classes)
     .innerJoin(etablissements, eq(etablissements.id, classes.etablissementId))
     .where(eq(classes.id, classeId))
     .limit(1);
+  const echelle = classe ? Number(classe.echelle) || 20 : 20;
 
   const programme = await db
     .select({ id: matieres.id, nom: matieres.nom, coefficient: matieres.coefficient })
@@ -144,7 +148,7 @@ export async function chargerBulletins(classeId: number): Promise<BulletinsClass
       const notesMatiere = lignesNotes
         .filter((n) => n.eleveUserId === eleve.id && n.matiereId === m.id)
         .filter((n) => !(n.absent && n.justifie))
-        .map((n) => (n.absent ? 0 : (Number(n.valeur) / n.bareme) * 20));
+        .map((n) => (n.absent ? 0 : (Number(n.valeur) / n.bareme) * 20 * (echelle / 20)));
       const moyenne =
         notesMatiere.length > 0
           ? notesMatiere.reduce((a, b) => a + b, 0) / notesMatiere.length
@@ -211,6 +215,7 @@ export async function chargerBulletins(classeId: number): Promise<BulletinsClass
     periode,
     eleves: resultats,
     publie: periode ? await periodePubliee(classeId, periode.id) : false,
+    echelle,
   };
 }
 

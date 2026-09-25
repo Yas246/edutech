@@ -75,6 +75,7 @@ export function navigationPour(role: Role): GroupeNav[] {
         { href: "/mon-ecole/transferts", titre: "Transferts", icone: "transferts" },
         { href: "/mon-ecole/salles", titre: "Salles", icone: "salles" },
         { href: "/mon-ecole/agenda", titre: "Agenda", icone: "agenda" },
+        { href: "/mon-ecole/parametres", titre: "Paramètres", icone: "assiduite" },
         { href: "/delegations", titre: "Délégations", icone: "delegations" },
       ],
     });

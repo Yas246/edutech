@@ -99,7 +99,7 @@ export default async function SerieBulletins({
             <p>
               Moyenne générale :{" "}
               <strong>
-                {e.moyenneGenerale === null ? "—" : `${formaterMoyenne(e.moyenneGenerale)}/20`}
+                {e.moyenneGenerale === null ? "—" : `${formaterMoyenne(e.moyenneGenerale)}/${donnees.echelle}`}
               </strong>{" "}
               · Rang : <strong>{e.rang ?? "—"}</strong>
             </p>
