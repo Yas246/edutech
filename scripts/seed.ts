@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "../src/db";
 import {
   abonnementsTransport,
@@ -23,6 +23,7 @@ import {
   notes,
   periodes,
   presences,
+  publicationsBulletins,
   presencesEnseignants,
   transferts,
   users,
@@ -66,6 +67,9 @@ async function idUtilisateur(
       nom: donnees.nom,
       telephone: donnees.telephone ?? "",
       sexe: donnees.sexe ?? "",
+      // Un pseudo dérivé de l'email : unique par construction (les
+      // comptes nommés sont regradés plus bas par fixerPseudo).
+      pseudo: email.split("@")[0],
       // Les comptes de démonstration sont des comptes établis.
       onboardingFait: true,
     })
@@ -1113,6 +1117,7 @@ async function principal() {
   await importerAccesMinistere();
   await vivifierAbandons();
   await fixerEtatCivil();
+  await enrichirNation();
   console.log("Seed terminé. Comptes de démonstration, mot de passe unique : EduTest-2026");
   process.exit(0);
 }
@@ -1234,4 +1239,274 @@ async function fixerEtatCivil() {
       .where(eq(users.email, email));
   }
   console.log(`État civil : ${etatCivil.length} élèves de démonstration datés et localisés.`);
+}
+
+/* ================================================================
+   L'enrichissement national : des écoles réelles du recensement,
+   activées et vivantes dans plusieurs départements, pour que les
+   écrans du ministère racontent un pays.
+   - une classe par école : « 3e A » (BEPC) en collège, « Terminale D »
+     en lycée
+   - parité contrastée selon l'école
+   - quatre matières confiées sur sept : le reste nourrit les besoins
+   - deux élèves par école « cessent de venir » : abandons répartis
+   - une école laissée en attente dans la file de validation
+   - bulletins publiés sur deux écoles sur trois
+   Idempotent : relancer le seed n'ajoute rien de dupliqué.
+   ================================================================ */
+
+const PROGRAMME_STANDARD: [string, number][] = [
+  ["Mathématiques", 4],
+  ["Français", 4],
+  ["Anglais", 3],
+  ["SVT", 3],
+  ["Physique-Chimie", 3],
+  ["Histoire-Géographie", 2],
+  ["EPS", 1],
+];
+
+const PRENOMS_M = ["Gildas", "Ulrich", "Erick", "Rachidi", "Bertin", "Pacôme", "Sylvestre", "Marcellin", "Josué", "Firmin", "Hervé", "Ghislain"];
+const PRENOMS_F = ["Sika", "Reine", "Aïcha", "Bernadette", "Carmelle", "Odile", "Sylvie", "Espérance", "Grâce", "Léa", "Nadia", "Rita"];
+const NOMS_FAMILLE = ["Dossou", "Agbodjan", "Houngbo", "Kponou", "Tossou", "Sossou", "Zinsou", "Adjovi", "Agossou", "Sagbo", "Lokonon", "Amoussou", "Bello", "Sanni", "Adandé", "Tohouegnon"];
+
+function slugEmail(texte: string) {
+  return texte
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, ".");
+}
+
+async function enrichirNation() {
+  const cibles = await db.execute(sql`
+    SELECT DISTINCT ON (e.departement)
+      e.id, e.nom, e.commune, e.departement
+    FROM etablissements e
+    WHERE e.id <> (SELECT id FROM etablissements WHERE nom = 'Lycée Béhanzin' LIMIT 1)
+      AND NOT EXISTS (SELECT 1 FROM classes c WHERE c.etablissement_id = e.id)
+      AND e.departement IN ('Alibori', 'Atacora', 'Borgou', 'Mono', 'Zou', 'Atlantique', 'Donga', 'Collines')
+    ORDER BY e.departement, e.nom
+    LIMIT 20
+  `);
+  const lignes = cibles as unknown as { id: number; nom: string; commune: string; departement: string }[];
+
+  // Une école par département au plus, neuf retenues, dont la dernière
+  // reste en attente : elle montrera la validation au travail.
+  const parDepartement = new Map<string, (typeof lignes)[number]>();
+  for (const l of lignes) {
+    if (!parDepartement.has(l.departement)) parDepartement.set(l.departement, l);
+  }
+  const choisies = [...parDepartement.values()].slice(0, 9);
+  if (choisies.length < 4) {
+    console.log("Enrichissement national : pas assez d'écoles cibles, ignoré.");
+    return;
+  }
+  const enAttente = choisies[choisies.length - 1];
+  const aActiver = choisies.slice(0, -1);
+
+  const ilYA = (jours: number) =>
+    new Date(Date.now() - jours * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  const ouvre = (iso: string) => new Date(`${iso}T12:00:00`).getDay() !== 0;
+
+  for (const [index, ecole] of aActiver.entries()) {
+    const emailDirection = `direction.${slugEmail(ecole.nom)}@edutech.bj`;
+    const idDirection = await idUtilisateur(emailDirection, {
+      prenom: "Direction",
+      nom: ecole.nom,
+      role: "direction",
+    });
+    await db
+      .update(users)
+      .set({ pseudo: `direction.${slugEmail(ecole.nom)}`, onboardingFait: true })
+      .where(eq(users.id, idDirection));
+    await db
+      .update(etablissements)
+      .set({ statut: "valide", directionUserId: idDirection })
+      .where(eq(etablissements.id, ecole.id));
+
+    const idProf = await idUtilisateur(`prof.nation${index + 1}@edutech.bj`, {
+      prenom: "Professeur",
+      nom: ecole.nom,
+      role: "enseignant",
+    });
+
+    const nomClasse = /college|ceg/i.test(ecole.nom) ? "3e A" : "Terminale D";
+    let [classe] = await db
+      .select({ id: classes.id })
+      .from(classes)
+      .where(and(eq(classes.etablissementId, ecole.id), eq(classes.nom, nomClasse)))
+      .limit(1);
+    if (!classe) {
+      const [cree] = await db
+        .insert(classes)
+        .values({
+          etablissementId: ecole.id,
+          nom: nomClasse,
+          niveau: nomClasse === "3e A" ? "3e" : "Terminale",
+          anneeScolaire: "2026-2027",
+        })
+        .returning({ id: classes.id });
+      classe = cree;
+    }
+    const idClasse = classe.id;
+
+    for (const [nom, coefficient] of PROGRAMME_STANDARD) {
+      await db
+        .insert(matieres)
+        .values({ classeId: idClasse, nom, coefficient })
+        .onConflictDoNothing({ target: [matieres.classeId, matieres.nom] });
+    }
+    const programme = await db
+      .select({ id: matieres.id, nom: matieres.nom })
+      .from(matieres)
+      .where(eq(matieres.classeId, idClasse));
+    for (const m of programme.slice(0, 4)) {
+      await db
+        .insert(enseignements)
+        .values({ classeId: idClasse, matiereId: m.id, enseignantUserId: idProf })
+        .onConflictDoNothing();
+    }
+
+    // Deux évaluations (maths, français) : elles portent les notes.
+    const maths = programme.find((m) => m.nom === "Mathématiques");
+    const francais = programme.find((m) => m.nom === "Français");
+    const evaluationsClasse: { id: number; matiereNom: string }[] = [];
+    for (const m of [maths, francais]) {
+      if (!m) continue;
+      const [deja] = await db
+        .select({ id: evaluations.id })
+        .from(evaluations)
+        .where(and(eq(evaluations.classeId, idClasse), eq(evaluations.titre, "Interrogation n°1")))
+        .limit(1);
+      if (deja) {
+        evaluationsClasse.push({ id: deja.id, matiereNom: m.nom });
+        continue;
+      }
+      const [cree] = await db
+        .insert(evaluations)
+        .values({
+          classeId: idClasse,
+          matiereId: m.id,
+          titre: "Interrogation n°1",
+          type: "interrogation",
+          bareme: 20,
+          date: ilYA(10),
+          creePar: idProf,
+        })
+        .returning({ id: evaluations.id });
+      evaluationsClasse.push({ id: cree.id, matiereNom: m.nom });
+    }
+
+    // Les élèves : parité contrastée selon l'école.
+    const majoriteFilles = index % 2 === 0;
+    const effectif = 9 + ((index * 3) % 4);
+    for (let n = 0; n < effectif; n++) {
+      const fille = majoriteFilles ? n % 4 !== 3 : n % 4 === 0;
+      const prenom = fille
+        ? PRENOMS_F[(index * 7 + n) % PRENOMS_F.length]
+        : PRENOMS_M[(index * 5 + n) % PRENOMS_M.length];
+      const nomFamille = NOMS_FAMILLE[(index * 3 + n * 2) % NOMS_FAMILLE.length];
+      const email = `${slugEmail(prenom)}.${slugEmail(nomFamille)}.n${index}${n}@edutech.bj`;
+      const idEleve = await idUtilisateur(email, {
+        prenom,
+        nom: nomFamille,
+        role: "eleve",
+        sexe: fille ? "F" : "M",
+      });
+      await db
+        .insert(inscriptions)
+        .values({ classeId: idClasse, eleveUserId: idEleve })
+        .onConflictDoNothing({ target: [inscriptions.classeId, inscriptions.eleveUserId] });
+
+      // L'état civil, pour les listes de candidature.
+      const annee = nomClasse === "3e A" ? 2011 : 2008;
+      await db
+        .update(users)
+        .set({
+          dateNaissance: `${annee}-${String((n % 12) + 1).padStart(2, "0")}-${String((n % 27) + 1).padStart(2, "0")}`,
+          lieuNaissance: ecole.commune || ecole.departement,
+          onboardingFait: true,
+        })
+        .where(eq(users.id, idEleve));
+
+      // Les notes des deux évaluations, déterministes.
+      for (const ev of evaluationsClasse) {
+        const valeur = (8 + ((index * 13 + n * 7 + ev.id * 3) % 80) / 10).toFixed(2);
+        await db
+          .insert(notes)
+          .values({ evaluationId: ev.id, eleveUserId: idEleve, valeur })
+          .onConflictDoNothing({ target: [notes.evaluationId, notes.eleveUserId] });
+      }
+
+      // Les présences : la classe continue d'être pointée, mais les
+      // deux derniers élèves ont cessé de venir il y a vingt jours.
+      const estAbandonne = n >= effectif - 2;
+      for (let j = estAbandonne ? 45 : 13; j >= (estAbandonne ? 20 : 0); j--) {
+        const date = ilYA(j);
+        if (!ouvre(date)) continue;
+        await db
+          .insert(presences)
+          .values({
+            classeId: idClasse,
+            eleveUserId: idEleve,
+            date,
+            statut: "present",
+            saisiPar: idDirection,
+          })
+          .onConflictDoNothing();
+      }
+    }
+
+    // La période annuelle, et les bulletins publiés deux fois sur trois.
+    let [periode] = await db
+      .select({ id: periodes.id })
+      .from(periodes)
+      .where(and(eq(periodes.etablissementId, ecole.id), eq(periodes.nom, "Trimestre 1")))
+      .limit(1);
+    if (!periode) {
+      const [cree] = await db
+        .insert(periodes)
+        .values({
+          etablissementId: ecole.id,
+          nom: "Trimestre 1",
+          debut: "2026-09-15",
+          fin: "2026-12-18",
+          active: true,
+        })
+        .returning({ id: periodes.id });
+      periode = cree;
+    }
+    if (periode && index % 3 !== 2) {
+      await db
+        .insert(publicationsBulletins)
+        .values({ classeId: idClasse, periodeId: periode.id, publiePar: idDirection })
+        .onConflictDoNothing({ target: [publicationsBulletins.classeId, publicationsBulletins.periodeId] });
+    }
+
+    console.log(`École vivante : ${ecole.nom} (${ecole.departement}) — ${effectif} élèves.`);
+  }
+
+  console.log(`École laissée en attente dans la file : ${enAttente.nom} (${enAttente.departement}).`);
+
+  // Deux agents du ministère pré-créés, pour la démonstration des
+  // niveaux de droits.
+  await idUtilisateur("agent.validation@edutech.bj", {
+    prenom: "Agent",
+    nom: "Validation",
+    role: "ministere",
+  });
+  await db
+    .update(users)
+    .set({ permissions: "validation", pseudo: "agent.validation", onboardingFait: true })
+    .where(eq(users.email, "agent.validation@edutech.bj"));
+  await idUtilisateur("agent.lecture@edutech.bj", {
+    prenom: "Agent",
+    nom: "Lecture",
+    role: "ministere",
+  });
+  await db
+    .update(users)
+    .set({ permissions: "lecture", pseudo: "agent.lecture", onboardingFait: true })
+    .where(eq(users.email, "agent.lecture@edutech.bj"));
+  console.log("Agents ministère : agent.validation et agent.lecture prêts (EduTest-2026).");
 }
