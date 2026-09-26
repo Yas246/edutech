@@ -8,6 +8,7 @@ import { IconBulb } from "@tabler/icons-react";
 import { exiger } from "@/lib/auth";
 import { EnTetePage } from "@/components/ui/en-tete";
 import { EtatVide } from "@/components/ui/etat-vide";
+import { Markdown } from "@/components/markdown";
 import FormulaireTuteur from "./formulaire";
 
 export const dynamic = "force-dynamic";
@@ -113,7 +114,11 @@ export default async function FilAideDevoir({
                       : "rounded-bl-md border border-ligne bg-white text-sm"
                   }`}
                 >
-                  <p className="whitespace-pre-line">{m.contenu}</p>
+                  {mien ? (
+                    <p className="whitespace-pre-line">{m.contenu}</p>
+                  ) : (
+                    <Markdown texte={m.contenu} />
+                  )}
                 </div>
               </div>
             );
